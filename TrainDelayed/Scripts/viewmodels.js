@@ -16,8 +16,13 @@ function TrainViewModel(json, callingAt) {
     self.from = json.Origin.Description.toLowerCase();
     self.to = json.Destination.Description.toLowerCase();
     self.callingAt = callingAt.toLowerCase();
-    self.expectedArrival = "00:00";
-    self.actualArrival = "00:00";
-    self.delay = 0;
+    self.expectedArrival = json.DestExpectedArrival ? moment(json.DestExpectedArrival, "HH:mm:ss").format("HH:mm") : "Unknown";
+    self.actualArrival = json.DestActualArrival ? moment(json.DestActualArrival).format("HH:mm") : "Unknown";
+    self.delay = json.DestExpectedArrival && json.DestActualArrival ?
+        moment(self.actualArrival, "HH:mm:ss").diff(moment(self.expectedArrival, "HH:mm:ss"), "minutes") : "Unknown";
     self.webLink = "http://www.londonmidland.com";
+    self.uniqueLink = "#getuid:" + json.TrainUid + "#" + moment(json.SchedOriginDeparture).format("YYYY-MM-DD");
+    self.cancelled = json.Cancellation != null;
+    self.title = json.Cancellation ? "Cancelled " + json.Cancellation.Type +
+        (json.Cancellation.CancelledAt ? " at " + json.Cancellation.CancelledAt.Description : "") : "";
 }

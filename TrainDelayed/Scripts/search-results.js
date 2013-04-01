@@ -6,7 +6,6 @@ var titleModel = new TitleViewModel();
 var titleFormat = "ddd Do MMM YYYY";
 var dateFormat = "ddd DD MMM YY";
 var dateFormatQuery = "YYYY-MM-DD";
-var dateHashFormat = "YYYY-MM-DD";
 var timeFormat = "HH:mm:ss";
 
 $(function () {
@@ -25,7 +24,7 @@ function loadHashCommand() {
             var to = elements[3];
             var date = null;
             if (elements.length == 5)
-                date = elements[4];
+                date = moment(elements[4], dateFormatQuery);
             var time = null;
             if (elements.length == 6)
                 time = elements[5];
@@ -39,6 +38,8 @@ function loadHashCommand() {
 
 function getCallingBetween(from, to, date, time) {
     $(".progress").show();
+    $("#error-row").hide();
+    $("#no-results-row").hide();
     $.when(
         $.getJSON("http://" + server + ":" + apiPort + "/Stanox/?GetByCrs&crsCode=" + from),
         $.getJSON("http://" + server + ":" + apiPort + "/Stanox/?GetByCrs&crsCode=" + to))
@@ -51,6 +52,9 @@ function getCallingBetween(from, to, date, time) {
         }
         titleModel.Text(title);
         getCallingBetweenByStanox(from[0], to[0], date, time);
+    }).fail(function () {
+        $(".progress").hide();
+        $("#error-row").show();
     });
 }
 
@@ -58,12 +62,11 @@ function getCallingBetweenByStanox(from, to, date, time) {
     if (!date) {
         date = new moment();
     }
-    $.getJSON("http://" + server + ":" + apiPort + "/TrainMovement/" + from.Name + "/" + to.Name + 
+    $.getJSON("http://" + server + ":" + apiPort + "/TrainMovement/" + from.Name + "/" + to.Name +
         "?startDate=" + date.format(dateFormatQuery) +
         "&endDate=" + new moment(date).add('days', 1).format(dateFormatQuery)
     ).done(function (data) {
         if (data && data.length) {
-            $("#no-results-row").hide();
 
             var results = Array();
             for (i in data) {
@@ -77,5 +80,8 @@ function getCallingBetweenByStanox(from, to, date, time) {
     }
     ).complete(function () {
         $(".progress").hide();
+    }).fail(function () {
+        $("#error-row").show();
     });
+    
 }
