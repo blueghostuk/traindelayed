@@ -109,3 +109,6 @@ TrainDelayed.pdb
 #web deploy files
 *.pubxml
 PublishProfiles/*
+
+# code doc
+*/bin/*.xml

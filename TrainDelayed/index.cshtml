@@ -1,13 +1,65 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
 }
+@using System.Web.Optimization;
+@section CustomCss{
+    <style type="text/css">
+        span.add-on {
+            width: 4em !important;
+            text-align: left !important;
+        }
+            span.add-on > i {
+                float: right !important;
+            }
+
+        div.input-prepend > input {
+            width: 350px !important;
+        }
+    </style>
+}
 <div class="container">
     <div class="hero-unit">
-        <h1>Coming soon ...</h1>
-        <br />
-        <ul>
-            <li><a href="http://www.trainnotifier.co.uk">http://www.trainnotifier.co.uk</a></li>
-            <li><a href="https://github.com/blueghostuk/traindelayed">https://github.com/blueghostuk/traindelayed</a></li>
-        </ul>
+        <h1>@System.Configuration.ConfigurationManager.AppSettings["brandingTitle"]</h1>
+        <p>
+            Search for your journey to see how late it was
+        </p>
+        <div class="row btn-group" style="margin-top: 30px;">
+            <div class="input-prepend">
+                <span class="add-on">From:<i class="icon-search"></i>
+                </span>
+                <input type="text" class="station-lookup" id="from-crs" autocomplete="off" placeholder="Type from station name here" />
+            </div>
+            <br />
+            <div class="input-prepend">
+                <span class="add-on">To:<i class="icon-search"></i>
+                </span>
+                <input type="text" class="station-lookup" id="to-crs" autocomplete="off" placeholder="Type to station name here" />
+            </div>
+            <br />
+            <div class="input-prepend">
+                <span class="add-on">On:<i class="icon-calendar"></i>
+                </span>
+                <input type="text" class="datepicker" placeholder="Choose a date (default to today)" id="date-picker" />
+            </div>
+            <br />
+            <div class="input-prepend">
+                <span class="add-on">At:<i class="icon-time"></i>
+                </span>
+                <input type="text" placeholder="Choose a time (default to all day)" id="time-picker" />
+            </div>
+            <br />
+            <div class="input-prepend">
+                <button type="button" class="btn">Find</button>
+            </div>
+        </div>
     </div>
 </div>
+
+@section FooterJs{
+    <script type="text/javascript">
+        var server = "@System.Configuration.ConfigurationManager.AppSettings["server"]";
+        var apiPort = "@System.Configuration.ConfigurationManager.AppSettings["apiPort"]";
+    </script>
+
+    @Scripts.Render("~/bundles/index")
+}

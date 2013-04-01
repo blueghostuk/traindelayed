@@ -91,11 +91,13 @@
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\moment-datepicker\datepicker.css" />
+    <Content Include="Content\style.css" />
     <Content Include="Global.asax" />
     <Content Include="index.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\index.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\knockout-2.2.1.debug.js" />
@@ -108,7 +110,13 @@
     <Content Include="Scripts\moment-datepicker.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
-    <Content Include="Web.config" />
+    <TypeScriptCompile Include="Scripts\Tocs.ts" />
+    <Content Include="Scripts\Tocs.js">
+      <DependentUpon>Tocs.ts</DependentUpon>
+    </Content>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -119,7 +127,6 @@
     <Content Include="_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="bin\" />
   </ItemGroup>
   <ItemGroup>

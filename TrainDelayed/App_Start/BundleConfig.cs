@@ -21,9 +21,16 @@ namespace TrainDelayed
                 "~/Scripts/moment.js",
                 "~/Scripts/moment-datepicker.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/index").Include(
+                "~/Scripts/index.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/app").Include(
+                "~/Scripts/Tocs.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.css",
-                "~/Content/bootstrap-responsive.css"));
+                "~/Content/bootstrap-responsive.css",
+                "~/Content/style.css"));
         }
     }
 }
