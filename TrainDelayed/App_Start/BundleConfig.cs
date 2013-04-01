@@ -28,7 +28,8 @@ namespace TrainDelayed
                 "~/Scripts/search-results.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
-                "~/Scripts/Tocs.js"));
+                "~/Scripts/Tocs.js",
+                "~/Scripts/viewmodels.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.css",
