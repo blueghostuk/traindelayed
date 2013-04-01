@@ -110,6 +110,8 @@
     <Content Include="Scripts\moment-datepicker.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\search-results.js" />
+    <Content Include="search-results.cshtml" />
     <TypeScriptCompile Include="Scripts\Tocs.ts" />
     <Content Include="Scripts\Tocs.js">
       <DependentUpon>Tocs.ts</DependentUpon>

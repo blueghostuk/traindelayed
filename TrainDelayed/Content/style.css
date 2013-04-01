@@ -1,2 +1,20 @@
-﻿body {
+﻿/* override bootstrap */
+ul.nav.nav-tabs {
+    margin-bottom: 0px;
+}
+
+/* override bootstrap responsive*/
+@media (max-width: 979px) {
+    .navbar-fixed-top {
+        position: fixed;
+    }
+}
+
+/* override bootstrap responsive*/
+/* only for within navbar*/
+@media (max-width: 767px) {
+    .navbar-inner > .container-fluid {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
 }

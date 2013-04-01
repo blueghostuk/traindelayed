@@ -17,6 +17,9 @@
         }
     </style>
 }
+@section TopMenu{
+    <li class="active"><a>Home</a></li>
+}
 <div class="container">
     <div class="hero-unit">
         <h1>@System.Configuration.ConfigurationManager.AppSettings["brandingTitle"]</h1>
@@ -49,7 +52,7 @@
             </div>
             <br />
             <div class="input-prepend">
-                <button type="button" class="btn">Find</button>
+                <button type="button" class="btn" onclick="doSearch();">Find</button>
             </div>
         </div>
     </div>
