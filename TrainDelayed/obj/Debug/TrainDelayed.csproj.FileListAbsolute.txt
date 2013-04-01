@@ -1,9 +1,0 @@
-C:\Users\blueg_000\Documents\GitHub\traindelayed\TrainDelayed\bin\TrainDelayed.dll
-C:\Users\blueg_000\Documents\GitHub\traindelayed\TrainDelayed\bin\TrainDelayed.pdb
-C:\Users\blueg_000\Documents\GitHub\traindelayed\TrainDelayed\bin\Antlr3.Runtime.dll
-C:\Users\blueg_000\Documents\GitHub\traindelayed\TrainDelayed\bin\Microsoft.Web.Infrastructure.dll
-C:\Users\blueg_000\Documents\GitHub\traindelayed\TrainDelayed\bin\System.Web.Optimization.dll
-C:\Users\blueg_000\Documents\GitHub\traindelayed\TrainDelayed\bin\WebGrease.dll
-C:\Users\blueg_000\Documents\GitHub\traindelayed\TrainDelayed\obj\Debug\TrainDelayed.csprojResolveAssemblyReference.cache
-C:\Users\blueg_000\Documents\GitHub\traindelayed\TrainDelayed\obj\Debug\TrainDelayed.dll
-C:\Users\blueg_000\Documents\GitHub\traindelayed\TrainDelayed\obj\Debug\TrainDelayed.pdb
