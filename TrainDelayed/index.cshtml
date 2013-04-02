@@ -8,12 +8,17 @@
             width: 4em !important;
             text-align: left !important;
         }
+
             span.add-on > i {
                 float: right !important;
             }
 
         div.input-prepend > input {
             width: 350px !important;
+        }
+
+        button {
+            width: 100px;
         }
     </style>
 }
@@ -24,44 +29,52 @@
     <div class="hero-unit">
         <h1>@System.Configuration.ConfigurationManager.AppSettings["brandingTitle"]</h1>
         <p>
-            Search for your journey to see how late it was
+            Search for your train to see how late it actually was. <small>(Direct trains only)</small>
         </p>
-        <div class="row btn-group" style="margin-top: 30px;">
-            <div class="input-prepend">
-                <span class="add-on">From:<i class="icon-search"></i>
-                </span>
-                <input type="text" class="station-lookup" id="from-crs" autocomplete="off" placeholder="Type from station name here" />
+        <form>
+            <div class="row btn-group" style="margin-top: 30px;">
+                <div class="input-prepend">
+                    <span class="add-on">From:<i class="icon-search"></i>
+                    </span>
+                    <input type="text" class="station-lookup" id="from-crs" autocomplete="off" placeholder="Type from station name here" />
+                </div>
+                <br />
+                <div class="input-prepend">
+                    <span class="add-on">To:<i class="icon-search"></i>
+                    </span>
+                    <input type="text" class="station-lookup" id="to-crs" autocomplete="off" placeholder="Type to station name here" />
+                </div>
+                <br />
+                <div class="input-prepend">
+                    <span class="add-on">On:<i class="icon-calendar"></i>
+                    </span>
+                    <input type="text" class="datepicker" placeholder="Choose a date (default to today)" id="date-picker" />
+                </div>
+                <br />
+                <div class="input-prepend">
+                    <span class="add-on">At:<i class="icon-time"></i>
+                    </span>
+                    <input type="text" placeholder="Choose a time (default to all day)" id="time-picker" />
+                </div>
+                <br />
+                <p>
+                    <button type="submit" class="btn btn-primary" onclick="doSearch();">Find</button>
+                </p>
             </div>
-            <br />
-            <div class="input-prepend">
-                <span class="add-on">To:<i class="icon-search"></i>
-                </span>
-                <input type="text" class="station-lookup" id="to-crs" autocomplete="off" placeholder="Type to station name here" />
-            </div>
-            <br />
-            <div class="input-prepend">
-                <span class="add-on">On:<i class="icon-calendar"></i>
-                </span>
-                <input type="text" class="datepicker" placeholder="Choose a date (default to today)" id="date-picker" />
-            </div>
-            <br />
-            <div class="input-prepend">
-                <span class="add-on">At:<i class="icon-time"></i>
-                </span>
-                <input type="text" placeholder="Choose a time (default to all day)" id="time-picker" />
-            </div>
-            <br />
-            <div class="input-prepend">
-                <button type="button" class="btn" onclick="doSearch();">Find</button>
-            </div>
-        </div>
+        </form>
     </div>
+</div>
 </div>
 
 @section FooterJs{
     <script type="text/javascript">
         var server = "@System.Configuration.ConfigurationManager.AppSettings["server"]";
         var apiPort = "@System.Configuration.ConfigurationManager.AppSettings["apiPort"]";
+
+        $(function () {
+            $("form").submit(doSearch);
+        });
+
     </script>
 
     @Scripts.Render("~/bundles/index")
