@@ -78,7 +78,7 @@
                         <td data-bind="text: expectedArrival"></td>
                         <td data-bind="text: actualArrival"></td>
                         <td data-bind="text: delay"></td>
-                        <td><a data-bind="text: webLink, attr: { href: webLink }" target="_blank" title="Go to Train Operating Company Website"></a></td>
+                        <td><a data-bind="text: webLinkText, attr: { href: webLink }, visible: webLink" target="_blank" title="Go to Train Operating Company Website"></a></td>
                     </tr>
                 </tbody>
             </table>

@@ -38,6 +38,7 @@ function doSearch() {
             date = ":" + moment(dateVal, "DD-MM-YYYY").format("YYYY-MM-DD");
 
         document.location.href = "search-results#from:" + fromCrs + ":to:" + toCRS + date;
+        return false;
     } else {
         return false;
     }

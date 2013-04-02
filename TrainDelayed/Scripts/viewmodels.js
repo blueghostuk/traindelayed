@@ -1,6 +1,7 @@
 ﻿/// <reference path="moment.js" />
 /// <reference path="knockout-2.2.0.js" />
 
+
 function TitleViewModel() {
     var self = this;
 
@@ -20,7 +21,8 @@ function TrainViewModel(json, callingAt) {
     self.actualArrival = json.DestActualArrival ? moment(json.DestActualArrival).format("HH:mm") : "Unknown";
     self.delay = json.DestExpectedArrival && json.DestActualArrival ?
         moment(self.actualArrival, "HH:mm:ss").diff(moment(self.expectedArrival, "HH:mm:ss"), "minutes") : "Unknown";
-    self.webLink = "http://www.londonmidland.com";
+    self.webLink = json.AtocCode ? (tocs[json.AtocCode.Code] && tocs[json.AtocCode.Code].webLink ? tocs[json.AtocCode.Code].webLink : null) : null;
+    self.webLinkText = self.tocName;
     self.uniqueLink = "#getuid:" + json.TrainUid + "#" + moment(json.SchedOriginDeparture).format("YYYY-MM-DD");
     self.cancelled = json.Cancellation != null;
     self.title = json.Cancellation ? "Cancelled " + json.Cancellation.Type +
