@@ -86,7 +86,7 @@ function getCallingBetweenByStanox(from, to, date) {
 
             var results = Array();
             for (i in data) {
-                results.push(new TrainViewModel(data[i], to.Description));
+                results.push(new TrainViewModel(data[i], from.Description, to.Description));
             }
 
             ko.applyBindings(results, $("#search-results").get(0));

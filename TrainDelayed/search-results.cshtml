@@ -46,6 +46,7 @@
                 <thead>
                     <tr>
                         <th colspan="4"></th>
+                        <th colspan="3">Calling At</th>
                         <th colspan="4">Calling At</th>
                         <th></th>
                     </tr>
@@ -54,6 +55,9 @@
                         <th>TOC</th>
                         <th>From</th>
                         <th>To</th>
+                        <th>Station</th>
+                        <th>Expected Departure</th>
+                        <th>Actual Departure</th>
                         <th>Station</th>
                         <th>Expected Arrival</th>
                         <th>Actual Arrival</th>
@@ -76,6 +80,9 @@
                         <td data-bind="text: tocCode, attr: { title : tocName }"></td>
                         <td data-bind="text: from" class="stationName"></td>
                         <td data-bind="text: to" class="stationName"></td>
+                        <td data-bind="text: fromStation" class="stationName"></td>
+                        <td data-bind="text: expectedDeparture"></td>
+                        <td data-bind="text: actualDeparture"></td>
                         <td data-bind="text: callingAt" class="stationName"></td>
                         <td data-bind="text: expectedArrival"></td>
                         <td data-bind="text: actualArrival"></td>
