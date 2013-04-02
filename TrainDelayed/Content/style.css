@@ -12,10 +12,6 @@ ul.nav.nav-tabs {
     margin-bottom: 0px;
 }
 
-footer{
-    padding: 0px 25px;
-}
-
 /* override bootstrap responsive*/
 @media (max-width: 979px) {
     .navbar-fixed-top {
