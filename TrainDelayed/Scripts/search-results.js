@@ -6,7 +6,9 @@ var titleModel = new TitleViewModel();
 var titleFormat = "ddd Do MMM YYYY";
 var dateFormat = "ddd DD MMM YY";
 var dateFormatQuery = "YYYY-MM-DD";
+var dateApiQuery = "YYYY-MM-DDTHH:mm";
 var timeFormat = "HH:mm:ss";
+var shortTimeFormat = "HH:mm";
 
 $(function () {
     ko.applyBindings(titleModel, $("#title").get(0));
@@ -60,11 +62,14 @@ function getCallingBetween(from, to, date, time) {
 
 function getCallingBetweenByStanox(from, to, date, time) {
     if (!date) {
-        date = new moment();
+        date = moment();
     }
+    var startDate = moment(date).subtract(2, 'hours');
+    var endDate = moment(date).add(2, 'hours');
+    titleModel.Text(titleModel.Text() + " " + startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
     $.getJSON("http://" + server + ":" + apiPort + "/TrainMovement/" + from.Name + "/" + to.Name +
-        "?startDate=" + date.format(dateFormatQuery) +
-        "&endDate=" + new moment(date).add('days', 1).format(dateFormatQuery)
+        "?startDate=" + startDate.format(dateApiQuery) +
+        "&endDate=" + endDate.format(dateApiQuery)
     ).done(function (data) {
         if (data && data.length) {
 

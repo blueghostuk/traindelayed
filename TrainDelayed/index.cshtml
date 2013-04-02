@@ -48,13 +48,13 @@
                 <div class="input-prepend">
                     <span class="add-on">On:<i class="icon-calendar"></i>
                     </span>
-                    <input type="text" class="datepicker" placeholder="Choose a date (default to today)" id="date-picker" />
+                    <input type="text" class="datepicker" placeholder="Date as DD/MM/YYYY (default to today)" id="date-picker" />
                 </div>
                 <br />
                 <div class="input-prepend">
                     <span class="add-on">At:<i class="icon-time"></i>
                     </span>
-                    <input type="text" placeholder="Choose a time (default to all day)" id="time-picker" />
+                    <input type="text" placeholder="Time as HH:mm (default to +/-2 hour period from now)" id="time-picker" />
                 </div>
                 <br />
                 <p>
@@ -72,7 +72,9 @@
         var apiPort = "@System.Configuration.ConfigurationManager.AppSettings["apiPort"]";
 
         $(function () {
-            $("form").submit(doSearch);
+            $("form").submit(function () {
+                return doSearch();
+            });
         });
 
     </script>
