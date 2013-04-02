@@ -25,12 +25,17 @@ function loadHashCommand() {
             var from = elements[1];
             var to = elements[3];
             var date = null;
-            if (elements.length == 5)
+            if (elements.length >= 5) {
                 date = moment(elements[4], dateFormatQuery);
+            } else {
+                date = moment();
+            }
             var time = null;
-            if (elements.length == 6)
-                time = elements[5];
-            getCallingBetween(from, to, date, time);
+            if (elements.length == 7) {
+                date.hour(elements[5]);
+                date.minute(elements[6]);
+            }
+            getCallingBetween(from, to, date);
         } else {
             // TODO: display error
         }
@@ -38,7 +43,7 @@ function loadHashCommand() {
     return false;
 }
 
-function getCallingBetween(from, to, date, time) {
+function getCallingBetween(from, to, date) {
     $(".progress").show();
     $("#error-row").hide();
     $("#no-results-row").hide();
@@ -53,17 +58,14 @@ function getCallingBetween(from, to, date, time) {
             title += " on " + date.format(titleFormat);
         }
         titleModel.Text(title);
-        getCallingBetweenByStanox(from[0], to[0], date, time);
+        getCallingBetweenByStanox(from[0], to[0], date);
     }).fail(function () {
         $(".progress").hide();
         $("#error-row").show();
     });
 }
 
-function getCallingBetweenByStanox(from, to, date, time) {
-    if (!date) {
-        date = moment();
-    }
+function getCallingBetweenByStanox(from, to, date) {
     var startDate = moment(date).subtract(2, 'hours');
     var endDate = moment(date).add(2, 'hours');
     titleModel.Text(titleModel.Text() + " " + startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
@@ -88,5 +90,5 @@ function getCallingBetweenByStanox(from, to, date, time) {
     }).fail(function () {
         $("#error-row").show();
     });
-    
+
 }
