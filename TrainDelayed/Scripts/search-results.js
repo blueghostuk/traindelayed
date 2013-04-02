@@ -14,6 +14,11 @@ $(function () {
     ko.applyBindings(titleModel, $("#title").get(0));
 
     loadHashCommand();
+
+    $("#neg-2hrs,#plus-2hrs").click(function () {
+        document.location.href = $(this).attr("href");
+        window.location.reload();
+    });
 });
 
 function loadHashCommand() {
@@ -36,6 +41,10 @@ function loadHashCommand() {
                 date.minute(elements[6]);
             }
             getCallingBetween(from, to, date);
+            var neg2 = moment(date).subtract(2, "hours");
+            var plus2 = moment(date).add(2, "hours");
+            $("#neg-2hrs").attr("href", "search-results#from:" + from + ":to:" + to + ":" + neg2.format("YYYY-MM-DD:HH:mm"));
+            $("#plus-2hrs").attr("href", "search-results#from:" + from + ":to:" + to + ":" + plus2.format("YYYY-MM-DD:HH:mm"));
         } else {
             // TODO: display error
         }
@@ -66,8 +75,8 @@ function getCallingBetween(from, to, date) {
 }
 
 function getCallingBetweenByStanox(from, to, date) {
-    var startDate = moment(date).subtract(2, 'hours');
-    var endDate = moment(date).add(2, 'hours');
+    var startDate = moment(date).subtract(2, "hours");
+    var endDate = moment(date).add(2, "hours");
     titleModel.Text(titleModel.Text() + " " + startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
     $.getJSON("http://" + server + ":" + apiPort + "/TrainMovement/" + from.Name + "/" + to.Name +
         "?startDate=" + startDate.format(dateApiQuery) +

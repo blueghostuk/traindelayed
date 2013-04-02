@@ -34,13 +34,15 @@
         <div class="progress progress-striped active hide">
             <div class="bar" style="width: 100%"></div>
         </div>
-        <div class="row" id="title" style="margin-top: 5px; font-size: large;" data-bind="visible: Text">
-            <span data-bind="text: Text" class="stationName" style="font-weight: bold; margin-left: 5px;">Trains from Birmingham New Street to Five Ways
-            </span>
-            <hr style="margin: 5px 0px;" />
+        <div class="row pagination" id="title" style="margin-top: 5px; font-size: large; text-align:center;" data-bind="visible: Text">
+            <ul>
+                <li style="width: 5em;"><a href="#" id="neg-2hrs">&lt; 2 hrs</a></li>
+                <li class="stationName" style="font-weight: bold; text-align:center;"><span data-bind="text: Text"></span></li>
+                <li style="width: 5em;"><a href="#"id="plus-2hrs">2 hrs &gt;</a></li>
+            </ul>
         </div>
         <div class="row">
-            <table class="table table-hover table-bordered" id="search-results">
+            <table class="table table-hover table-bordered table-header-colour" id="search-results">
                 <thead>
                     <tr>
                         <th colspan="4"></th>

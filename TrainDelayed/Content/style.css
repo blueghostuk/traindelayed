@@ -3,6 +3,10 @@
     text-transform: capitalize;
 }
 
+table.table-header-colour thead th {
+    background-color: #EEE;
+}
+
 /* override bootstrap */
 ul.nav.nav-tabs {
     margin-bottom: 0px;
