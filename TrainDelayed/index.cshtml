@@ -58,7 +58,7 @@
                 </div>
                 <br />
                 <p>
-                    <button type="submit" class="btn btn-primary" onclick="doSearch();">Find</button>
+                    <button type="submit" class="btn btn-primary">Find</button>
                 </p>
             </div>
         </form>
@@ -69,13 +69,6 @@
     <script type="text/javascript">
         var server = "@System.Configuration.ConfigurationManager.AppSettings["server"]";
         var apiPort = "@System.Configuration.ConfigurationManager.AppSettings["apiPort"]";
-
-        $(function () {
-            $("form").submit(function () {
-                return doSearch();
-            });
-        });
-
     </script>
 
     @Scripts.Render("~/bundles/index")

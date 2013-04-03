@@ -10,6 +10,9 @@ $(function () {
         format: 'DD-MM-YYYY',
         autoHide: true
     });
+    $("form").submit(function () {
+        return doSearch();
+    });
     $(".station-lookup").attr("placeholder", "Loading stations ...");
     loadStations();
 });
@@ -56,8 +59,6 @@ function doSearch() {
             time = ":" + moment().format(timeFormat);
         }
         document.location.href = "search-results#from:" + fromCrs + ":to:" + toCRS + date + time;
-        return false;
-    } else {
-        return false;
     }
+    return false;
 }
