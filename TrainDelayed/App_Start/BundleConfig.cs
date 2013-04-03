@@ -34,6 +34,7 @@ namespace TrainDelayed
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.css",
                 "~/Content/bootstrap-responsive.css",
+                "~/Content/cerulean.css",
                 "~/Content/style.css"));
         }
     }
