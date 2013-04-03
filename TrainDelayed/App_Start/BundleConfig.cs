@@ -32,9 +32,9 @@ namespace TrainDelayed
                 "~/Scripts/viewmodels.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                "~/Content/bootstrap.css",
-                "~/Content/bootstrap-responsive.css",
+                //"~/Content/bootstrap.css",
                 "~/Content/cerulean.css",
+                "~/Content/bootstrap-responsive.css",
                 "~/Content/style.css"));
         }
     }
