@@ -46,8 +46,8 @@ function loadHashCommand() {
             getCallingBetween(from, to, date);
             var neg2 = moment(date).subtract(2, "hours");
             var plus2 = moment(date).add(2, "hours");
-            $("#neg-2hrs").attr("href", "search/from/" + from + "/to/" + to + "/" + neg2.format("/YYYY-MM-DD/HH-mm"));
-            $("#plus-2hrs").attr("href", "search/from/" + from + "/to/" + to + "/" + plus2.format("/YYYY-MM-DD/HH-mm"));
+            $("#neg-2hrs").attr("href", "search/from/" + from + "/to/" + to + "/" + neg2.format("YYYY-MM-DD/HH-mm"));
+            $("#plus-2hrs").attr("href", "search/from/" + from + "/to/" + to + "/" + plus2.format("YYYY-MM-DD/HH-mm"));
         } else {
             // TODO: display error
         }
