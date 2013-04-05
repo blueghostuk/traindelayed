@@ -33,7 +33,7 @@ function TrainViewModel(json, from, callingAt) {
     self.webLink = json.AtocCode ? (tocs[json.AtocCode.Code] && tocs[json.AtocCode.Code].webLink ? tocs[json.AtocCode.Code].webLink : null) : null;
     self.webLinkText = self.tocName;
 
-    self.uniqueLink = "#getuid:" + json.TrainUid + "#" + moment(json.SchedOriginDeparture).format("YYYY-MM-DD");
+    self.uniqueLink = "/" + json.TrainUid + "/" + moment(json.SchedOriginDeparture).format("YYYY/MM/DD");
 
     self.cancelled = json.Cancellation != null;
 
