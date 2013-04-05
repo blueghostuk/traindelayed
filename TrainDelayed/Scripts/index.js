@@ -2,8 +2,8 @@
 /// <reference path="moment-datepicker.js" />
 /// <reference path="moment.js" />
 
-var timeFormat = "HH:mm";
-var dateFormat = "YYYY-MM-DD";
+var timeFormat = "/HH-mm";
+var dateFormat = "/YYYY-MM-DD";
 
 $(function () {
     $('.datepicker').datepicker({
@@ -43,22 +43,22 @@ function doSearch() {
         if (dateVal && dateVal.length > 0) {
             dateVal = moment(dateVal, "DD-MM-YYYY");
             if (dateVal.isValid()) {
-                date = ":" + dateVal.format(dateFormat);
+                date = dateVal.format(dateFormat);
             }
         } else {
-            date = ":" + moment().format(dateFormat);
+            date =  moment().format(dateFormat);
         }
         var time = "";
         var timeVal = $("#time-picker").val();
         if (timeVal && timeVal.length > 0) {
             timeVal = moment(timeVal, timeFormat);
             if (timeVal.isValid()) {
-                time = ":" + timeVal.format(timeFormat)
+                time = timeVal.format(timeFormat)
             }
         } else {
-            time = ":" + moment().format(timeFormat);
+            time = moment().format(timeFormat);
         }
-        document.location.href = "search-results#from:" + fromCrs + ":to:" + toCRS + date + time;
+        document.location.href = "search/from/" + fromCrs + "/to/" + toCRS + date + time;
     }
     return false;
 }

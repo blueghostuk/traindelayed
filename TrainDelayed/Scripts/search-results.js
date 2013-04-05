@@ -25,7 +25,7 @@ function loadHashCommand() {
     if (document.location.hash.length > 0) {
         var cmdString = document.location.hash;
 
-        var elements = cmdString.split(':');
+        var elements = cmdString.split('/');
         if (elements.length >= 4) {
             var from = elements[1];
             var to = elements[3];
@@ -36,9 +36,12 @@ function loadHashCommand() {
                 date = moment();
             }
             var time = null;
-            if (elements.length == 7) {
-                date.hour(elements[5]);
-                date.minute(elements[6]);
+            if (elements.length == 6) {
+                var time = elements[5].split('-');
+                if (time.length == 2) {
+                    date.hour(time[0]);
+                    date.minute(time[1]);
+                }
             }
             getCallingBetween(from, to, date);
             var neg2 = moment(date).subtract(2, "hours");
