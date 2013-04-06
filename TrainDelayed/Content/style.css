@@ -27,3 +27,18 @@ ul.nav.nav-tabs {
         padding-left: 20px;
     }
 }
+
+@media (min-width: 979px) {
+    .phone-show {
+        display: none !important;
+    }
+}
+
+@media (max-width: 979px) {
+    .phone-hide {
+        display: none !important;
+    }
+    tr.phone-show {
+        display: table-cell !important;
+    }
+}

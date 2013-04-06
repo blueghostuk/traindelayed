@@ -17,6 +17,12 @@
         .span12 {
             padding-left: 25px;
         }
+
+        @@media (max-width: 979px) {
+            div.pagination {
+                font-size: small !important;
+            }
+        }
     </style>
 }
 @section TopMenu{
@@ -56,11 +62,15 @@
                         <th title="Where the train started">From</th>
                         <th title="Where the train was going to">To</th>
                         <th title="This is your 'from' station">Station</th>
-                        <th title="This is the published departure time">Expected Departure</th>
-                        <th title="This is the actual departure time (if known)">Actual Departure</th>
+                        <th class="phone-hide" title="This is the published departure time">Expected Departure</th>
+                        <th class="phone-show" title="This is the published departure time">Exp. Dept.</th>
+                        <th class="phone-hide" title="This is the actual departure time (if known)">Actual Departure</th>
+                        <th class="phone-show" title="This is the actual departure time (if known)">Act. Dept.</th>
                         <th title="This is your 'to' station">Station</th>
-                        <th title="This is the published arrival time">Expected Arrival</th>
-                        <th title="This is the actual arrival time (if known)">Actual Arrival</th>
+                        <th class="phone-hide" title="This is the published arrival time">Expected Arrival</th>
+                        <th class="phone-show" title="This is the published arrival time">Exp. Arr.</th>
+                        <th class="phone-hide" title="This is the actual arrival time (if known)">Actual Arrival</th>
+                        <th class="phone-show" title="This is the actual arrival time (if known)">Act. Arr.</th>
                         <th title="How many minutes early/late was the train from the published schedule">Delay</th>
                         <th title="Link to TOC Website (maybe direct to claim form PDF/Web Form)">Web Link</th>
                     </tr>
@@ -74,7 +84,7 @@
                             }
                             else
                             {
-                            @:<td><a data-bind="text: id, attr: { href : '@ConfigurationManager.AppSettings["trainLink"]' + uniqueLink }" target="_blank" title="View this train in full on another website"></a></td>
+                            @:<td><a data-bind="text: id, attr: { href : '@ConfigurationManager.AppSettings["trainLink"]    ' + uniqueLink }" target="_blank" title="View this train in full on another website"></a></td>
                             }
                         }
                         <td data-bind="text: tocCode, attr: { title : tocName }"></td>
