@@ -21,7 +21,7 @@ function loadStations() {
     $.getJSON("http://" + server + ":" + apiPort + "/Station/")
     .done(function (stations) {
         var locations = [];
-        for (i in stations) {
+        for (var i in stations) {
             locations.push(stations[i].StationName + ' (' + stations[i].CRS + ' - ' + stations[i].Tiploc + ')');
         }
         $(".station-lookup").typeahead({
@@ -37,7 +37,7 @@ function doSearch() {
     var toStation = $("#to-crs").val();
     var fromCrs = fromStation.substr(fromStation.indexOf('(') + 1, 3);
     var toCRS = toStation.substr(toStation.indexOf('(') + 1, 3);
-    if (fromCrs && fromCrs.length == 3 && toCRS && toCRS.length == 3) {
+    if (fromCrs && fromCrs.length === 3 && toCRS && toCRS.length === 3) {
         var date = "";
         var dateVal = $("#date-picker").val();
         if (dateVal && dateVal.length > 0) {
@@ -53,7 +53,7 @@ function doSearch() {
         if (timeVal && timeVal.length > 0) {
             timeVal = moment(timeVal, timeFormat);
             if (timeVal.isValid()) {
-                time = timeVal.format(timeFormat)
+                time = timeVal.format(timeFormat);
             }
         } else {
             time = moment().format(timeFormat);

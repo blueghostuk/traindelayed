@@ -1,4 +1,6 @@
 ﻿/// <reference path="jquery-1.9.1.js" />
+/// <reference path="knockout-2.2.1.js" />
+/// <reference path="jquery.ba-hashchange.js" />
 /// <reference path="viewmodels.js" />
 
 var titleModel = new TitleViewModel();
@@ -9,11 +11,17 @@ var dateFormatQuery = "YYYY-MM-DD";
 var dateApiQuery = "YYYY-MM-DDTHH:mm";
 var timeFormat = "HH:mm:ss";
 var shortTimeFormat = "HH:mm";
+var results = ko.observableArray();
 
 $(function () {
     ko.applyBindings(titleModel, $("#title").get(0));
+    ko.applyBindings(results, $("#search-results").get(0));
 
     loadHashCommand();
+
+    $(window).hashchange(function () {
+        loadHashCommand();
+    });
 
     $("#neg-2hrs,#plus-2hrs").click(function () {
         document.location.href = $(this).attr("href");
@@ -35,10 +43,9 @@ function loadHashCommand() {
             } else {
                 date = moment();
             }
-            var time = null;
-            if (elements.length == 6) {
+            if (elements.length === 6) {
                 var time = elements[5].split('-');
-                if (time.length == 2) {
+                if (time.length === 2) {
                     date.hour(time[0]);
                     date.minute(time[1]);
                 }
@@ -59,6 +66,7 @@ function getCallingBetween(from, to, date) {
     $(".progress").show();
     $("#error-row").hide();
     $("#no-results-row").hide();
+    results.removeAll();
     $.when(
         $.getJSON("http://" + server + ":" + apiPort + "/Stanox/?GetByCrs&crsCode=" + from),
         $.getJSON("http://" + server + ":" + apiPort + "/Stanox/?GetByCrs&crsCode=" + to))
@@ -85,14 +93,10 @@ function getCallingBetweenByStanox(from, to, date) {
         "?startDate=" + startDate.format(dateApiQuery) +
         "&endDate=" + endDate.format(dateApiQuery)
     ).done(function (data) {
-        if (data && data.length) {
-
-            var results = Array();
-            for (i in data) {
+        if (data && data.length && data.length > 0) {
+            for (var i in data) {
                 results.push(new TrainViewModel(data[i], from.Description, to.Description));
             }
-
-            ko.applyBindings(results, $("#search-results").get(0));
         } else {
             $("#no-results-row").show();
         }
