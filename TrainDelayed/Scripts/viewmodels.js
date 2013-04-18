@@ -16,6 +16,7 @@ function TrainViewModel(json, from, callingAt) {
     self.tocName = json.AtocCode ? json.AtocCode.Name : "";
 
     self.from = json.Origin.Description.toLowerCase();
+    self.newFrom = json.ChangeOfOrigin !== null ? json.ChangeOfOrigin.NewOrigin.Description.toLowerCase() : null;
     self.to = json.Destination.Description.toLowerCase();
 
     self.fromStation = from.toLowerCase();
@@ -35,6 +36,8 @@ function TrainViewModel(json, from, callingAt) {
     self.uniqueLink = "/" + json.TrainUid + "/" + moment(json.SchedOriginDeparture).format("YYYY/MM/DD");
 
     self.cancelled = json.Cancellation !== null;
+
+    self.changeOfOrigin = json.ChangeOfOrigin !== null;
 
     self.title = json.Cancellation ? "Cancelled " + json.Cancellation.Type +
         (json.Cancellation.CancelledAt ? " at " + json.Cancellation.CancelledAt.Description : "") : "";

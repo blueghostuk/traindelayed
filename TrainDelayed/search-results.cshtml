@@ -77,7 +77,7 @@
                     </tr>
                 </thead>
                 <tbody data-bind="foreach: $data">
-                    <tr data-bind="css: { error: cancelled }, attr: { Title: title }">
+                    <tr data-bind="css: { info: changeOfOrigin, error: cancelled }, attr: { Title: title }">
                         @{
                             if (string.IsNullOrEmpty(@ConfigurationManager.AppSettings["trainLink"]))
                             {
@@ -89,7 +89,16 @@
                             }
                         }
                         <td data-bind="text: tocCode, attr: { title : tocName }"></td>
-                        <td data-bind="text: from" class="stationName"></td>
+                        <td>
+                            <!-- ko if: changeOfOrigin -->
+                            <span data-bind="text: from" class="stationName" style="text-decoration: line-through;"></span>
+                            <br />
+                            Starts from <span data-bind="text: newFrom" class="stationName"></span>
+                            <!-- /ko -->
+                            <!-- ko if: !changeOfOrigin -->
+                            <span data-bind="text: from" class="stationName"></span>
+                            <!-- /ko -->
+                        </td>
                         <td data-bind="text: to" class="stationName"></td>
                         <td data-bind="text: fromStation" class="stationName"></td>
                         <td data-bind="text: expectedDeparture"></td>
