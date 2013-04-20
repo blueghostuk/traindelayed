@@ -35,8 +35,8 @@ function loadStations() {
 function doSearch() {
     var fromStation = $("#from-crs").val();
     var toStation = $("#to-crs").val();
-    var fromCrs = fromStation.substr(fromStation.indexOf('(') + 1, 3);
-    var toCRS = toStation.substr(toStation.indexOf('(') + 1, 3);
+    var fromCrs = fromStation.substr(fromStation.lastIndexOf('(') + 1, 3);
+    var toCRS = toStation.substr(toStation.lastIndexOf('(') + 1, 3);
     if (fromCrs && fromCrs.length === 3 && toCRS && toCRS.length === 3) {
         var date = "";
         var dateVal = $("#date-picker").val();
