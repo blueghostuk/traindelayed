@@ -1,9 +1,14 @@
 ﻿/// <reference path="jquery-1.9.1.js" />
 /// <reference path="moment-datepicker.js" />
+/// <reference path="bootstrap.js" />
 /// <reference path="moment.js" />
+/// <reference path="knockout-2.2.1.js" />
 
 var timeFormat = "/HH-mm";
 var dateFormat = "/YYYY-MM-DD";
+
+var fromLocal = ko.observableArray();
+var toLocal = ko.observableArray();
 
 $(function () {
     $('.datepicker').datepicker({
@@ -14,6 +19,8 @@ $(function () {
         return doSearch();
     });
     $(".station-lookup").attr("placeholder", "Loading stations ...");
+    ko.applyBindings(fromLocal, $("#from-local").get(0));
+    ko.applyBindings(toLocal, $("#to-local").get(0));
     loadStations();
 });
 
@@ -75,4 +82,36 @@ function doSearch() {
         document.location.href = "search/from/" + fromCrs + "/to/" + toCRS + date + time;
     }
     return false;
+}
+
+function lookupLocalFrom() {
+    navigator.geolocation.getCurrentPosition(function (position) {
+        $.getJSON("http://" + server + ":" + apiPort + "/Station/GeoLookup", {
+            lat: position.coords.latitude,
+            lon: position.coords.longitude
+        }).done(function (stations) {
+            fromLocal.removeAll();
+            if (stations && stations.length > 0) {
+                for (var i in stations) {
+                    fromLocal.push(stations[i].StationName + ' (' + stations[i].CRS + ' - ' + stations[i].Tiploc + ')');
+                }
+            }
+        });
+    });
+}
+
+function lookupLocalTo() {
+    navigator.geolocation.getCurrentPosition(function (position) {
+        $.getJSON("http://" + server + ":" + apiPort + "/Station/GeoLookup", {
+            lat: position.coords.latitude,
+            lon: position.coords.longitude
+        }).done(function (stations) {
+            toLocal.removeAll();
+            if (stations && stations.length > 0) {
+                for (var i in stations) {
+                    toLocal.push(stations[i].StationName + ' (' + stations[i].CRS + ' - ' + stations[i].Tiploc + ')');
+                }
+            }
+        });
+    });
 }
