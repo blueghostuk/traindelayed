@@ -1,10 +1,9 @@
+/// <reference path="../typings/jquery.hashchange/jquery.hashchange.d.ts" />
+/// <reference path="searchModels.ts" />
 /// <reference path="../typings/moment/moment.d.ts" />
 /// <reference path="../jquery.ba-hashchange.js" />
 /// <reference path="../typings/knockout/knockout.d.ts" />
 /// <reference path="../typings/jquery/jquery.d.ts" />
-/// <reference path="viewmodels.js" />
-
-var titleModel = new TitleViewModel();
 
 var titleFormat = "ddd Do MMM YYYY";
 var dateFormat = "ddd DD MMM YY";
@@ -12,9 +11,16 @@ var dateFormatQuery = "YYYY-MM-DD";
 var dateApiQuery = "YYYY-MM-DDTHH:mm";
 var timeFormat = "HH:mm:ss";
 var shortTimeFormat = "HH:mm";
+
+var titleModel = new TrainDelayed.Search.TitleViewModel();
 var results = ko.observableArray();
 
+var webApi: IWebApi;
+
 $(function () {
+    webApi = new TrainDelayed.WebApi();
+    TrainDelayed.Common.webApi = webApi;
+
     ko.applyBindings(titleModel, $("#title").get(0));
     ko.applyBindings(results, $("#search-results").get(0));
 
@@ -52,8 +58,12 @@ function loadHashCommand() {
                 }
             }
             getCallingBetween(from, to, date);
-            var neg2 = moment(date).subtract(2, "hours");
-            var plus2 = moment(date).add(2, "hours");
+            var neg2 = moment(date).subtract({
+                hours: TrainDelayed.DateTimeFormats.timeFrameHours
+            });
+            var plus2 = moment(date).add({
+                hours: TrainDelayed.DateTimeFormats.timeFrameHours
+            });
             $("#neg-2hrs").attr("href", "search/from/" + from + "/to/" + to + "/" + neg2.format("YYYY-MM-DD/HH-mm"));
             $("#plus-2hrs").attr("href", "search/from/" + from + "/to/" + to + "/" + plus2.format("YYYY-MM-DD/HH-mm"));
         } else {
@@ -63,46 +73,69 @@ function loadHashCommand() {
     return false;
 }
 
-function getCallingBetween(from, to, date) {
+function getCallingBetween(from: string, to: string, date?: Moment) {
     $(".progress").show();
     $("#error-row").hide();
     $("#no-results-row").hide();
     results.removeAll();
     $.when(
-        $.getJSON("http://" + server + ":" + apiPort + "/Stanox/?GetByCrs&crsCode=" + from),
-        $.getJSON("http://" + server + ":" + apiPort + "/Stanox/?GetByCrs&crsCode=" + to))
+        webApi.getStanoxByCrsCode(from),
+        webApi.getStanoxByCrsCode(to))
     .done(function (from, to) {
-        var title = "Trains from " + from[0].Description.toLowerCase() + " to " + to[0].Description.toLowerCase();
+        var fromTiploc: IStationTiploc = from[0];
+        var toTiploc: IStationTiploc = to[0];
+        var title = "Trains from " + fromTiploc.Description.toLowerCase() + " to " + toTiploc.Description.toLowerCase();
         if (!date) {
-            title += " on " + new moment().format(titleFormat);
-        } else {
-            title += " on " + date.format(titleFormat);
+            date = moment();
         }
-        titleModel.Text(title);
-        getCallingBetweenByStanox(from[0], to[0], date);
+        title += " on " + date.format(titleFormat);
+        titleModel.text(title);
+        getCallingBetweenByStanox(fromTiploc, toTiploc, date);
     }).fail(function () {
         $(".progress").hide();
         $("#error-row").show();
     });
 }
 
-function getCallingBetweenByStanox(from, to, date) {
-    var startDate = moment(date).subtract(2, "hours");
-    var endDate = moment(date).add(2, "hours");
-    titleModel.Text(titleModel.Text() + " " + startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
-    $.getJSON("http://" + server + ":" + apiPort + "/TrainMovement/" + from.Name + "/" + to.Name +
-        "?startDate=" + startDate.format(dateApiQuery) +
-        "&endDate=" + endDate.format(dateApiQuery)
-    ).done(function (data) {
-        if (data && data.length && data.length > 0) {
-            for (var i in data) {
-                results.push(new TrainViewModel(data[i], from.Description, to.Description));
+function getCallingBetweenByStanox(from : IStationTiploc, to: IStationTiploc, date: Moment) {
+    var startDate = moment(date).subtract({
+        hours: TrainDelayed.DateTimeFormats.timeFrameHours
+    });
+    var endDate = moment(date).add({
+        hours: TrainDelayed.DateTimeFormats.timeFrameHours
+    });
+    titleModel.text(titleModel.text() + " " + startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
+
+    var query: JQueryPromise;
+    var startDateQuery = startDate.format(TrainDelayed.DateTimeFormats.dateTimeApiFormat);
+    var endDateQuery = endDate.format(TrainDelayed.DateTimeFormats.dateTimeApiFormat);
+    if (from.CRS && from.CRS.length == 3 && to.CRS && to.CRS.length == 3) {
+        query = webApi.getTrainMovementsBetweenStations(
+            from.CRS,
+            to.CRS,
+            startDateQuery,
+            endDateQuery);
+    } else {
+        query = webApi.getTrainMovementsBetweenLocations(
+            from.Stanox,
+            to.Stanox,
+            startDateQuery,
+            endDateQuery);
+    }
+    query.done(function (data: ITrainMovementResults) {
+        if (data && data.Movements.length > 0) {
+            $("#no-results-row").hide();
+
+            var viewModels: TrainDelayed.Search.Train[] = data.Movements.map(function (movement: ITrainMovementResult) {
+                return new TrainDelayed.Search.Train(from, to, movement, data.Tiplocs);
+            });
+            for (var i = 0; i < viewModels.length; i++) {
+                results.push(viewModels[i]);
             }
         } else {
             $("#no-results-row").show();
         }
-    }
-    ).complete(function () {
+    }).always(function () {
         $(".progress").hide();
     }).fail(function () {
         $("#error-row").show();

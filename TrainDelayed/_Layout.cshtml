@@ -71,7 +71,7 @@
     @Scripts.Render("~/bundles/moment")
     @Scripts.Render("~/bundles/app")
     <script type="text/javascript">
-        TrainNotifier.Common.serverSettings = {
+        TrainDelayed.Common.serverSettings = {
             apiUrl: "@System.Configuration.ConfigurationManager.AppSettings["apiUrl"]",
             trainLink: "@System.Configuration.ConfigurationManager.AppSettings["trainLink"]"
         };
