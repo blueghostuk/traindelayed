@@ -117,12 +117,29 @@
     <Content Include="Global.asax" />
     <Content Include="index.cshtml" />
     <None Include="Properties\PublishProfiles\azure.pubxml" />
-    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <None Include="Scripts\jquery-1.10.1.intellisense.js" />
+    <TypeScriptCompile Include="Scripts\app\common.ts" />
+    <Content Include="Scripts\app\common.js">
+      <DependentUpon>common.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Scripts\app\search-schedule.ts" />
+    <Content Include="Scripts\app\search-schedule.js">
+      <DependentUpon>search-schedule.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Scripts\app\searchModels.ts" />
+    <Content Include="Scripts\app\searchModels.js">
+      <DependentUpon>searchModels.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery-1.10.1.js" />
+    <Content Include="Scripts\jquery-1.10.1.min.js" />
+    <Content Include="Scripts\jquery-1.10.1.min.map" />
+    <TypeScriptCompile Include="Scripts\app\webApi.ts" />
+    <Content Include="Scripts\app\webApi.js">
+      <DependentUpon>webApi.ts</DependentUpon>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\index.js" />
-    <Content Include="Scripts\jquery-1.9.1.js" />
-    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\app\index.js" />
     <Content Include="Scripts\jquery.ba-hashchange.js" />
     <Content Include="Scripts\jquery.ba-hashchange.min.js" />
     <Content Include="Scripts\knockout-2.2.1.debug.js" />
@@ -135,11 +152,16 @@
     <Content Include="Scripts\moment-datepicker.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
-    <Content Include="Scripts\search-results.js" />
-    <Content Include="Scripts\viewmodels.js" />
+    <Content Include="Scripts\app\search-results.js" />
+    <Content Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
+    <Content Include="Scripts\typings\jquery\jquery.d.ts" />
+    <Content Include="Scripts\typings\knockout\knockout.amd.d.ts" />
+    <Content Include="Scripts\typings\knockout\knockout.d.ts" />
+    <Content Include="Scripts\typings\moment\moment.d.ts" />
+    <Content Include="Scripts\app\viewmodels.js" />
     <Content Include="search-results.cshtml" />
-    <TypeScriptCompile Include="Scripts\Tocs.ts" />
-    <Content Include="Scripts\Tocs.js">
+    <TypeScriptCompile Include="Scripts\app\Tocs.ts" />
+    <Content Include="Scripts\app\Tocs.js">
       <DependentUpon>Tocs.ts</DependentUpon>
     </Content>
     <Content Include="Web.config">
@@ -151,7 +173,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup />
