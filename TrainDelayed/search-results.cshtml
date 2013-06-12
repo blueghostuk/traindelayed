@@ -41,11 +41,11 @@
         <div class="progress progress-striped active hide">
             <div class="bar" style="width: 100%"></div>
         </div>
-        <div class="row pagination" id="title" style="margin-top: 5px; font-size: large; text-align: center;" data-bind="visible: Text">
+        <div class="row pagination" id="title" style="margin-top: 5px; font-size: large; text-align: center;" data-bind="visible: text">
             <ul>
-                <li style="width: 5em;"><a href="#" id="neg-2hrs">&lt; 2 hrs</a></li>
-                <li class="stationName" style="font-weight: bold; text-align: center;"><span data-bind="text: Text"></span></li>
-                <li style="width: 5em;"><a href="#" id="plus-2hrs">2 hrs &gt;</a></li>
+                <li style="width: 5em;"><a href="#" id="neg-2hrs">&lt; Earlier</a></li>
+                <li class="stationName" style="font-weight: bold; text-align: center;"><span data-bind="text: text"></span></li>
+                <li style="width: 5em;"><a href="#" id="plus-2hrs">Later &gt;</a></li>
             </ul>
         </div>
         <div class="row">
@@ -78,36 +78,27 @@
                 </thead>
                 <tbody data-bind="foreach: $data">
                     <tr data-bind="css: { info: changeOfOrigin, error: cancelled }, attr: { Title: title }">
-                        @{
-                            if (string.IsNullOrEmpty(@ConfigurationManager.AppSettings["trainLink"]))
-                            {
-                            @:<td data-bind="text: id"></td>
-                            }
-                            else
-                            {
-                            @:<td><a data-bind="text: id, attr: { href : '@ConfigurationManager.AppSettings["trainLink"]' + uniqueLink }" target="_blank" title="View this train in full on another website"></a></td>
-                            }
-                        }
+                        <td><a data-bind="text: headcode, attr: { href: url }" target="_blank" title="View this train in full on another website"></a></td>
                         <td data-bind="text: tocCode, attr: { title : tocName }"></td>
                         <td>
                             <!-- ko if: changeOfOrigin -->
-                            <span data-bind="text: from" class="stationName" style="text-decoration: line-through;"></span>
+                            <span data-bind="text: originStation" class="stationName" style="text-decoration: line-through;"></span>
                             <br />
-                            Starts from <span data-bind="text: newFrom" class="stationName"></span>
+                            Starts from <span data-bind="text: changeOfOriginStation" class="stationName"></span>
                             <!-- /ko -->
                             <!-- ko if: !changeOfOrigin -->
-                            <span data-bind="text: from" class="stationName"></span>
+                            <span data-bind="text: originStation" class="stationName"></span>
                             <!-- /ko -->
                         </td>
-                        <td data-bind="text: to" class="stationName"></td>
+                        <td data-bind="text: destStation" class="stationName"></td>
                         <td data-bind="text: fromStation" class="stationName"></td>
                         <td data-bind="text: expectedDeparture"></td>
                         <td data-bind="text: actualDeparture"></td>
-                        <td data-bind="text: callingAt" class="stationName"></td>
+                        <td data-bind="text: toStation" class="stationName"></td>
                         <td data-bind="text: expectedArrival"></td>
                         <td data-bind="text: actualArrival"></td>
                         <td data-bind="text: delay"></td>
-                        <td><a data-bind="text: webLinkText, attr: { href: webLink }, visible: webLink" target="_blank" title="Go to Train Operating Company Website"></a></td>
+                        <td><a data-bind="text: tocName, attr: { href: tocUrl }, visible: tocUrl" target="_blank" title="Go to Train Operating Company Website"></a></td>
                     </tr>
                 </tbody>
             </table>

@@ -1,16 +1,11 @@
-﻿/// <reference path="jquery-1.9.1.js" />
-/// <reference path="moment-datepicker.js" />
-/// <reference path="bootstrap.js" />
-/// <reference path="moment.js" />
-/// <reference path="knockout-2.2.1.js" />
-
 var timeFormat = "/HH-mm";
 var dateFormat = "/YYYY-MM-DD";
-
 var fromLocal = ko.observableArray();
 var toLocal = ko.observableArray();
-
+var webApi;
 $(function () {
+    webApi = new TrainDelayed.WebApi();
+    TrainDelayed.Common.webApi = webApi;
     $('.datepicker').datepicker({
         format: 'DD-MM-YYYY',
         autoHide: true
@@ -23,12 +18,10 @@ $(function () {
     ko.applyBindings(toLocal, $("#to-local").get(0));
     loadStations();
 });
-
 function loadStations() {
-    $.getJSON("http://" + server + ":" + apiPort + "/Station/")
-    .done(function (stations) {
+    webApi.getStations().done(function (stations) {
         var locations = [];
-        for (var i in stations) {
+        for(var i in stations) {
             locations.push(stations[i].StationName + ' (' + stations[i].CRS + ' - ' + stations[i].Tiploc + ')');
         }
         $(".station-lookup").typeahead({
@@ -38,13 +31,13 @@ function loadStations() {
                 return items.sort(function (a, b) {
                     var aCrs = a.substr(a.lastIndexOf('(') + 1, 3);
                     var bCrs = b.substr(b.lastIndexOf('(') + 1, 3);
-
-                    if (self.query.toLowerCase() == aCrs.toLowerCase())
+                    if(self.query.toLowerCase() == aCrs.toLowerCase()) {
                         return -1;
-                    else if (self.query.toLowerCase() == bCrs.toLowerCase())
+                    } else if(self.query.toLowerCase() == bCrs.toLowerCase()) {
                         return 1;
-                    else
-                        return aCrs > bCrs;
+                    } else {
+                        return aCrs > bCrs ? 1 : -1;
+                    }
                 });
             }
         });
@@ -52,28 +45,27 @@ function loadStations() {
         $("#to-crs").attr("placeholder", "Type to station name here");
     });
 }
-
 function doSearch() {
     var fromStation = $("#from-crs").val();
     var toStation = $("#to-crs").val();
     var fromCrs = fromStation.substr(fromStation.lastIndexOf('(') + 1, 3);
     var toCRS = toStation.substr(toStation.lastIndexOf('(') + 1, 3);
-    if (fromCrs && fromCrs.length === 3 && toCRS && toCRS.length === 3) {
+    if(fromCrs && fromCrs.length === 3 && toCRS && toCRS.length === 3) {
         var date = "";
         var dateVal = $("#date-picker").val();
-        if (dateVal && dateVal.length > 0) {
+        if(dateVal && dateVal.length > 0) {
             dateVal = moment(dateVal, "DD-MM-YYYY");
-            if (dateVal.isValid()) {
+            if(dateVal.isValid()) {
                 date = dateVal.format(dateFormat);
             }
         } else {
-            date =  moment().format(dateFormat);
+            date = moment().format(dateFormat);
         }
         var time = "";
         var timeVal = $("#time-picker").val();
-        if (timeVal && timeVal.length > 0) {
+        if(timeVal && timeVal.length > 0) {
             timeVal = moment(timeVal, timeFormat);
-            if (timeVal.isValid()) {
+            if(timeVal.isValid()) {
                 time = timeVal.format(timeFormat);
             }
         } else {
@@ -83,32 +75,24 @@ function doSearch() {
     }
     return false;
 }
-
 function lookupLocalFrom() {
     navigator.geolocation.getCurrentPosition(function (position) {
-        $.getJSON("http://" + server + ":" + apiPort + "/Station/GeoLookup", {
-            lat: position.coords.latitude,
-            lon: position.coords.longitude
-        }).done(function (stations) {
+        webApi.getStationByLocation(position.coords.latitude, position.coords.longitude).done(function (stations) {
             fromLocal.removeAll();
-            if (stations && stations.length > 0) {
-                for (var i in stations) {
+            if(stations && stations.length > 0) {
+                for(var i in stations) {
                     fromLocal.push(stations[i].StationName + ' (' + stations[i].CRS + ' - ' + stations[i].Tiploc + ')');
                 }
             }
         });
     });
 }
-
 function lookupLocalTo() {
     navigator.geolocation.getCurrentPosition(function (position) {
-        $.getJSON("http://" + server + ":" + apiPort + "/Station/GeoLookup", {
-            lat: position.coords.latitude,
-            lon: position.coords.longitude
-        }).done(function (stations) {
+        webApi.getStationByLocation(position.coords.latitude, position.coords.longitude).done(function (stations) {
             toLocal.removeAll();
-            if (stations && stations.length > 0) {
-                for (var i in stations) {
+            if(stations && stations.length > 0) {
+                for(var i in stations) {
                     toLocal.push(stations[i].StationName + ' (' + stations[i].CRS + ' - ' + stations[i].Tiploc + ')');
                 }
             }

@@ -23,14 +23,16 @@ namespace TrainDelayed
                 "~/Scripts/moment-datepicker.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/index").Include(
-                "~/Scripts/index.js"));
+                "~/Scripts/app/index-page.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/search-results").Include(
-                "~/Scripts/search-results.js"));
+                "~/Scripts/app/searchModels.js",
+                "~/Scripts/app/search-schedule.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
-                "~/Scripts/Tocs.js",
-                "~/Scripts/viewmodels.js"));
+                "~/Scripts/app/common.js",
+                "~/Scripts/app/webApi.js",
+                "~/Scripts/app/Tocs.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 //"~/Content/bootstrap.css",

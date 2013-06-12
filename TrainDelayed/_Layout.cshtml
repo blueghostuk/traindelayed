@@ -70,6 +70,12 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/moment")
     @Scripts.Render("~/bundles/app")
+    <script type="text/javascript">
+        TrainDelayed.Common.serverSettings = {
+            apiUrl: "@System.Configuration.ConfigurationManager.AppSettings["apiUrl"]",
+            trainLink: "@System.Configuration.ConfigurationManager.AppSettings["trainLink"]"
+        };
+    </script>
     @RenderSection("FooterJs", required: false)
     @{
         var adSenseCode = System.Configuration.ConfigurationManager.AppSettings["ad_sense_code"];
