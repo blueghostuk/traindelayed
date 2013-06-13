@@ -63,12 +63,11 @@ function getCallingBetween(from, to, date) {
     $.when(webApi.getStanoxByCrsCode(from), webApi.getStanoxByCrsCode(to)).done(function (from, to) {
         var fromTiploc = from[0];
         var toTiploc = to[0];
-        var title = "Trains from " + fromTiploc.Description.toLowerCase() + " to " + toTiploc.Description.toLowerCase();
         if(!date) {
             date = moment();
         }
-        title += " on " + date.format(titleFormat);
-        titleModel.text(title);
+        titleModel.from(TrainDelayed.StationTiploc.toDisplayString(fromTiploc));
+        titleModel.to(TrainDelayed.StationTiploc.toDisplayString(toTiploc));
         getCallingBetweenByStanox(fromTiploc, toTiploc, date);
     }).fail(function () {
         $(".progress").hide();
@@ -82,7 +81,7 @@ function getCallingBetweenByStanox(from, to, date) {
     var endDate = moment(date).add({
         hours: TrainDelayed.DateTimeFormats.timeFrameHours
     });
-    titleModel.text(titleModel.text() + " " + startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
+    titleModel.dateString(startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
     var query;
     var startDateQuery = startDate.format(TrainDelayed.DateTimeFormats.dateTimeApiFormat);
     var endDateQuery = endDate.format(TrainDelayed.DateTimeFormats.dateTimeApiFormat);

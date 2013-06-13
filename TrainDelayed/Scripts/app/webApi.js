@@ -278,6 +278,9 @@ var TrainDelayed;
             }
             return null;
         };
+        StationTiploc.toDisplayString = function toDisplayString(tiploc) {
+            return (tiploc.StationName && tiploc.StationName.length > 0 ? tiploc.StationName : tiploc.Description).toLowerCase();
+        };
         return StationTiploc;
     })();
     TrainDelayed.StationTiploc = StationTiploc;    

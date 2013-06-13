@@ -3,7 +3,9 @@ var TrainDelayed;
     (function (Search) {
         var TitleViewModel = (function () {
             function TitleViewModel() {
-                this.text = ko.observable();
+                this.from = ko.observable();
+                this.to = ko.observable();
+                this.dateString = ko.observable();
             }
             return TitleViewModel;
         })();
@@ -17,11 +19,11 @@ var TrainDelayed;
                 this.url = TrainDelayed.Common.serverSettings.trainLink + "/" + train.Schedule.TrainUid + "/" + moment(train.Actual.OriginDepartTimestamp).format(TrainDelayed.DateTimeFormats.dateUrlFormat);
                 var origin = train.Schedule.Stops[0];
                 var originTiploc = TrainDelayed.StationTiploc.findStationTiploc(origin.TiplocStanoxCode, tiplocs);
-                this.originStation = originTiploc.StationName.toLowerCase();
+                this.originStation = TrainDelayed.StationTiploc.toDisplayString(originTiploc);
                 var dest = train.Schedule.Stops[train.Schedule.Stops.length - 1];
                 var destTiploc = TrainDelayed.StationTiploc.findStationTiploc(dest.TiplocStanoxCode, tiplocs);
-                this.destStation = destTiploc.StationName.toLowerCase();
-                this.fromStation = fromTiploc.StationName.toLowerCase();
+                this.destStation = TrainDelayed.StationTiploc.toDisplayString(destTiploc);
+                this.fromStation = TrainDelayed.StationTiploc.toDisplayString(fromTiploc);
                 var fromExpected = null;
                 for(var i = 0; i < train.Schedule.Stops.length; i++) {
                     var scheduleStop = train.Schedule.Stops[i];
@@ -32,8 +34,10 @@ var TrainDelayed;
                 }
                 if(fromExpected) {
                     this.expectedDeparture = fromExpected.PublicDeparture ? TrainDelayed.DateTimeFormats.formatTimeString(fromExpected.PublicDeparture) : "Unknown";
+                    this.fromPlatform = fromExpected.Platform;
                 } else {
                     this.expectedDeparture = "Unknown";
+                    this.fromPlatform = null;
                 }
                 var fromActual = null;
                 var fromDepartureStops = train.Actual.Stops.filter(function (stop) {
@@ -47,11 +51,12 @@ var TrainDelayed;
                     }
                 }
                 if(fromActual) {
-                    this.actualDeparture = fromActual.ActualTimestamp ? TrainDelayed.DateTimeFormats.formatTimeString(fromActual.ActualTimestamp) : "Unknown";
+                    this.actualDeparture = fromActual.ActualTimestamp ? TrainDelayed.DateTimeFormats.formatDateTimeString(fromActual.ActualTimestamp) : "Unknown";
+                    this.fromPlatform = fromActual.Platform || this.fromPlatform;
                 } else {
                     this.actualDeparture = "Unknown";
                 }
-                this.toStation = toTiploc.StationName.toLowerCase();
+                this.toStation = TrainDelayed.StationTiploc.toDisplayString(toTiploc);
                 var toExpected = null;
                 for(var i = 0; i < train.Schedule.Stops.length; i++) {
                     var scheduleArrivalStop = train.Schedule.Stops[i];
@@ -62,8 +67,10 @@ var TrainDelayed;
                 }
                 if(toExpected) {
                     this.expectedArrival = toExpected.PublicArrival ? TrainDelayed.DateTimeFormats.formatTimeString(toExpected.PublicArrival) : "Unknown";
+                    this.toPlatform = toExpected.Platform;
                 } else {
                     this.expectedArrival = "Unknown";
+                    this.toPlatform = null;
                 }
                 var toActual = null;
                 var toArrivalStops = train.Actual.Stops.filter(function (stop) {
@@ -77,8 +84,9 @@ var TrainDelayed;
                     }
                 }
                 if(toActual) {
-                    this.actualArrival = TrainDelayed.DateTimeFormats.formatTimeString(toActual.ActualTimestamp);
+                    this.actualArrival = TrainDelayed.DateTimeFormats.formatDateTimeString(toActual.ActualTimestamp);
                     this.delay = moment(toActual.ActualTimestamp).diff(moment(toActual.PlannedTimestamp), 'minutes').toString();
+                    this.toPlatform = toActual.Platform || this.toPlatform;
                 } else {
                     this.actualArrival = "Unknown";
                     this.delay = "Unknown";

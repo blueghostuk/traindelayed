@@ -1,7 +1,6 @@
 /// <reference path="../typings/jquery.hashchange/jquery.hashchange.d.ts" />
 /// <reference path="searchModels.ts" />
 /// <reference path="../typings/moment/moment.d.ts" />
-/// <reference path="../jquery.ba-hashchange.js" />
 /// <reference path="../typings/knockout/knockout.d.ts" />
 /// <reference path="../typings/jquery/jquery.d.ts" />
 
@@ -84,12 +83,11 @@ function getCallingBetween(from: string, to: string, date?: Moment) {
     .done(function (from, to) {
         var fromTiploc: IStationTiploc = from[0];
         var toTiploc: IStationTiploc = to[0];
-        var title = "Trains from " + fromTiploc.Description.toLowerCase() + " to " + toTiploc.Description.toLowerCase();
         if (!date) {
             date = moment();
         }
-        title += " on " + date.format(titleFormat);
-        titleModel.text(title);
+        titleModel.from(TrainDelayed.StationTiploc.toDisplayString(fromTiploc));
+        titleModel.to(TrainDelayed.StationTiploc.toDisplayString(toTiploc));
         getCallingBetweenByStanox(fromTiploc, toTiploc, date);
     }).fail(function () {
         $(".progress").hide();
@@ -104,7 +102,8 @@ function getCallingBetweenByStanox(from : IStationTiploc, to: IStationTiploc, da
     var endDate = moment(date).add({
         hours: TrainDelayed.DateTimeFormats.timeFrameHours
     });
-    titleModel.text(titleModel.text() + " " + startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
+
+    titleModel.dateString(startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
 
     var query: JQueryPromise;
     var startDateQuery = startDate.format(TrainDelayed.DateTimeFormats.dateTimeApiFormat);

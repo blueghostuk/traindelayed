@@ -327,6 +327,10 @@ module TrainDelayed {
                 return results[0];
             return null;
         };
+        public static toDisplayString(tiploc: IStationTiploc) {
+            return (tiploc.StationName && tiploc.StationName.length > 0 ?
+                tiploc.StationName : tiploc.Description).toLowerCase();
+        }
     };
 }
 
