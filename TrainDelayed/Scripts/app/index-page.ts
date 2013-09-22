@@ -1,7 +1,7 @@
 /// <reference path="common.ts" />
 /// <reference path="webApi.ts" />
 /// <reference path="../typings/knockout/knockout.d.ts" />
-/// <reference path="../moment-datepicker.d.ts" />
+/// <reference path="../typings/bootstrap.datepicker/bootstrap.datepicker.d.ts" />
 /// <reference path="../typings/moment/moment.d.ts" />
 /// <reference path="../typings/bootstrap/bootstrap.d.ts" />
 /// <reference path="../typings/jquery/jquery.d.ts" />
@@ -19,8 +19,9 @@ $(function () {
     TrainDelayed.Common.webApi = webApi;
 
     $('.datepicker').datepicker({
-        format: 'DD-MM-YYYY',
-        autoHide: true
+        format: 'dd/mm/yyyy'
+    }).on("changeDate", function () {
+        $(this).datepicker('hide');
     });
     $("form").submit(function () {
         return doSearch();

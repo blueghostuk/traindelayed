@@ -1,6 +1,9 @@
+// Module
 var TrainDelayed;
 (function (TrainDelayed) {
+    // Class
     var TrainOperatingCompany = (function () {
+        // Constructor
         function TrainOperatingCompany(code, name, webLink) {
             this.code = code;
             this.name = name;
@@ -8,10 +11,10 @@ var TrainDelayed;
         }
         return TrainOperatingCompany;
     })();
-    TrainDelayed.TrainOperatingCompany = TrainOperatingCompany;    
+    TrainDelayed.TrainOperatingCompany = TrainOperatingCompany;
 })(TrainDelayed || (TrainDelayed = {}));
-var tocs = {
-};
+
+var tocs = {};
 tocs["AW"] = new TrainDelayed.TrainOperatingCompany("AW", "Arriva Trains Wales", "http://www.arrivatrainswales.co.uk/PassengersCharter/");
 tocs["CC"] = new TrainDelayed.TrainOperatingCompany("CC", "c2c", "http://www.c2c-online.co.uk/about_us/passengers_charter/what_happens_if_things_go_wrong");
 tocs["CH"] = new TrainDelayed.TrainOperatingCompany("CH", "Chiltern Railways Company", "http://www.chilternrailways.co.uk/uploads/publications/715.pdf");

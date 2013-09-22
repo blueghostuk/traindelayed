@@ -6,9 +6,9 @@
 module TrainDelayed.Search {
 
     export class TitleViewModel {
-        public from: KnockoutObservableString = ko.observable();
-        public to: KnockoutObservableString = ko.observable();
-        public dateString: KnockoutObservableString = ko.observable();
+        public from: KnockoutObservable<string> = ko.observable();
+        public to: KnockoutObservable<string> = ko.observable();
+        public dateString: KnockoutObservable<string> = ko.observable();
     }
 
     export class Train {
@@ -31,11 +31,14 @@ module TrainDelayed.Search {
         public tocCode: string;
         public tocName: string;
         public tocUrl: string;
-        public changeOfOrigin: bool = false;
-        public cancelled: bool = false;
+        public changeOfOrigin: boolean = false;
+        public cancelled: boolean = false;
         public title: string = "";
 
         constructor(fromTiploc: IStationTiploc, toTiploc: IStationTiploc, train: ITrainMovementResult, tiplocs: IStationTiploc[]) {
+
+            if (!train.Actual)
+                return;
 
             this.headcode = train.Actual.HeadCode;
             this.url = Common.serverSettings.trainLink + "/"

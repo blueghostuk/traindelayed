@@ -105,7 +105,7 @@ function getCallingBetweenByStanox(from : IStationTiploc, to: IStationTiploc, da
 
     titleModel.dateString(startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
 
-    var query: JQueryPromise;
+    var query: JQueryPromise<any>;
     var startDateQuery = startDate.format(TrainDelayed.DateTimeFormats.dateTimeApiFormat);
     var endDateQuery = endDate.format(TrainDelayed.DateTimeFormats.dateTimeApiFormat);
     if (from.CRS && from.CRS.length == 3 && to.CRS && to.CRS.length == 3) {
@@ -129,7 +129,9 @@ function getCallingBetweenByStanox(from : IStationTiploc, to: IStationTiploc, da
                 return new TrainDelayed.Search.Train(from, to, movement, data.Tiplocs);
             });
             for (var i = 0; i < viewModels.length; i++) {
-                results.push(viewModels[i]);
+                if (viewModels[i].headcode) {
+                    results.push(viewModels[i]);
+                }
             }
         } else {
             $("#no-results-row").show();

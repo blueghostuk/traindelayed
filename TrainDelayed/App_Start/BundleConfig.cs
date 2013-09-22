@@ -19,8 +19,7 @@ namespace TrainDelayed
                 "~/Scripts/bootstrap*"));
 
             bundles.Add(new ScriptBundle("~/bundles/moment").Include(
-                "~/Scripts/moment.js",
-                "~/Scripts/moment-datepicker.js"));
+                "~/Scripts/moment.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/index").Include(
                 "~/Scripts/app/index-page.js"));
@@ -35,10 +34,9 @@ namespace TrainDelayed
                 "~/Scripts/app/Tocs.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                //"~/Content/bootstrap.css",
                 "~/Content/cerulean.css",
-                "~/Content/moment-datepicker/bootstrap-responsive.css",
-                "~/Content/datepicker.css",
+                "~/Content/bootstrap-responsive.css",
+                "~/Content/bootstrap-datepicker.css",
                 "~/Content/style.css"));
         }
     }
