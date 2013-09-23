@@ -129,7 +129,11 @@ module TrainDelayed.Search {
                 this.delay = "Unknown";
             }            
 
-            var toc = tocs[train.Schedule.AtocCode.Code];
+            var tocSet = false;
+            var toc: TrainDelayed.TrainOperatingCompany;
+            if (train.Schedule.AtocCode) {
+                toc = tocs[train.Schedule.AtocCode.Code];
+            }
             if (toc) {
                 this.tocCode = toc.code;
                 this.tocName = toc.name;
