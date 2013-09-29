@@ -30,8 +30,8 @@
     <li><a href="/">Home</a></li>
     <li class="active"><a>Search Results</a></li>
 }
-<div class="row-fluid">
-    <div class="span12">
+<div class="row">
+    <div class="col-md-12">
         <div class="row alert alert-info hide" id="no-results-row">
             <strong>No Results Found</strong>
         </div>
@@ -42,8 +42,7 @@
             <div class="bar" style="width: 100%"></div>
         </div>
         <div class="row pagination" id="title" data-bind="visible: from">
-            <span data-bind="text: from" class="stationName xl"></span><span data-bind="visible: to">&nbsp;to</span>
-            <span data-bind="text: to" class="stationName xl"></span>
+            <span data-bind="text: from" class="stationName xl"></span><span data-bind="visible: to">&nbsp;to&nbsp;</span><span data-bind="text: to" class="stationName xl"></span>
             <br />
             <span data-bind="text: dateString"></span>
             <hr style="margin: 5px 0px;" />
@@ -68,23 +67,23 @@
                         <th title="Where the train was going to">To</th>
                         <th title="This is your 'from' station">Station</th>
                         <th title="Departure Platform">Pfm.</th>
-                        <th class="phone-hide" title="This is the published departure time">Expected Departure</th>
-                        <th class="phone-show" title="This is the published departure time">Exp. Dept.</th>
-                        <th class="phone-hide" title="This is the actual departure time (if known)">Actual Departure</th>
-                        <th class="phone-show" title="This is the actual departure time (if known)">Act. Dept.</th>
+                        <th class="hidden-xs hidden-sm visible-md visible-lg" title="This is the published departure time">Expected Departure</th>
+                        <th class="visible-xs visible-sm hidden-md hidden-lg" title="This is the published departure time">Exp. Dept.</th>
+                        <th class="hidden-xs hidden-sm visible-md visible-lg" title="This is the actual departure time (if known)">Actual Departure</th>
+                        <th class="visible-xs visible-sm hidden-md hidden-lg" title="This is the actual departure time (if known)">Act. Dept.</th>
                         <th title="This is your 'to' station">Station</th>
                         <th title="Arrival Platform">Pfm.</th>
-                        <th class="phone-hide" title="This is the published arrival time">Expected Arrival</th>
-                        <th class="phone-show" title="This is the published arrival time">Exp. Arr.</th>
-                        <th class="phone-hide" title="This is the actual arrival time (if known)">Actual Arrival</th>
-                        <th class="phone-show" title="This is the actual arrival time (if known)">Act. Arr.</th>
+                        <th class="hidden-xs hidden-sm visible-md visible-lg" title="This is the published arrival time">Expected Arrival</th>
+                        <th class="visible-xs visible-sm hidden-md hidden-lg" title="This is the published arrival time">Exp. Arr.</th>
+                        <th class="hidden-xs hidden-sm visible-md visible-lg" title="This is the actual arrival time (if known)">Actual Arrival</th>
+                        <th class="visible-xs visible-sm hidden-md hidden-lg" title="This is the actual arrival time (if known)">Act. Arr.</th>
                         <th title="How many minutes early/late was the train from the published schedule">Delay</th>
                         <th title="Link to TOC Website (maybe direct to claim form PDF/Web Form)">Web Link</th>
                     </tr>
                 </thead>
                 <tbody data-bind="foreach: $data">
                     <tr data-bind="css: { info: changeOfOrigin, error: cancelled }, attr: { Title: title }">
-                        <td><a data-bind="text: headcode, attr: { href: url }" target="_blank" title="View this train in full on another website"></a></td>
+                        <td><a data-bind="text: headcode, attr: { href: url }" target="_blank" title="View the full details of this train"></a></td>
                         <td data-bind="text: tocCode, attr: { title : tocName }"></td>
                         <td>
                             <!-- ko if: changeOfOrigin -->

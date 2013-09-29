@@ -7,11 +7,6 @@ table.table-header-colour thead th {
     background-color: #EEE;
 }
 
-/* override bootstrap */
-ul.nav.nav-tabs {
-    margin-bottom: 0px;
-}
-
 .pagination {
     margin-bottom: 0px !important;
 }
@@ -64,17 +59,7 @@ ul.pager {
     }
 }
 
-@media (min-width: 979px) {
-    .phone-show {
-        display: none !important;
-    }
-}
-
 @media (max-width: 979px) {
-    .phone-hide {
-        display: none !important;
-    }
-
     tr.phone-show {
         display: table-cell !important;
     }

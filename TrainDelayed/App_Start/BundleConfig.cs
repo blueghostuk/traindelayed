@@ -15,8 +15,11 @@ namespace TrainDelayed
                 "~/Scripts/knockout-{version}.js",
                 "~/Scripts/knockout.mapping-latest.js"));
 
+
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                "~/Scripts/bootstrap*"));
+                "~/Scripts/hogan*",
+                "~/Scripts/bootstrap*",
+                "~/Scripts/typeahead*"));
 
             bundles.Add(new ScriptBundle("~/bundles/moment").Include(
                 "~/Scripts/moment.js"));
@@ -34,8 +37,10 @@ namespace TrainDelayed
                 "~/Scripts/app/Tocs.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                "~/Content/cerulean.css",
-                "~/Content/bootstrap-responsive.css",
+                //"~/Content/cerulean.css",
+                "~/Content/bootstrap/bootstrap.css",
+                "~/Content/bootstrap/cerulean.css",
+                "~/Content/bootstrap/typeahead-fix.css",
                 "~/Content/bootstrap-datepicker.css",
                 "~/Content/style.css"));
         }

@@ -112,19 +112,26 @@
     <Content Include="bin\TrainDelayed.pdb" />
     <Content Include="bin\WebGrease.dll" />
     <Content Include="Content\bootstrap-datepicker.css" />
-    <Content Include="Content\bootstrap-responsive.css" />
-    <Content Include="Content\bootstrap-responsive.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\cerulean.css" />
-    <Content Include="Content\images\glyphicons-halflings-white.png" />
-    <Content Include="Content\images\glyphicons-halflings.png" />
+    <Content Include="Content\bootstrap\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap\bootstrap.css" />
+    <Content Include="Content\bootstrap\bootstrap.min.css" />
+    <Content Include="Content\bootstrap\cerulean.css" />
+    <Content Include="Content\bootstrap\typeahead-fix.css" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\style.css" />
     <Content Include="Global.asax" />
     <Content Include="index.cshtml" />
     <None Include="Properties\PublishProfiles\azure.pubxml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\hogan.js" />
+    <Content Include="Scripts\hogan.min.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
     <Content Include="Scripts\jquery-2.0.3.min.map" />
@@ -152,8 +159,6 @@
     <Content Include="Scripts\app\webApi.js">
       <DependentUpon>webApi.ts</DependentUpon>
     </Content>
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery.ba-hashchange.js" />
     <Content Include="Scripts\jquery.ba-hashchange.min.js" />
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
@@ -207,6 +212,8 @@
     <Content Include="Scripts\moment-datepicker.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\typeahead.js" />
+    <Content Include="Scripts\typeahead.min.js" />
     <Content Include="Scripts\typings\bootstrap.datepicker\bootstrap.datepicker.d.ts" />
     <Content Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery.hashchange\jquery.hashchange.d.ts" />

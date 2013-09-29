@@ -14,23 +14,24 @@
     @RenderSection("HeaderJs", false)
 </head>
 <body>
-    <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                </a>
-                <a class="brand" href="#">@System.Configuration.ConfigurationManager.AppSettings["brandingTitle"]</a>
-                <div class="nav-collapse collapse">
-                    <ul class="nav">
-                        @RenderSection("TopMenu", true)
-                    </ul>
-                </div>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">@System.Configuration.ConfigurationManager.AppSettings["brandingTitle"]</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @RenderSection("TopMenu", true)
+                </ul>
             </div>
         </div>
     </div>
-    <div class="container-fluid">
+    <div class="container">
         @RenderBody()
         @{
             var adClient = System.Configuration.ConfigurationManager.AppSettings["ad_client"];
@@ -39,8 +40,9 @@
         @if (!string.IsNullOrWhiteSpace(adClient) && !string.IsNullOrWhiteSpace(adSlot))
         {
             <div style="text-align: center">
-                <script type="text/javascript"><!--
-                    google_ad_client = "@adClient";
+                <script type="text/javascript">
+                    <!--
+                                        google_ad_client = "@adClient";
                     /* TrainDelayed */
                     google_ad_slot = "@adSlot";
                     google_ad_width = 728;

@@ -30,41 +30,53 @@ $(function () {
     ko.applyBindings(toLocal, $("#to-local").get(0));
     loadStations();
 });
+var locations = [];
 
 function loadStations() {
-    webApi.getStations().done(function (stations) {
-        var locations = [];
-        for (var i in stations) {
-            locations.push(stations[i].StationName + ' (' + stations[i].CRS + ' - ' + stations[i].Tiploc + ')');
+    webApi.getStations().done(function (results) {
+        for (var i = 0; i < results.length; i++) {
+            locations.push({
+                value: results[i].StationName,
+                crs: results[i].CRS,
+                tokens: [results[i].StationName, results[i].CRS, results[i].Tiploc]
+            });
         }
         $(".station-lookup").typeahead({
-            source: locations,
-            sorter: function (items) {
-                var self = this;
-                return items.sort(function (a, b) {
-                    var aCrs = a.substr(a.lastIndexOf('(') + 1, 3);
-                    var bCrs = b.substr(b.lastIndexOf('(') + 1, 3);
-
-                    if (self.query.toLowerCase() == aCrs.toLowerCase())
-                        return -1;
-else if (self.query.toLowerCase() == bCrs.toLowerCase())
-                        return 1;
-else
-                        return aCrs > bCrs ? 1 : -1;
-                });
-            }
+            name: 'stations-lookup',
+            local: locations,
+            template: '<p><strong>{{value}}</strong>&nbsp;({{crs}})</p>',
+            engine: Hogan
         });
         $("#from-crs").attr("placeholder", "Type from station name here");
         $("#to-crs").attr("placeholder", "Type to station name here");
     });
 }
 
+function findStation(value) {
+    var matches = locations.filter(function (item) {
+        return item.value.toLowerCase() == value.toLowerCase();
+    });
+    return matches.length > 0 ? matches[0] : null;
+}
+
 function doSearch() {
     var fromStation = $("#from-crs").val();
+    var fromCrs = findStation(fromStation);
+    if (fromCrs) {
+        fromCrs = fromCrs.crs;
+    } else {
+        if (fromStation.length > 0)
+            fromCrs = fromStation.substring(0, 4);
+    }
     var toStation = $("#to-crs").val();
-    var fromCrs = fromStation.substr(fromStation.lastIndexOf('(') + 1, 3);
-    var toCRS = toStation.substr(toStation.lastIndexOf('(') + 1, 3);
-    if (fromCrs && fromCrs.length === 3 && toCRS && toCRS.length === 3) {
+    var toCrs = findStation(toStation);
+    if (toCrs) {
+        toCrs = toCrs.crs;
+    } else {
+        if (toStation.length > 0)
+            toCrs = toStation.substring(0, 4);
+    }
+    if (fromCrs && fromCrs.length === 3 && toCrs && toCrs.length === 3) {
         var date = "";
         var dateVal = $("#date-picker").val();
         if (dateVal && dateVal.length > 0) {
@@ -85,7 +97,7 @@ function doSearch() {
         } else {
             time = moment().format(timeFormat);
         }
-        document.location.href = "search/from/" + fromCrs + "/to/" + toCRS + date + time;
+        document.location.href = "search/from/" + fromCrs + "/to/" + toCrs + date + time;
     }
     return false;
 }
