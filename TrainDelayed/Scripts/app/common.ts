@@ -8,6 +8,22 @@ interface IServerSettings {
     apiName: string;
 }
 
+function preAjax() {
+    show($(".progress"));
+    hide($("#error-row"));
+    hide($("#no-results-row"));
+}
+
+function show(element) {
+    $(element).removeClass("hide");
+    $(element).show();
+}
+
+function hide(element) {
+    $(element).hide();
+    $(element).addClass("hide");
+}
+
 module TrainDelayed {
 
     export class Common {
@@ -74,7 +90,7 @@ module TrainDelayed {
     };
 
     export class CommonStrings {
-        public static halfMinute = "�";
+        public static halfMinute = "½";
     };
 
 }

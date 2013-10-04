@@ -9,6 +9,8 @@ module TrainDelayed.Search {
         public from: KnockoutObservable<string> = ko.observable();
         public to: KnockoutObservable<string> = ko.observable();
         public dateString: KnockoutObservable<string> = ko.observable();
+
+        public results: KnockoutObservableArray<TrainDelayed.Search.Train> = ko.observableArray();
     }
 
     export class Train {
@@ -28,6 +30,7 @@ module TrainDelayed.Search {
         public expectedArrival: string;
         public actualArrival: string;
         public delay: string;
+        public delayText: string;
         public tocCode: string;
         public tocName: string;
         public tocUrl: string;
@@ -122,11 +125,14 @@ module TrainDelayed.Search {
             }
             if (toActual) {
                 this.actualArrival = DateTimeFormats.formatDateTimeString(toActual.ActualTimestamp);
-                this.delay = moment(toActual.ActualTimestamp).diff(moment(toActual.PlannedTimestamp), 'minutes').toString();
+                var delay = moment(toActual.ActualTimestamp).diff(moment(toActual.PlannedTimestamp), 'minutes');
+                this.delay = delay.toString();
+                this.delayText = delay > 0 ? delay + " mins late" : delay == 0 ? "on time" : delay + " mins early";
                 this.toPlatform = toActual.Platform || this.toPlatform;
             } else {
                 this.actualArrival = "Unknown";
                 this.delay = "Unknown";
+                this.delayText = "not known";
             }            
 
             var tocSet = false;

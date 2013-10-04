@@ -12,7 +12,6 @@ var timeFormat = "HH:mm:ss";
 var shortTimeFormat = "HH:mm";
 
 var titleModel = new TrainDelayed.Search.TitleViewModel();
-var results = ko.observableArray();
 
 var webApi: IWebApi;
 
@@ -20,8 +19,7 @@ $(function () {
     webApi = new TrainDelayed.WebApi();
     TrainDelayed.Common.webApi = webApi;
 
-    ko.applyBindings(titleModel, $("#title").get(0));
-    ko.applyBindings(results, $("#search-results").get(0));
+    ko.applyBindings(titleModel, $("#parent").get(0));
 
     loadHashCommand();
 
@@ -73,29 +71,27 @@ function loadHashCommand() {
 }
 
 function getCallingBetween(from: string, to: string, date?: Moment) {
-    $(".progress").show();
-    $("#error-row").hide();
-    $("#no-results-row").hide();
-    results.removeAll();
+    preAjax();
+    titleModel.results.removeAll();
     $.when(
         webApi.getStanoxByCrsCode(from),
         webApi.getStanoxByCrsCode(to))
-    .done(function (from, to) {
-        var fromTiploc: IStationTiploc = from[0];
-        var toTiploc: IStationTiploc = to[0];
-        if (!date) {
-            date = moment();
-        }
-        titleModel.from(TrainDelayed.StationTiploc.toDisplayString(fromTiploc));
-        titleModel.to(TrainDelayed.StationTiploc.toDisplayString(toTiploc));
-        getCallingBetweenByStanox(fromTiploc, toTiploc, date);
-    }).fail(function () {
-        $(".progress").hide();
-        $("#error-row").show();
-    });
+        .done(function (from, to) {
+            var fromTiploc: IStationTiploc = from[0];
+            var toTiploc: IStationTiploc = to[0];
+            if (!date) {
+                date = moment();
+            }
+            titleModel.from(TrainDelayed.StationTiploc.toDisplayString(fromTiploc));
+            titleModel.to(TrainDelayed.StationTiploc.toDisplayString(toTiploc));
+            getCallingBetweenByStanox(fromTiploc, toTiploc, date);
+        }).fail(function () {
+            hide($(".progress"));
+            show($("#error-row"));
+        });
 }
 
-function getCallingBetweenByStanox(from : IStationTiploc, to: IStationTiploc, date: Moment) {
+function getCallingBetweenByStanox(from: IStationTiploc, to: IStationTiploc, date: Moment) {
     var startDate = moment(date).subtract({
         hours: TrainDelayed.DateTimeFormats.timeFrameHours
     });
@@ -123,23 +119,22 @@ function getCallingBetweenByStanox(from : IStationTiploc, to: IStationTiploc, da
     }
     query.done(function (data: ITrainMovementResults) {
         if (data && data.Movements.length > 0) {
-            $("#no-results-row").hide();
-
             var viewModels: TrainDelayed.Search.Train[] = data.Movements.map(function (movement: ITrainMovementResult) {
                 return new TrainDelayed.Search.Train(from, to, movement, data.Tiplocs);
             });
             for (var i = 0; i < viewModels.length; i++) {
                 if (viewModels[i].headcode) {
-                    results.push(viewModels[i]);
+                    titleModel.results.push(viewModels[i]);
                 }
             }
         } else {
-            $("#no-results-row").show();
+            show($("#no-results-row"));
         }
     }).always(function () {
-        $(".progress").hide();
-    }).fail(function () {
-        $("#error-row").show();
-    });
+            hide($(".progress"));
+        }).fail(function () {
+            hide($(".progress"));
+            show($("#error-row"));
+        });
 
 }

@@ -11,7 +11,6 @@ var timeFormat = "HH:mm:ss";
 var shortTimeFormat = "HH:mm";
 
 var titleModel = new TrainDelayed.Search.TitleViewModel();
-var results = ko.observableArray();
 
 var webApi;
 
@@ -19,8 +18,7 @@ $(function () {
     webApi = new TrainDelayed.WebApi();
     TrainDelayed.Common.webApi = webApi;
 
-    ko.applyBindings(titleModel, $("#title").get(0));
-    ko.applyBindings(results, $("#search-results").get(0));
+    ko.applyBindings(titleModel, $("#parent").get(0));
 
     loadHashCommand();
 
@@ -72,10 +70,8 @@ function loadHashCommand() {
 }
 
 function getCallingBetween(from, to, date) {
-    $(".progress").show();
-    $("#error-row").hide();
-    $("#no-results-row").hide();
-    results.removeAll();
+    preAjax();
+    titleModel.results.removeAll();
     $.when(webApi.getStanoxByCrsCode(from), webApi.getStanoxByCrsCode(to)).done(function (from, to) {
         var fromTiploc = from[0];
         var toTiploc = to[0];
@@ -86,8 +82,8 @@ function getCallingBetween(from, to, date) {
         titleModel.to(TrainDelayed.StationTiploc.toDisplayString(toTiploc));
         getCallingBetweenByStanox(fromTiploc, toTiploc, date);
     }).fail(function () {
-        $(".progress").hide();
-        $("#error-row").show();
+        hide($(".progress"));
+        show($("#error-row"));
     });
 }
 
@@ -111,22 +107,21 @@ function getCallingBetweenByStanox(from, to, date) {
     }
     query.done(function (data) {
         if (data && data.Movements.length > 0) {
-            $("#no-results-row").hide();
-
             var viewModels = data.Movements.map(function (movement) {
                 return new TrainDelayed.Search.Train(from, to, movement, data.Tiplocs);
             });
             for (var i = 0; i < viewModels.length; i++) {
                 if (viewModels[i].headcode) {
-                    results.push(viewModels[i]);
+                    titleModel.results.push(viewModels[i]);
                 }
             }
         } else {
-            $("#no-results-row").show();
+            show($("#no-results-row"));
         }
     }).always(function () {
-        $(".progress").hide();
+        hide($(".progress"));
     }).fail(function () {
-        $("#error-row").show();
+        hide($(".progress"));
+        show($("#error-row"));
     });
 }

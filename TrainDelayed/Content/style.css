@@ -23,6 +23,7 @@ div#title {
 @media (max-width: 480px) {
     div#title {
         font-size: 14px;
+        padding-left: 10px;
     }
 
         div#title span.xl {
@@ -43,24 +44,3 @@ ul.pager {
     ul.pager li:last-child {
         float: right;
     }
-/* override bootstrap responsive*/
-@media (max-width: 979px) {
-    .navbar-fixed-top {
-        position: fixed;
-    }
-}
-
-/* override bootstrap responsive*/
-/* only for within navbar*/
-@media (max-width: 767px) {
-    .navbar-inner > .container-fluid {
-        padding-right: 20px;
-        padding-left: 20px;
-    }
-}
-
-@media (max-width: 979px) {
-    tr.phone-show {
-        display: table-cell !important;
-    }
-}

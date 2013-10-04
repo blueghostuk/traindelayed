@@ -1,6 +1,22 @@
 ﻿/// <reference path="../typings/bootstrap/bootstrap.d.ts" />
 /// <reference path="webApi.ts" />
 /// <reference path="../typings/moment/moment.d.ts" />
+function preAjax() {
+    show($(".progress"));
+    hide($("#error-row"));
+    hide($("#no-results-row"));
+}
+
+function show(element) {
+    $(element).removeClass("hide");
+    $(element).show();
+}
+
+function hide(element) {
+    $(element).hide();
+    $(element).addClass("hide");
+}
+
 var TrainDelayed;
 (function (TrainDelayed) {
     var Common = (function () {
@@ -74,7 +90,7 @@ var TrainDelayed;
     var CommonStrings = (function () {
         function CommonStrings() {
         }
-        CommonStrings.halfMinute = "�";
+        CommonStrings.halfMinute = "½";
         return CommonStrings;
     })();
     TrainDelayed.CommonStrings = CommonStrings;
