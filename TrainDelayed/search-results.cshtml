@@ -110,7 +110,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Time</th>
-                        <th>From</th>
+                        <th>To</th>
                         <th>Delay</th>
                     </tr>
                 </thead>
@@ -120,17 +120,8 @@
                             <a data-bind="text: headcode, attr: { href: url }" target="_blank" title="View the full details of this train"></a>
                         </td>
                         <td data-bind="text: expectedDeparture"></td>
-                        <td>
-                            <!-- ko if: changeOfOrigin -->
-                            <span data-bind="text: changeOfOriginStation" class="stationName"></span>
-                            <!-- /ko -->
-                            <!-- ko if: !changeOfOrigin -->
-                            <span data-bind="text: originStation" class="stationName"></span>
-                            <!-- /ko -->
-                        </td>
-                        <td>
-                            <span data-bind="text: delayText"></span>
-                        </td>
+                        <td data-bind="text: destStation" class="stationName"></td>
+                        <td data-bind="text: delayText"></td>
                     </tr>
                 </tbody>
             </table>
