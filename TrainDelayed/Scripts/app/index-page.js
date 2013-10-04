@@ -108,7 +108,11 @@ function lookupLocalFrom() {
             fromLocal.removeAll();
             if (stations && stations.length > 0) {
                 for (var i in stations) {
-                    fromLocal.push(stations[i].StationName + ' (' + stations[i].CRS + ' - ' + stations[i].Tiploc + ')');
+                    fromLocal.push(stations[i].StationName);
+                    locations.push({
+                        value: stations[i].StationName,
+                        crs: stations[i].CRS
+                    });
                 }
             }
         });
@@ -121,7 +125,11 @@ function lookupLocalTo() {
             toLocal.removeAll();
             if (stations && stations.length > 0) {
                 for (var i in stations) {
-                    toLocal.push(stations[i].StationName + ' (' + stations[i].CRS + ' - ' + stations[i].Tiploc + ')');
+                    toLocal.push(stations[i].StationName);
+                    locations.push({
+                        value: stations[i].StationName,
+                        crs: stations[i].CRS
+                    });
                 }
             }
         });
