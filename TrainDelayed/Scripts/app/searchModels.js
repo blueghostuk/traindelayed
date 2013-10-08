@@ -100,11 +100,13 @@ var TrainDelayed;
                     this.actualArrival = TrainDelayed.DateTimeFormats.formatDateTimeString(toActual.ActualTimestamp);
                     var delay = moment(toActual.ActualTimestamp).diff(moment(toActual.PlannedTimestamp), 'minutes');
                     this.delay = delay.toString();
-                    this.delayText = delay > 0 ? delay + " mins late" : delay == 0 ? "on time" : delay + " mins early";
+                    this.delayText = delay > 0 ? delay + " mins late" : delay == 0 ? "on time" : (delay * -1) + " mins early";
+                    this.delayCss = delay >= 30 ? "danger" : delay > 0 ? "warning" : "success";
                     this.toPlatform = toActual.Platform || this.toPlatform;
                 } else {
                     this.actualArrival = "Unknown";
                     this.delay = "Unknown";
+                    this.delayText = "not known";
                     this.delayText = "not known";
                 }
 

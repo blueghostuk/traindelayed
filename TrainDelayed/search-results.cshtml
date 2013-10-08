@@ -100,7 +100,7 @@
                         <td data-bind="text: toPlatform"></td>
                         <td data-bind="text: expectedArrival"></td>
                         <td data-bind="text: actualArrival"></td>
-                        <td data-bind="text: delay"></td>
+                        <td data-bind="text: delayText, css: delayCss"></td>
                         <td><a data-bind="text: tocName, attr: { href: tocUrl }, visible: tocUrl" target="_blank" title="Go to Train Operating Company Website"></a></td>
                     </tr>
                 </tbody>
@@ -110,7 +110,9 @@
                     <tr>
                         <th>ID</th>
                         <th>Time</th>
+                        <th>From</th>
                         <th>To</th>
+                        <th>Due</th>
                         <th>Delay</th>
                     </tr>
                 </thead>
@@ -120,8 +122,19 @@
                             <a data-bind="text: headcode, attr: { href: url }" target="_blank" title="View the full details of this train"></a>
                         </td>
                         <td data-bind="text: expectedDeparture"></td>
+                        <td>
+                            <!-- ko if: changeOfOrigin -->
+                            <span data-bind="text: originStation" class="stationName" style="text-decoration: line-through;"></span>
+                            <br />
+                            Starts from <span data-bind="text: changeOfOriginStation" class="stationName"></span>
+                            <!-- /ko -->
+                            <!-- ko if: !changeOfOrigin -->
+                            <span data-bind="text: originStation" class="stationName"></span>
+                            <!-- /ko -->
+                        </td>
                         <td data-bind="text: destStation" class="stationName"></td>
-                        <td data-bind="text: delayText"></td>
+                        <td data-bind="text: expectedArrival"></td>
+                        <td data-bind="text: delayText, css: delayCss"></td>
                     </tr>
                 </tbody>
             </table>
