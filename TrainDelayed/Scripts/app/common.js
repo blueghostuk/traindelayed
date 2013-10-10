@@ -82,6 +82,7 @@ var TrainDelayed;
         DateTimeFormats.dateTitleFormat = "ddd Do MMM YYYY";
         DateTimeFormats.dateTimeApiFormat = "YYYY-MM-DDTHH:mm";
         DateTimeFormats.timeFrameHours = 1;
+        DateTimeFormats.timeFrameBeforeHours = 2;
         return DateTimeFormats;
     })();
     TrainDelayed.DateTimeFormats = DateTimeFormats;

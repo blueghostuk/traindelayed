@@ -9,21 +9,6 @@
             padding-top: 60px;
             padding-bottom: 40px;
         }
-
-        .sidebar-nav {
-            padding: 9px 0;
-        }
-
-        .span12 {
-            padding-left: 25px;
-        }
-
-        @@media (max-width: 979px) {
-            div.pagination {
-                font-size: small !important;
-                margin-bottom: 5px;
-            }
-        }
     </style>
 }
 @section TopMenu{
@@ -49,8 +34,8 @@
         </div>
         <div class="row">
             <ul class="pager">
-                <li><a href="#" id="neg-2hrs">&lt; Earlier</a></li>
-                <li><a href="#" id="plus-2hrs">Later &gt;</a></li>
+                <li class="previous"><a href="#" id="neg-2hrs">&lt; Earlier</a></li>
+                <li class="next"><a href="#" id="plus-2hrs">Later &gt;</a></li>
             </ul>
             <table class="table table-hover table-bordered table-header-colour hidden-xs" data-bind="visible: results().length > 0">
                 <thead>

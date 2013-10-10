@@ -7,10 +7,6 @@ table.table-header-colour thead th {
     background-color: #EEE;
 }
 
-.pagination {
-    margin-bottom: 0px !important;
-}
-
 div#title {
     font-size: large;
 }
@@ -31,16 +27,3 @@ div#title {
             font-size: 14px;
         }
 }
-
-ul.pager {
-    margin-top: 0px !important;
-    margin-bottom: 5px !important;
-}
-
-    ul.pager li:first-child {
-        float: left;
-    }
-
-    ul.pager li:last-child {
-        float: right;
-    }

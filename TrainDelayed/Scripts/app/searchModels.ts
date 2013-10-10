@@ -136,6 +136,7 @@ module TrainDelayed.Search {
                 this.delay = "Unknown";
                 this.delayText = "not known";
                 this.delayText = "not known";
+                this.delayCss = "";
             }            
 
             var tocSet = false;

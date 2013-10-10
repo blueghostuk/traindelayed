@@ -89,7 +89,7 @@ function getCallingBetween(from, to, date) {
 
 function getCallingBetweenByStanox(from, to, date) {
     var startDate = moment(date).subtract({
-        hours: TrainDelayed.DateTimeFormats.timeFrameHours
+        hours: TrainDelayed.DateTimeFormats.timeFrameBeforeHours
     });
     var endDate = moment(date).add({
         hours: TrainDelayed.DateTimeFormats.timeFrameHours

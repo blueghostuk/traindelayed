@@ -4,23 +4,6 @@
 @using System.Web.Optimization;
 @section CustomCss{
     <style type="text/css">
-        span.add-on {
-            width: 4em !important;
-            text-align: left !important;
-        }
-
-            span.add-on > i {
-                float: right !important;
-            }
-
-        div.input-prepend > input {
-            width: 350px !important;
-        }
-
-        div.input-prepend.input-append > input {
-            width: 284px !important;
-        }
-
         button {
             width: 100px;
         }
@@ -33,7 +16,7 @@
     <div class="col-md-6 col-xs-12 col-sm-12" style="margin-top: 65px;">
         <h1>@System.Configuration.ConfigurationManager.AppSettings["brandingTitle"]</h1>
         <p>
-            Search for your train to see how much delay occurred. <small>(Direct trains only)</small>
+            Search historical records of the UK National Rail Network (currently dating back 14 days) to see if your train was delayed. <small>(Direct trains only)</small>
         </p>
         <form>
             <div class="input-group input-group-sm">
