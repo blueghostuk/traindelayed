@@ -22,6 +22,14 @@ namespace TrainDelayed.App_Start
                     {"time", "[0-9]{2}-[0-9]{2}"}
                 },
                 new SearchRouteHandler()));
+            routes.Add(new Route("search/from/{crsA}/to/{crsB}",
+                null,
+                new RouteValueDictionary
+                {
+                    {"crsA", "[A-Z]{3}"},
+                    {"crsB", "[A-Z]{3}"},
+                },
+                new SearchRouteHandler()));
         }
     }
 
@@ -58,7 +66,13 @@ namespace TrainDelayed.App_Start
                     _date = DateTime.UtcNow.Date;
                 }
                 if (values.ContainsKey("time"))
+                {
                     _time = "/" + values["time"].ToString();
+                }
+                else
+                {
+                    _time = "/" + DateTime.Now.TimeOfDay.ToString("hh\\-mm");
+                }
             }
 
             public bool IsReusable
@@ -68,7 +82,7 @@ namespace TrainDelayed.App_Start
 
             public void ProcessRequest(HttpContext context)
             {
-                context.Response.RedirectPermanent(string.Format("~/search-results#from/{0}/to/{1}/{2:yyyy-MM-dd}{3}", _crsA, _crsB, _date, _time));
+                context.Response.RedirectPermanent(string.Format("~/search-results#!from/{0}/to/{1}/{2:yyyy-MM-dd}{3}", _crsA, _crsB, _date, _time));
             }
         }
     }

@@ -1,4 +1,13 @@
 ﻿@{
+    if (TrainDelayed.Handlers.FromToHandler.IsGoogleRequest(Request.Url))
+    {
+        var handler = new TrainDelayed.Handlers.FromToHandler(Response);
+        handler.ProcessRequest(Request.Url);
+        return;
+    }
+
+}
+@{
     Layout = "~/_Layout.cshtml";
 }
 @using System.Web.Optimization;

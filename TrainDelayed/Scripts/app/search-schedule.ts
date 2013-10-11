@@ -36,6 +36,7 @@ $(function () {
 function loadHashCommand() {
     if (document.location.hash.length > 0) {
         var cmdString = document.location.hash;
+        cmdString = cmdString.replace("!", "");
 
         var elements = cmdString.split('/');
         if (elements.length >= 4) {
