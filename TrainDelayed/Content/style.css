@@ -16,7 +16,7 @@ div#title {
         font-size: x-large;
     }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     div#title {
         font-size: 14px;
         padding-left: 10px;
@@ -26,4 +26,8 @@ div#title {
             font-weight: bold;
             font-size: 14px;
         }
+
+    .pager {
+        margin: 0px !important;
+    }
 }
