@@ -50,34 +50,53 @@
                 <table class="table table-hover table-bordered table-header-colour hidden-xs">
                     <thead>
                         <tr>
+                            <!-- 1,2,3,4 -->
                             <th colspan="4"></th>
+                            <!-- 5,6,7 -->
                             <th colspan="3" title="This is your 'from' station">Calling At <span data-bind="text: from" class="stationName"></span></th>
+                            <!-- 8,9,10,11 -->
                             <th colspan="4" title="This is your 'to' station">Calling At <span data-bind="text: to" class="stationName"></span></th>
+                            <!-- 12 -->
                             <th></th>
                         </tr>
                         <tr>
+                            <!-- 1 -->
                             <th title="ID of this train">ID</th>
+                            <!-- 2 -->
                             <th title="Train Operating Company">TOC</th>
+                            <!-- 3 -->
                             <th title="Where the train started">From</th>
+                            <!-- 4 -->
                             <th title="Where the train was going to">To</th>
+                            <!-- 5 -->
                             <th title="Departure Platform">Pfm.</th>
+                            <!-- 6 -->
                             <th class="hidden-xs hidden-sm visible-md visible-lg" title="This is the published departure time">Expected Departure</th>
                             <th class="visible-xs visible-sm hidden-md hidden-lg" title="This is the published departure time">Exp. Dept.</th>
+                            <!-- 7 -->
                             <th class="hidden-xs hidden-sm visible-md visible-lg" title="This is the actual departure time (if known)">Actual Departure</th>
                             <th class="visible-xs visible-sm hidden-md hidden-lg" title="This is the actual departure time (if known)">Act. Dept.</th>
+                            <!-- 8 -->
                             <th title="Arrival Platform">Pfm.</th>
+                            <!-- 9 -->
                             <th class="hidden-xs hidden-sm visible-md visible-lg" title="This is the published arrival time">Expected Arrival</th>
                             <th class="visible-xs visible-sm hidden-md hidden-lg" title="This is the published arrival time">Exp. Arr.</th>
+                            <!-- 10 -->
                             <th class="hidden-xs hidden-sm visible-md visible-lg" title="This is the actual arrival time (if known)">Actual Arrival</th>
                             <th class="visible-xs visible-sm hidden-md hidden-lg" title="This is the actual arrival time (if known)">Act. Arr.</th>
+                            <!-- 11 -->
                             <th title="How many minutes early/late was the train from the published schedule">Delay</th>
+                            <!-- 12 -->
                             <th title="Link to TOC Website (maybe direct to claim form PDF/Web Form)">Web Link</th>
                         </tr>
                     </thead>
                     <tbody data-bind="foreach: results">
                         <tr data-bind="css: { info: changeOfOrigin, error: cancelled }, attr: { Title: title }">
+                            <!-- 1 -->
                             <td><a data-bind="text: headcode, attr: { href: url }" target="_blank" title="View the full details of this train"></a></td>
+                            <!-- 2 -->
                             <td data-bind="text: tocCode, attr: { title : tocName }"></td>
+                            <!-- 3 -->
                             <td>
                                 <!-- ko if: changeOfOrigin -->
                                 <span data-bind="text: originStation" class="stationName" style="text-decoration: line-through;"></span>
@@ -88,14 +107,23 @@
                                 <span data-bind="text: originStation" class="stationName"></span>
                                 <!-- /ko -->
                             </td>
+                            <!-- 4 -->
                             <td data-bind="text: destStation" class="stationName"></td>
+                            <!-- 5 -->
                             <td data-bind="text: fromPlatform"></td>
+                            <!-- 6 -->
                             <td data-bind="text: expectedDeparture"></td>
+                            <!-- 7 -->
                             <td data-bind="text: actualDeparture"></td>
+                            <!-- 8 -->
                             <td data-bind="text: toPlatform"></td>
+                            <!-- 9 -->
                             <td data-bind="text: expectedArrival"></td>
+                            <!-- 10 -->
                             <td data-bind="text: actualArrival"></td>
+                            <!-- 11 -->
                             <td data-bind="text: delayText, css: delayCss"></td>
+                            <!-- 12 -->
                             <td><a data-bind="text: tocName, attr: { href: tocUrl }, visible: tocUrl" target="_blank" title="Go to Train Operating Company Website"></a></td>
                         </tr>
                     </tbody>

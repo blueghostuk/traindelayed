@@ -37,9 +37,9 @@ namespace TrainDelayed
                 "~/Scripts/app/Tocs.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                //"~/Content/cerulean.css",
-                "~/Content/bootstrap/bootstrap.css",
-                "~/Content/bootstrap/cerulean.css",
+                // minification seems to fuck this up so include manually in _Layout.cshtml
+                //"~/Content/bootstrap/bootstrap*",
+                //"~/Content/bootstrap/cerulean*",
                 "~/Content/bootstrap/typeahead-fix.css",
                 "~/Content/bootstrap-datepicker.css",
                 "~/Content/style.css"));
