@@ -166,8 +166,6 @@
     <Content Include="Scripts\jquery.ba-hashchange.min.js" />
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
     <Content Include="Scripts\knockout-2.3.0.js" />
-    <Content Include="Scripts\knockout.mapping-latest.debug.js" />
-    <Content Include="Scripts\knockout.mapping-latest.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.bg.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.ca.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.cs.js" />
@@ -217,13 +215,9 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\typeahead.js" />
     <Content Include="Scripts\typeahead.min.js" />
-    <Content Include="Scripts\typings\bootstrap.datepicker\bootstrap.datepicker.d.ts" />
-    <Content Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\bootstrap.datepicker\bootstrap.datepicker.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery.hashchange\jquery.hashchange.d.ts" />
-    <Content Include="Scripts\typings\jquery\jquery.d.ts" />
-    <Content Include="Scripts\typings\knockout\knockout.amd.d.ts" />
-    <Content Include="Scripts\typings\knockout\knockout.d.ts" />
-    <Content Include="Scripts\typings\moment\moment.d.ts" />
     <Content Include="search-results.cshtml" />
     <TypeScriptCompile Include="Scripts\app\Tocs.ts" />
     <Content Include="Scripts\app\Tocs.js">
@@ -239,6 +233,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="_Layout.cshtml" />
+    <TypeScriptCompile Include="Scripts\typings\knockout\knockout.amd.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetworkRailDownloader.Common\TrainNotifier.Common.csproj">
@@ -264,6 +261,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">

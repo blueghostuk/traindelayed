@@ -12,9 +12,7 @@ namespace TrainDelayed
                 "~/Scripts/jquery.ba-hashchange.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
-                "~/Scripts/knockout-{version}.js",
-                "~/Scripts/knockout.mapping-latest.js"));
-
+                "~/Scripts/knockout-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                 "~/Scripts/hogan*",
@@ -38,7 +36,6 @@ namespace TrainDelayed
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 // minification seems to fuck this up so include manually in _Layout.cshtml
-                //"~/Content/bootstrap/bootstrap*",
                 //"~/Content/bootstrap/cerulean*",
                 "~/Content/bootstrap/typeahead-fix.css",
                 "~/Content/bootstrap-datepicker.css",
