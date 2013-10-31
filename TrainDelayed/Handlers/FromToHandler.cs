@@ -42,14 +42,14 @@ namespace TrainDelayed.Handlers
             DateTime today = DateTime.Now;
             DateTime startTime = today.AddHours(-1);
             DateTime endTime = today.AddHours(1);
-            _response.Write(string.Format("<title>Trains from {0} to {1} on {2:dd/MM/yyyy} between {3:HH:mm} and {4:HH:mm}</title>",
+            _response.Write(string.Format("<title>Train Delays from {0} to {1} on {2:dd/MM/yyyy} between {3:HH:mm} and {4:HH:mm}</title>",
                 fromStation.Description, toStation.Description, today, startTime, endTime));
-            _response.Write(string.Format("<meta name=\"description\" content=\"Trains from {0} to {1} on {2:dd/MM/yyyy} between {3:HH:mm} and {4:HH:mm}\">",
+            _response.Write(string.Format("<meta name=\"description\" content=\"Trains Delays from {0} to {1} on {2:dd/MM/yyyy} between {3:HH:mm} and {4:HH:mm}\">",
                 fromStation.Description, toStation.Description, today, startTime, endTime));
 
             _response.Write("</head><body>");
 
-            _response.Write(string.Format("<h1>Trains from {0} to {1}</h1>", fromStation.Description, toStation.Description));
+            _response.Write(string.Format("<h1>Trains Delays from {0} to {1}</h1>", fromStation.Description, toStation.Description));
             _response.Write(string.Format("<h2>On {0:dd/MM/yyyy} between {1:HH:mm} and {2:HH:mm}</h2>", today, startTime, endTime));
             _response.Write("<hr />");
 
