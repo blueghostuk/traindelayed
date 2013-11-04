@@ -39,6 +39,9 @@
             <span data-bind="text: from" class="stationName xl"></span><span data-bind="visible: to">&nbsp;to&nbsp;</span><span data-bind="text: to" class="stationName xl"></span>
             <br />
             <span data-bind="text: dateString"></span>
+            <span class="visible-xs xs">
+                (Click on a train to view more details)
+            </span>
             <hr style="margin: 5px 0px;" />
         </div>
         <div class="row">
@@ -131,7 +134,6 @@
                 <table class="table visible-xs" style="width:100%;">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Time</th>
                             <th>From</th>
                             <th>To</th>
@@ -142,22 +144,29 @@
                     <tbody data-bind="foreach: results">
                         <tr>
                             <td>
-                                <a data-bind="text: headcode, attr: { href: url }" target="_blank" title="View the full details of this train"></a>
+                                <a data-bind="text: expectedDeparture, attr: { href: url }" target="_blank" title="View the full details of this train"></a>
                             </td>
-                            <td data-bind="text: expectedDeparture"></td>
                             <td>
                                 <!-- ko if: changeOfOrigin -->
-                                <span data-bind="text: originStation" class="stationName" style="text-decoration: line-through;"></span>
-                                <br />
-                                Starts from <span data-bind="text: changeOfOriginStation" class="stationName"></span>
+                                <a data-bind="attr: { href: url }" target="_blank" title="View the full details of this train">
+                                    <span data-bind="text: originStation" class="stationName" style="text-decoration: line-through;"></span>
+                                    <br />
+                                    Starts from <span data-bind="text: changeOfOriginStation" class="stationName"></span>
+                                </a>
                                 <!-- /ko -->
                                 <!-- ko if: !changeOfOrigin -->
-                                <span data-bind="text: originStation" class="stationName"></span>
+                                <a data-bind="text: originStation, attr: { href: url }" target="_blank" title="View the full details of this train" class="stationName"></a>
                                 <!-- /ko -->
                             </td>
-                            <td data-bind="text: destStation" class="stationName"></td>
-                            <td data-bind="text: expectedArrival"></td>
-                            <td data-bind="text: delayText, css: delayCss"></td>
+                            <td>
+                                <a data-bind="text: destStation, attr: { href: url }" target="_blank" title="View the full details of this train" class="stationName"></a>
+                            </td>
+                            <td>
+                                <a data-bind="text: expectedArrival, attr: { href: url }" target="_blank" title="View the full details of this train"></a>
+                            </td>
+                            <td data-bind="css: delayCss">
+                                <a data-bind="text: delayText, attr: { href: url }" target="_blank" title="View the full details of this train"></a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
