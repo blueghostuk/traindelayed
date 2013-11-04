@@ -37,7 +37,7 @@ namespace TrainDelayed
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 // minification seems to fuck this up so include manually in _Layout.cshtml
                 //"~/Content/bootstrap/cerulean*",
-                "~/Content/bootstrap/typeahead-fix.css",
+                "~/Content/typeahead-fix.css",
                 "~/Content/bootstrap-datepicker.css",
                 "~/Content/style.css"));
         }
