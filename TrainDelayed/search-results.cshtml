@@ -143,7 +143,7 @@
                         </tr>
                     </thead>
                     <tbody data-bind="foreach: results">
-                        <tr>
+                        <tr data-bind="css: { warning: changeOfOrigin, danger: cancelled }, attr: { Title: title }">
                             <td>
                                 <a data-bind="text: expectedDeparture, attr: { href: url }" target="_blank" title="View the full details of this train"></a>
                             </td>
