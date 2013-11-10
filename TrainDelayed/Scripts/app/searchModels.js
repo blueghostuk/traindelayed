@@ -128,7 +128,7 @@ var TrainDelayed;
 
                 if (train && train.Cancellations.length > 0) {
                     var can = train.Cancellations[0];
-                    var canTxt = can.Type;
+                    var canTxt = "Cancelled " + can.Type;
                     if (can.CancelledAtStanoxCode) {
                         var canTiploc = TrainDelayed.StationTiploc.findStationTiploc(can.CancelledAtStanoxCode, tiplocs);
                         this.cancelledAtStation = canTiploc.Description.toLowerCase();

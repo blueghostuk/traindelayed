@@ -95,7 +95,7 @@
                         </tr>
                     </thead>
                     <tbody data-bind="foreach: results">
-                        <tr data-bind="css: { info: changeOfOrigin, error: cancelled }, attr: { Title: title }">
+                        <tr data-bind="css: { warning: changeOfOrigin, danger: cancelled }, attr: { Title: title }">
                             <!-- 1 -->
                             <td><a data-bind="text: headcode, attr: { href: url }" target="_blank" title="View the full details of this train"></a></td>
                             <!-- 2 -->
