@@ -9,6 +9,7 @@ var TrainDelayed;
             this.name = name;
             this.webLink = webLink;
         }
+        TrainOperatingCompany.Freight = "ZZ";
         return TrainOperatingCompany;
     })();
     TrainDelayed.TrainOperatingCompany = TrainOperatingCompany;

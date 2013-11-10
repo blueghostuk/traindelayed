@@ -10,6 +10,9 @@ module TrainDelayed {
 
     // Class
     export class TrainOperatingCompany implements ITrainOperatingCompany {
+
+        static Freight: string = "ZZ";
+
         // Constructor
         constructor(public code: string, public name: string, public webLink?:string) { }
 

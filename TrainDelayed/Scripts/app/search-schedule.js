@@ -1,5 +1,6 @@
-/// <reference path="../typings/jquery.hashchange/jquery.hashchange.d.ts" />
+/// <reference path="Tocs.ts" />
 /// <reference path="searchModels.ts" />
+/// <reference path="../typings/jquery.hashchange/jquery.hashchange.d.ts" />
 /// <reference path="../typings/moment/moment.d.ts" />
 /// <reference path="../typings/knockout/knockout.d.ts" />
 /// <reference path="../typings/jquery/jquery.d.ts" />
@@ -108,7 +109,11 @@ function getCallingBetweenByStanox(from, to, date) {
     }
     query.done(function (data) {
         if (data && data.Movements.length > 0) {
-            var viewModels = data.Movements.map(function (movement) {
+            var filteredData = data.Movements.filter(function (movement) {
+                return movement.Schedule.AtocCode && movement.Schedule.AtocCode.Code.length > 0 && movement.Schedule.AtocCode.Code != TrainDelayed.TrainOperatingCompany.Freight;
+            });
+
+            var viewModels = filteredData.map(function (movement) {
                 return new TrainDelayed.Search.Train(from, to, movement, data.Tiplocs);
             });
             for (var i = 0; i < viewModels.length; i++) {
