@@ -127,7 +127,6 @@ function getCallingBetweenByStanox(from, to, date) {
     }).always(function () {
         hide($(".progress"));
     }).fail(function () {
-        hide($(".progress"));
         show($("#error-row"));
     });
 }

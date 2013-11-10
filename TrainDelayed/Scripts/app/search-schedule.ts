@@ -141,7 +141,6 @@ function getCallingBetweenByStanox(from: IStationTiploc, to: IStationTiploc, dat
     }).always(function () {
             hide($(".progress"));
         }).fail(function () {
-            hide($(".progress"));
             show($("#error-row"));
         });
 

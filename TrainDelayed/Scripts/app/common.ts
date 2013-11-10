@@ -62,7 +62,7 @@ module TrainDelayed {
         public static dateUrlFormat = "YYYY/MM/DD";
         public static dateTitleFormat = "ddd Do MMM YYYY";
         public static dateTimeApiFormat = "YYYY-MM-DDTHH:mm";
-        public static timeFrameHours = 1;
+        public static timeFrameHours = 2;
         public static timeFrameBeforeHours = 2;
 
         public static formatTimeString(time: string): string {
