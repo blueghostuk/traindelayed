@@ -108,7 +108,8 @@ TrainDelayed.pdb
 
 #web deploy files
 *.pubxml
-PublishProfiles/*
+PublishProfiles/*.*
+PublishProfiles/azure-vm.pubxml
 
 # code doc
 */bin/*.xml
