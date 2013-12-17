@@ -1,6 +1,7 @@
 ﻿/// <reference path="../typings/bootstrap/bootstrap.d.ts" />
 /// <reference path="webApi.ts" />
 /// <reference path="../typings/moment/moment.d.ts" />
+
 function preAjax() {
     show($(".progress"));
     hide($("#error-row"));

@@ -1,9 +1,9 @@
+/// <reference path="../typings/knockout/knockout.d.ts" />
+/// <reference path="common.ts" />
+/// <reference path="Tocs.ts" />
+/// <reference path="webApi.ts" />
 var TrainDelayed;
 (function (TrainDelayed) {
-    /// <reference path="../typings/knockout/knockout.d.ts" />
-    /// <reference path="common.ts" />
-    /// <reference path="Tocs.ts" />
-    /// <reference path="webApi.ts" />
     (function (Search) {
         var TitleViewModel = (function () {
             function TitleViewModel() {
@@ -53,7 +53,7 @@ var TrainDelayed;
                 }
                 var fromActual = null;
                 var fromDepartureStops = train.Actual.Stops.filter(function (stop) {
-                    return stop.EventType === TrainDelayed.EventType.Departure;
+                    return stop.EventType === 1 /* Departure */;
                 });
                 for (var i = 0; i < fromDepartureStops.length; i++) {
                     var actualStop = fromDepartureStops[i];
@@ -87,7 +87,7 @@ var TrainDelayed;
                 }
                 var toActual = null;
                 var toArrivalStops = train.Actual.Stops.filter(function (stop) {
-                    return stop.EventType === TrainDelayed.EventType.Arrival;
+                    return stop.EventType === 2 /* Arrival */;
                 });
                 for (var i = 0; i < toArrivalStops.length; i++) {
                     var actualArrivalStop = toArrivalStops[i];

@@ -6,11 +6,11 @@
 module TrainDelayed.Search {
 
     export class TitleViewModel {
-        public from: KnockoutObservable<string> = ko.observable();
-        public to: KnockoutObservable<string> = ko.observable();
-        public dateString: KnockoutObservable<string> = ko.observable();
+        public from = ko.observable<string>();
+        public to = ko.observable<string>();
+        public dateString = ko.observable<string>();
 
-        public results: KnockoutObservableArray<TrainDelayed.Search.Train> = ko.observableArray();
+        public results = ko.observableArray<TrainDelayed.Search.Train>();
     }
 
     export class Train {

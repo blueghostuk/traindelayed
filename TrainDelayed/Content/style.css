@@ -1,7 +1,8 @@
 ﻿
-.stationName {
+.tt-dataset-stations-lookup, .stationName {
     text-transform: capitalize;
 }
+
 
 table.table-header-colour thead th {
     background-color: #EEE;

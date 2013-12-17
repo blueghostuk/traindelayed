@@ -1,3 +1,4 @@
+
 // Module
 var TrainDelayed;
 (function (TrainDelayed) {
