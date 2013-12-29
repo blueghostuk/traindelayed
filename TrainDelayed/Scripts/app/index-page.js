@@ -1,10 +1,3 @@
-/// <reference path="common.ts" />
-/// <reference path="webApi.ts" />
-/// <reference path="../typings/knockout/knockout.d.ts" />
-/// <reference path="../typings/bootstrap.datepicker/bootstrap.datepicker.d.ts" />
-/// <reference path="../typings/moment/moment.d.ts" />
-/// <reference path="../typings/bootstrap/bootstrap.d.ts" />
-/// <reference path="../typings/jquery/jquery.d.ts" />
 var timeFormat = "/HH-mm";
 var dateFormat = "/YYYY-MM-DD";
 
@@ -38,7 +31,7 @@ function loadStations() {
             locations.push({
                 value: results[i].StationName,
                 crs: results[i].CRS,
-                tokens: [results[i].StationName, results[i].CRS, results[i].Tiploc]
+                tokens: [results[i].CRS, results[i].StationName, results[i].Tiploc]
             });
         }
         $(".station-lookup").typeahead({
