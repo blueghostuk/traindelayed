@@ -1,10 +1,7 @@
 
-// Module
 var TrainDelayed;
 (function (TrainDelayed) {
-    // Class
     var TrainOperatingCompany = (function () {
-        // Constructor
         function TrainOperatingCompany(code, name, webLink) {
             this.code = code;
             this.name = name;

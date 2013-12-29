@@ -1,9 +1,3 @@
-/// <reference path="Tocs.ts" />
-/// <reference path="searchModels.ts" />
-/// <reference path="../typings/jquery.hashchange/jquery.hashchange.d.ts" />
-/// <reference path="../typings/moment/moment.d.ts" />
-/// <reference path="../typings/knockout/knockout.d.ts" />
-/// <reference path="../typings/jquery/jquery.d.ts" />
 var titleFormat = "ddd Do MMM YYYY";
 var dateFormat = "ddd DD MMM YY";
 var dateFormatQuery = "YYYY-MM-DD";
@@ -65,7 +59,6 @@ function loadHashCommand() {
             $("#neg-2hrs").attr("href", "search/from/" + from + "/to/" + to + "/" + neg2.format("YYYY-MM-DD/HH-mm"));
             $("#plus-2hrs").attr("href", "search/from/" + from + "/to/" + to + "/" + plus2.format("YYYY-MM-DD/HH-mm"));
         } else {
-            // TODO: display error
         }
     }
     return false;

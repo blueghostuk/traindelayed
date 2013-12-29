@@ -1,7 +1,3 @@
-/// <reference path="../typings/knockout/knockout.d.ts" />
-/// <reference path="common.ts" />
-/// <reference path="Tocs.ts" />
-/// <reference path="webApi.ts" />
 var TrainDelayed;
 (function (TrainDelayed) {
     (function (Search) {

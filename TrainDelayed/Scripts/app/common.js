@@ -1,7 +1,4 @@
-﻿/// <reference path="../typings/bootstrap/bootstrap.d.ts" />
-/// <reference path="webApi.ts" />
-/// <reference path="../typings/moment/moment.d.ts" />
-
+﻿
 function preAjax() {
     show($(".progress"));
     hide($("#error-row"));
@@ -23,24 +20,6 @@ var TrainDelayed;
     var Common = (function () {
         function Common() {
         }
-        Common.displayStanox = function (stanox) {
-            if (!stanox)
-                return;
-            var html = "";
-            if (stanox.StationName) {
-                html = stanox.StationName.toLowerCase();
-            } else {
-                html = stanox.Tiploc.toLowerCase();
-            }
-            if (stanox.CRS) {
-                html += " (" + stanox.CRS + ")";
-            }
-            $(".stanox-" + stanox.Stanox).html(html);
-            $(".stanox-" + stanox.Stanox).tooltip({
-                title: stanox.Stanox
-            });
-            $(".stanox-" + stanox.Stanox).addClass("stationName");
-        };
         return Common;
     })();
     TrainDelayed.Common = Common;
