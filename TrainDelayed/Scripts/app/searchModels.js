@@ -59,7 +59,7 @@ var TrainDelayed;
                     }
                 }
                 if (fromActual) {
-                    this.actualDeparture = fromActual.ActualTimestamp ? TrainDelayed.DateTimeFormats.formatDateTimeString(fromActual.ActualTimestamp) : "Unknown";
+                    this.actualDeparture = fromActual.ActualTimestamp ? TrainDelayed.DateTimeFormats.formatDateTimeString(fromActual.ActualTimestamp, TrainDelayed.DateTimeFormats.timeFormat) : "Unknown";
                     this.fromPlatform = fromActual.Platform || this.fromPlatform;
                 } else {
                     this.actualDeparture = "Unknown";
@@ -93,7 +93,7 @@ var TrainDelayed;
                     }
                 }
                 if (toActual) {
-                    this.actualArrival = TrainDelayed.DateTimeFormats.formatDateTimeString(toActual.ActualTimestamp);
+                    this.actualArrival = TrainDelayed.DateTimeFormats.formatDateTimeString(toActual.ActualTimestamp, TrainDelayed.DateTimeFormats.timeFormat);
                     var delay = moment(toActual.ActualTimestamp).diff(moment(toActual.PlannedTimestamp), 'minutes');
                     this.delay = delay.toString();
                     this.delayText = delay > 0 ? delay + " mins late" : delay == 0 ? "on time" : (delay * -1) + " mins early";

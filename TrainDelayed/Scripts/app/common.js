@@ -40,10 +40,11 @@ var TrainDelayed;
             return null;
         };
 
-        DateTimeFormats.formatDateTimeString = function (dateTime) {
+        DateTimeFormats.formatDateTimeString = function (dateTime, format) {
+            if (typeof format === "undefined") { format = DateTimeFormats.shortTimeFormat; }
             if (dateTime) {
                 var timeMoment = moment(dateTime);
-                var ts = timeMoment.format(TrainDelayed.DateTimeFormats.shortTimeFormat);
+                var ts = timeMoment.format(format);
                 if (timeMoment.seconds() === 30) {
                     ts += TrainDelayed.CommonStrings.halfMinute;
                 }

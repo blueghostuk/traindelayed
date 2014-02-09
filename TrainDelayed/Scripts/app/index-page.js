@@ -5,13 +5,17 @@ var fromLocal = ko.observableArray();
 var toLocal = ko.observableArray();
 
 var webApi;
+var locations = [];
 
 $(function () {
     webApi = new TrainDelayed.WebApi();
     TrainDelayed.Common.webApi = webApi;
 
     $('.datepicker').datepicker({
-        format: 'dd/mm/yyyy'
+        format: 'dd/mm/yyyy',
+        startDate: moment().subtract({ days: 14 }).toDate(),
+        weekStart: 1,
+        todayHighlight: true
     }).on("changeDate", function () {
         $(this).datepicker('hide');
     });
@@ -23,7 +27,17 @@ $(function () {
     ko.applyBindings(toLocal, $("#to-local").get(0));
     loadStations();
 });
-var locations = [];
+
+function getTokens(station) {
+    var results = [];
+    results.push(station.CRS);
+    results.push(station.Tiploc);
+    var stationSplit = station.StationName.split(" ");
+    for (var i = 0; i < stationSplit.length; i++) {
+        results.push(stationSplit[i]);
+    }
+    return results;
+}
 
 function loadStations() {
     webApi.getStations().done(function (results) {
@@ -31,7 +45,7 @@ function loadStations() {
             locations.push({
                 value: results[i].StationName,
                 crs: results[i].CRS,
-                tokens: [results[i].CRS, results[i].StationName, results[i].Tiploc]
+                tokens: getTokens(results[i])
             });
         }
         $(".station-lookup").typeahead({

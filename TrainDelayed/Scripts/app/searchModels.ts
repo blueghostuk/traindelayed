@@ -88,7 +88,7 @@ module TrainDelayed.Search {
             }
             if (fromActual) {
                 this.actualDeparture = fromActual.ActualTimestamp ?
-                    DateTimeFormats.formatDateTimeString(fromActual.ActualTimestamp) :
+                DateTimeFormats.formatDateTimeString(fromActual.ActualTimestamp, DateTimeFormats.timeFormat) :
                     "Unknown";
                 this.fromPlatform = fromActual.Platform || this.fromPlatform;
             } else {
@@ -125,7 +125,7 @@ module TrainDelayed.Search {
                 }
             }
             if (toActual) {
-                this.actualArrival = DateTimeFormats.formatDateTimeString(toActual.ActualTimestamp);
+                this.actualArrival = DateTimeFormats.formatDateTimeString(toActual.ActualTimestamp, DateTimeFormats.timeFormat);
                 var delay = moment(toActual.ActualTimestamp).diff(moment(toActual.PlannedTimestamp), 'minutes');
                 this.delay = delay.toString();
                 this.delayText = delay > 0 ? delay + " mins late" : delay == 0 ? "on time" : (delay * -1) + " mins early";

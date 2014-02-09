@@ -57,10 +57,10 @@ module TrainDelayed {
             return null;
         }
 
-        public static formatDateTimeString(dateTime: string): string {
+        public static formatDateTimeString(dateTime: string, format: string = DateTimeFormats.shortTimeFormat): string {
             if (dateTime) {
                 var timeMoment = moment(dateTime);
-                var ts = timeMoment.format(TrainDelayed.DateTimeFormats.shortTimeFormat);
+                var ts = timeMoment.format(format);
                 if (timeMoment.seconds() === 30) {
                     ts += TrainDelayed.CommonStrings.halfMinute;
                 }
