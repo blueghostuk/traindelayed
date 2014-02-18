@@ -1,28 +1,31 @@
-﻿/// <reference path="common.ts" />
-/// <reference path="../typings/jquery/jquery.d.ts" />
+﻿/// <reference path="../typings/jquery/jquery.d.ts" />
 /// <reference path="../typings/moment/moment.d.ts" />
 
 interface IWebApi {
     getStanox(stanox: string): JQueryPromise<any>;
     getStanoxByCrsCode(crsCode: string): JQueryPromise<any>;
+    getAllStanoxByCrsCode(crsCode: string): JQueryPromise<any>;
 
     getStations(): JQueryPromise<any>;
-    getStationByLocation(lat: number, lon: number): JQueryPromise<any>;
+    getStationByLocation(lat: number, lon: number, limit?: number): JQueryPromise<any>;
 
     getTrainMovementByUid(uid: string, date: string): JQueryPromise<any>;
     getTrainMovementById(id: string): JQueryPromise<any>;
     getTrainMovementAssociations(uid: string, date: string): JQueryPromise<any>;
     getTrainMovementsByHeadcode(headcode: string, date: string): JQueryPromise<any>;
 
-    getTrainMovementsTerminatingAtLocation(stanox: string, startDate: string, endDate: string): JQueryPromise<any>;
-    getTrainMovementsTerminatingAtStation(crsCode: string, startDate: string, endDate: string): JQueryPromise<any>;
-    getTrainMovementsStartingAtLocation(stanox: string, startDate: string, endDate: string): JQueryPromise<any>;
-    getTrainMovementsStartingAtStation(crsCode: string, startDate: string, endDate: string): JQueryPromise<any>;
-    getTrainMovementsCallingAtLocation(stanox: string, startDate: string, endDate: string): JQueryPromise<any>;
-    getTrainMovementsCallingAtStation(crsCode: string, startDate: string, endDate: string): JQueryPromise<any>;
-    getTrainMovementsBetweenLocations(fromStanox: string, toStanox: string, startDate: string, endDate: string): JQueryPromise<any>;
-    getTrainMovementsBetweenStations(fromCrsCode: string, toCrsCode: string, startDate: string, endDate: string): JQueryPromise<any>;
+    getTrainMovementsTerminatingAtLocation(stanox: string, startDate: string, endDate: string, atocCode?: string): JQueryPromise<any>;
+    getTrainMovementsTerminatingAtStation(crsCode: string, startDate: string, endDate: string, atocCode?: string): JQueryPromise<any>;
+    getTrainMovementsStartingAtLocation(stanox: string, startDate: string, endDate: string, atocCode?: string): JQueryPromise<any>;
+    getTrainMovementsStartingAtStation(crsCode: string, startDate: string, endDate: string, atocCode?: string): JQueryPromise<any>;
+    getTrainMovementsCallingAtLocation(stanox: string, startDate: string, endDate: string, atocCode?: string): JQueryPromise<any>;
+    getTrainMovementsCallingAtStation(crsCode: string, startDate: string, endDate: string, atocCode?: string): JQueryPromise<any>;
+    getTrainMovementsBetweenLocations(fromStanox: string, toStanox: string, startDate: string, endDate: string, atocCode?: string): JQueryPromise<any>;
+    getTrainMovementsBetweenStations(fromCrsCode: string, toCrsCode: string, startDate: string, endDate: string, atocCode?: string): JQueryPromise<any>;
 
+    getTrainMovementLink(headcode: string, crsCode: string, platform: string): JQueryPromise<any>;
+
+    getTrainMovementsNearLocation(lat: number, lon: number, limit: number): JQueryPromise<any>;
 
     getPPMSectors(): JQueryPromise<any>;
     getPPMOperatorRegions(operatorCode: string): JQueryPromise<any>;
@@ -40,13 +43,13 @@ interface IEstimate {
     CurrentDelay: number;
 }
 
-module TrainDelayed {
+module TrainNotifier {
 
     export class WebApi implements IWebApi {
 
         constructor(public serverSettings?: IServerSettings) {
             if (!serverSettings) {
-                this.serverSettings = TrainDelayed.Common.serverSettings;
+                this.serverSettings = TrainNotifier.Common.serverSettings;
             }
         }
 
@@ -68,17 +71,20 @@ module TrainDelayed {
             return $.getJSON(this.getBaseUrl() + "/Stanox/" + stanox);
         }
 
-        getStationByLocation(lat: number, lon: number) {
+        getStationByLocation(lat: number, lon: number, limit: number = 5) {
             return $.getJSON(this.getBaseUrl() + "/Station/GeoLookup", $.extend({}, this.getArgs(), {
                 lat: lat,
-                lon: lon
+                lon: lon,
+                limit: limit
             }));
         }
 
         getStanoxByCrsCode(crsCode: string) {
-            return $.getJSON(this.getBaseUrl() + "/Stanox/?GetByCRS", $.extend({}, this.getArgs(), {
-                crsCode: crsCode
-            }));
+            return $.getJSON(this.getBaseUrl() + "/Stanox/Single/" + crsCode, this.getArgs());
+        }
+
+        getAllStanoxByCrsCode(crsCode: string) {
+            return $.getJSON(this.getBaseUrl() + "/Stanox/Find/" + crsCode, this.getArgs());
         }
 
         getTrainMovementByUid(uid: string, date: string) {
@@ -97,60 +103,80 @@ module TrainDelayed {
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/Headcode/" + headcode + "/" + date, this.getArgs());
         }
 
-        getTrainMovementsTerminatingAtLocation(stanox: string, startDate: string, endDate: string) {
+        getTrainMovementsTerminatingAtLocation(stanox: string, startDate: string, endDate: string, atocCode?: string) {
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/TerminatingAt/Location/" + stanox, $.extend({}, this.getArgs(), {
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                atocCode: atocCode
             }));
         }
 
-        getTrainMovementsTerminatingAtStation(crsCode: string, startDate: string, endDate: string) {
+        getTrainMovementsTerminatingAtStation(crsCode: string, startDate: string, endDate: string, atocCode?: string) {
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/TerminatingAt/Station/" + crsCode, $.extend({}, this.getArgs(), {
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                atocCode: atocCode
             }));
         }
 
-        getTrainMovementsStartingAtLocation(stanox: string, startDate: string, endDate: string) {
-            return $.getJSON(this.getBaseUrl() + "/TrainMovement/StartingAt/Location/" + stanox, $.extend({}, this.getArgs(), {
-                startDate: startDate,
-                endDate: endDate
+        getTrainMovementsNearLocation(lat: number, lon: number, limit: number = 10) {
+            return $.getJSON(this.getBaseUrl() + "/TrainMovement/Nearest/", $.extend({}, this.getArgs(), {
+                lat: lat,
+                lon: lon,
+                limit: limit
             }));
         }
 
-        getTrainMovementsStartingAtStation(crsCode: string, startDate: string, endDate: string) {
+        getTrainMovementsStartingAtStation(crsCode: string, startDate: string, endDate: string, atocCode?: string) {
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/StartingAt/Station/" + crsCode, $.extend({}, this.getArgs(), {
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                atocCode: atocCode
             }));
         }
 
-        getTrainMovementsCallingAtLocation(stanox: string, startDate: string, endDate: string) {
+        getTrainMovementsCallingAtLocation(stanox: string, startDate: string, endDate: string, atocCode?: string) {
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/CallingAt/Location/" + stanox, $.extend({}, this.getArgs(), {
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                atocCode: atocCode
             }));
         }
 
-        getTrainMovementsCallingAtStation(crsCode: string, startDate: string, endDate: string) {
+        getTrainMovementsCallingAtStation(crsCode: string, startDate: string, endDate: string, atocCode?: string) {
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/CallingAt/Station/" + crsCode, $.extend({}, this.getArgs(), {
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                atocCode: atocCode
             }));
         }
 
-        getTrainMovementsBetweenLocations(fromStanox: string, toStanox: string, startDate: string, endDate: string) {
+        getTrainMovementsBetweenLocations(fromStanox: string, toStanox: string, startDate: string, endDate: string, atocCode?: string) {
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/Between/Location/" + fromStanox + "/" + toStanox, $.extend({}, this.getArgs(), {
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                atocCode: atocCode
             }));
         }
 
-        getTrainMovementsBetweenStations(fromCrsCode: string, toCrsCode: string, startDate: string, endDate: string) {
+        getTrainMovementsBetweenStations(fromCrsCode: string, toCrsCode: string, startDate: string, endDate: string, atocCode?: string) {
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/Between/Station/" + fromCrsCode + "/" + toCrsCode, $.extend({}, this.getArgs(), {
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                atocCode: atocCode
             }));
+        }
+
+        getTrainMovementsStartingAtLocation(stanox: string, startDate: string, endDate: string, atocCode?: string) {
+            return $.getJSON(this.getBaseUrl() + "/TrainMovement/StartingAt/Location/" + stanox, $.extend({}, this.getArgs(), {
+                startDate: startDate,
+                endDate: endDate,
+                atocCode: atocCode
+            }));
+        }
+
+        getTrainMovementLink(headcode: string, crsCode: string, platform: string) {
+            return $.getJSON(this.getBaseUrl() + "/TrainMovement/Headcode/" + headcode + "/" + crsCode + "/" + platform + "/", this.getArgs());
         }
 
         getPPMData(operatorCode: string, name: string) {
@@ -196,7 +222,12 @@ interface IBerthContents {
     m_Item2: string;
 }
 
-module TrainDelayed {
+module TrainNotifier {
+
+    export enum LiveTrainStopSource {
+        Trust = 0,
+        TD = 1
+    }
 
     export enum EventType {
         Departure = 1,
@@ -307,24 +338,31 @@ module TrainDelayed {
         public static EnRoute = "EN ROUTE";
     }
 
+    export enum STPIndicatorValue {
+        Cancellation = 1,
+        STP = 2,
+        Overlay = 3,
+        Permanent = 4
+    }
+
     export class STPIndicator {
         public static Cancellation: ISTPIndicator = {
-            STPIndicatorId: 1,
+            STPIndicatorId: STPIndicatorValue.Cancellation,
             Code: 'C',
             Description: 'Cancellation Of Permanent Schedule'
         }
         public static STP: ISTPIndicator = {
-            STPIndicatorId: 2,
+            STPIndicatorId: STPIndicatorValue.STP,
             Code: 'N',
             Description: 'STP'
         }
         public static Overlay: ISTPIndicator = {
-            STPIndicatorId: 3,
+            STPIndicatorId: STPIndicatorValue.Overlay,
             Code: 'O',
             Description: 'Overlay'
         }
         public static Permanent: ISTPIndicator = {
-            STPIndicatorId: 4,
+            STPIndicatorId: STPIndicatorValue.Permanent,
             Code: 'P',
             Description: 'Permanent'
         }
@@ -357,86 +395,15 @@ module TrainDelayed {
                 return results[0];
             return null;
         }
+        public static stationTiplocMatches(tiploc: IStationTiploc, tiplocs: IStationTiploc[]) {
+            return tiplocs.some(function (t) {
+                return t.CRS == tiploc.CRS ||
+                    t.Stanox == tiploc.Stanox;
+            });
+        }
         public static toDisplayString(tiploc: IStationTiploc) {
             return (tiploc.StationName && tiploc.StationName.length > 0 ?
                 tiploc.StationName : tiploc.Description).toLowerCase();
-        }
-    }
-
-    export class RunningTrainEstimater {
-
-        public static estimateTrainTimes(trainMovement: ITrainMovementResult) {
-            if (trainMovement.Schedule && trainMovement.Schedule.Stops && trainMovement.Schedule.Stops.length > 0) {
-                var currentDelay = 0;
-                if (trainMovement.Actual && trainMovement.Actual.Stops && trainMovement.Actual.Stops.length > 0) {
-                    var lastStop = trainMovement.Actual.Stops[trainMovement.Actual.Stops.length - 1];
-                    currentDelay = moment(lastStop.ActualTimestamp)
-                        .diff(moment(lastStop.PlannedTimestamp), 'minutes');
-                }
-
-                trainMovement.Schedule.Stops.forEach(function (stop: IRunningScheduleTrainStop) {
-                    var estimate = RunningTrainEstimater.estimateTimes(stop, currentDelay);
-                    currentDelay = estimate.CurrentDelay;
-                });
-            }
-        }
-
-        public static estimateTimes(
-            scheduleStop: IRunningScheduleTrainStop,
-            currentDelay: number = 0): IEstimate {
-
-            var arrival: Moment,
-                pubArrival: Moment,
-                departure: Moment,
-                pubDeparture: Moment,
-                pass: Moment;
-
-            if (currentDelay > 0) {
-                if (scheduleStop.EngineeringAllowance) {
-                    currentDelay -= scheduleStop.EngineeringAllowance;
-                }
-                if (scheduleStop.PathingAllowance) {
-                    currentDelay -= scheduleStop.PathingAllowance;
-                }
-                if (scheduleStop.PerformanceAllowance) {
-                    currentDelay -= scheduleStop.PerformanceAllowance;
-                }
-            }
-            if (currentDelay < 0) {
-                currentDelay = 0;
-            }
-
-            if (scheduleStop.Arrival) {
-                arrival = moment(scheduleStop.Arrival, TrainDelayed.DateTimeFormats.timeFormat);
-                arrival = arrival.add({ minutes: currentDelay });
-            }
-            if (scheduleStop.PublicArrival) {
-                pubArrival = moment(scheduleStop.PublicArrival, TrainDelayed.DateTimeFormats.timeFormat);
-                pubArrival = pubArrival.add({ minutes: currentDelay });
-            }
-
-            if (scheduleStop.Departure) {
-                departure = moment(scheduleStop.Departure, TrainDelayed.DateTimeFormats.timeFormat);
-                departure = departure.add({ minutes: currentDelay });
-            }
-            if (scheduleStop.PublicDeparture) {
-                pubDeparture = moment(scheduleStop.PublicDeparture, TrainDelayed.DateTimeFormats.timeFormat);
-                pubDeparture = pubDeparture.add({ minutes: currentDelay });
-            }
-            if (scheduleStop.Pass) {
-                pass = moment(scheduleStop.Pass, TrainDelayed.DateTimeFormats.timeFormat);
-                pass = pass.add({ minutes: currentDelay });
-            }
-
-            scheduleStop.Estimate = {
-                Arrival: arrival,
-                PublicArrival: pubArrival,
-                Departure: departure,
-                PublicDeparture: pubDeparture,
-                Pass: pass,
-                CurrentDelay: currentDelay
-            };
-            return scheduleStop.Estimate;
         }
     }
 
@@ -616,8 +583,8 @@ module TrainDelayed {
         private static _xu: ICategoryType = { CategoryTypeId: CategoryTypeId.XU, Code: "XU", Description: "Unadvertised Express" };
         private static _xx: ICategoryType = { CategoryTypeId: CategoryTypeId.XX, Code: "XX", Description: "Express Passenger" };
         private static _xz: ICategoryType = { CategoryTypeId: CategoryTypeId.XZ, Code: "XZ", Description: "Sleeper (Domestic)" };
-        private static _br: ICategoryType = { CategoryTypeId: CategoryTypeId.BR, Code: "BR", Description: "Bus � Replacement due to engineering work" };
-        private static _bs: ICategoryType = { CategoryTypeId: CategoryTypeId.BS, Code: "BS", Description: "Bus � WTT Service" };
+        private static _br: ICategoryType = { CategoryTypeId: CategoryTypeId.BR, Code: "BR", Description: "Bus Replacement due to engineering work" };
+        private static _bs: ICategoryType = { CategoryTypeId: CategoryTypeId.BS, Code: "BS", Description: "Bus WTT Service" };
         private static _ee: ICategoryType = { CategoryTypeId: CategoryTypeId.EE, Code: "EE", Description: "Empty Coaching Stock (ECS)" };
         private static _el: ICategoryType = { CategoryTypeId: CategoryTypeId.EL, Code: "EL", Description: "ECS, London Underground/Metro Service" };
         private static _es: ICategoryType = { CategoryTypeId: CategoryTypeId.ES, Code: "ES", Description: "ECS & Staff" };
@@ -724,13 +691,14 @@ module TrainDelayed {
 }
 
 interface IRunningTrainActualStop {
-    EventType: number;
+    EventType: TrainNotifier.EventType;
     PlannedTimestamp: string;
     ActualTimestamp?: string;
     Line?: string;
     Platform?: string;
     ScheduleStopNumber: number;
     TiplocStanoxCode: string;
+    Source: TrainNotifier.LiveTrainStopSource;
 }
 
 interface IRunningTrainActual {
@@ -738,7 +706,7 @@ interface IRunningTrainActual {
     TrainId: string;
     HeadCode: string;
     TrainServiceCode: string;
-    State: number;
+    State: TrainNotifier.TrainState;
     ScheduleOriginStanoxCode: string;
     OriginDepartTimestamp: string;
     Stops: IRunningTrainActualStop[];
@@ -767,19 +735,19 @@ interface IScheduleStatus {
 }
 
 interface ISTPIndicator {
-    STPIndicatorId: number;
+    STPIndicatorId: TrainNotifier.STPIndicatorValue;
     Code: string;
     Description: string;
 }
 
 interface IPowerType {
-    PowerTypeId: TrainDelayed.PowerTypeId;
+    PowerTypeId: TrainNotifier.PowerTypeId;
     Code: string;
     Description: string;
 }
 
 interface ICategoryType {
-    CategoryTypeId: TrainDelayed.CategoryTypeId;
+    CategoryTypeId: TrainNotifier.CategoryTypeId;
     Code: string;
     Description: string;
 }
@@ -817,6 +785,7 @@ interface IReinstatement {
     NewOriginStanoxCode: string;
     PlannedDepartureTime: string;
 }
+
 interface IChangeOfOrigin {
     NewOriginStanoxCode: string;
     ReasonCode: string;
@@ -831,9 +800,9 @@ interface IRunningScheduleTrain {
     EndDate: string;
     AtocCode: IAtocCode;
     ScheduleStatusId: number;
-    STPIndicatorId: number;
-    PowerTypeId?: TrainDelayed.PowerTypeId;
-    CategoryTypeId?: TrainDelayed.CategoryTypeId;
+    STPIndicatorId: TrainNotifier.STPIndicatorValue;
+    PowerTypeId?: TrainNotifier.PowerTypeId;
+    CategoryTypeId?: TrainNotifier.CategoryTypeId;
     Speed?: number;
     Stops: IRunningScheduleTrainStop[];
     Schedule: ISchedule;
@@ -866,6 +835,28 @@ interface IAssociation {
     DateType: number;
     // not used
     Schedule?: any;
-    STPIndicator: number;
+    STPIndicator: TrainNotifier.STPIndicatorValue;
     Location: ITiploc;
+}
+
+interface IPPMRegion {
+    Description: string;
+    OperatorCode?: string;
+    SectorCode?: string;
+}
+
+interface IPPMData {
+    CancelVeryLate: number;
+    Code: string;
+    Late: number;
+    Name: string;
+    OnTime: number;
+    Timestamp: string;
+    Total: number;
+    Trend: number;
+}
+
+interface ITrainMovementLink {
+    TrainUid: string;
+    OriginDepartTimestamp: string;
 }

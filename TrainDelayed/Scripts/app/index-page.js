@@ -8,8 +8,8 @@ var webApi;
 var locations = [];
 
 $(function () {
-    webApi = new TrainDelayed.WebApi();
-    TrainDelayed.Common.webApi = webApi;
+    webApi = new TrainNotifier.WebApi();
+    TrainNotifier.Common.webApi = webApi;
 
     $('.datepicker').datepicker({
         format: 'dd/mm/yyyy',
@@ -51,7 +51,10 @@ function loadStations() {
 
         locationLookup.initialize();
 
-        $(".station-lookup").typeahead(null, {
+        $(".station-lookup").typeahead({
+            highlight: true,
+            autoselect: true
+        }, {
             source: locationLookup.ttAdapter()
         });
         $("#from-crs").attr("placeholder", "Type from station name here");

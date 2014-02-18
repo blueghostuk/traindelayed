@@ -45,19 +45,19 @@ module TrainDelayed.Search {
                 return;
 
             this.headcode = train.Actual.HeadCode;
-            this.url = Common.serverSettings.trainLink + "/"
+            this.url = TrainNotifier.Common.serverSettings.trainLink + "/"
                 + train.Schedule.TrainUid + "/"
-                + moment(train.Actual.OriginDepartTimestamp).format(DateTimeFormats.dateUrlFormat);
+            + moment(train.Actual.OriginDepartTimestamp).format(TrainNotifier.DateTimeFormats.dateUrlFormat);
 
             var origin = train.Schedule.Stops[0];
-            var originTiploc = StationTiploc.findStationTiploc(origin.TiplocStanoxCode, tiplocs);
-            this.originStation = StationTiploc.toDisplayString(originTiploc);
+            var originTiploc = TrainNotifier.StationTiploc.findStationTiploc(origin.TiplocStanoxCode, tiplocs);
+            this.originStation = TrainNotifier.StationTiploc.toDisplayString(originTiploc);
 
             var dest = train.Schedule.Stops[train.Schedule.Stops.length - 1];
-            var destTiploc = StationTiploc.findStationTiploc(dest.TiplocStanoxCode, tiplocs);
-            this.destStation = StationTiploc.toDisplayString(destTiploc);
+            var destTiploc = TrainNotifier.StationTiploc.findStationTiploc(dest.TiplocStanoxCode, tiplocs);
+            this.destStation = TrainNotifier.StationTiploc.toDisplayString(destTiploc);
 
-            this.fromStation = StationTiploc.toDisplayString(fromTiploc);
+            this.fromStation = TrainNotifier.StationTiploc.toDisplayString(fromTiploc);
             var fromExpected: IRunningScheduleTrainStop = null;
             for (var i = 0; i < train.Schedule.Stops.length; i++) {
                 var scheduleStop = train.Schedule.Stops[i];
@@ -68,7 +68,7 @@ module TrainDelayed.Search {
             }
             if (fromExpected) {
                 this.expectedDeparture = fromExpected.PublicDeparture ?
-                    DateTimeFormats.formatTimeString(fromExpected.PublicDeparture) :
+                TrainNotifier.DateTimeFormats.formatTimeString(fromExpected.PublicDeparture) :
                     "Unknown";
                 this.fromPlatform = fromExpected.Platform;
             } else {
@@ -77,7 +77,7 @@ module TrainDelayed.Search {
             }
             var fromActual: IRunningTrainActualStop = null;
             var fromDepartureStops = train.Actual.Stops.filter(function (stop: IRunningTrainActualStop) {
-                return stop.EventType === EventType.Departure;
+                return stop.EventType === TrainNotifier.EventType.Departure;
             });
             for (var i = 0; i < fromDepartureStops.length; i++) {
                 var actualStop = fromDepartureStops[i];
@@ -88,14 +88,14 @@ module TrainDelayed.Search {
             }
             if (fromActual) {
                 this.actualDeparture = fromActual.ActualTimestamp ?
-                DateTimeFormats.formatDateTimeString(fromActual.ActualTimestamp, DateTimeFormats.timeFormat) :
+                TrainNotifier.DateTimeFormats.formatDateTimeString(fromActual.ActualTimestamp, TrainNotifier.DateTimeFormats.timeFormat) :
                     "Unknown";
                 this.fromPlatform = fromActual.Platform || this.fromPlatform;
             } else {
                 this.actualDeparture = "Unknown";
             }
 
-            this.toStation = StationTiploc.toDisplayString(toTiploc);
+            this.toStation = TrainNotifier.StationTiploc.toDisplayString(toTiploc);
             var toExpected: IRunningScheduleTrainStop = null;
             for (var i = 0; i < train.Schedule.Stops.length; i++) {
                 var scheduleArrivalStop = train.Schedule.Stops[i];
@@ -106,7 +106,7 @@ module TrainDelayed.Search {
             }
             if (toExpected) {
                 this.expectedArrival = toExpected.PublicArrival ?
-                    DateTimeFormats.formatTimeString(toExpected.PublicArrival) :
+                TrainNotifier.DateTimeFormats.formatTimeString(toExpected.PublicArrival) :
                     "Unknown";
                 this.toPlatform = toExpected.Platform;
             } else {
@@ -115,7 +115,7 @@ module TrainDelayed.Search {
             }
             var toActual: IRunningTrainActualStop = null;
             var toArrivalStops = train.Actual.Stops.filter(function (stop: IRunningTrainActualStop) {
-                return stop.EventType === EventType.Arrival;
+                return stop.EventType === TrainNotifier.EventType.Arrival;
             });
             for (var i = 0; i < toArrivalStops.length; i++) {
                 var actualArrivalStop = toArrivalStops[i];
@@ -125,7 +125,7 @@ module TrainDelayed.Search {
                 }
             }
             if (toActual) {
-                this.actualArrival = DateTimeFormats.formatDateTimeString(toActual.ActualTimestamp, DateTimeFormats.timeFormat);
+                this.actualArrival = TrainNotifier.DateTimeFormats.formatDateTimeString(toActual.ActualTimestamp, TrainNotifier.DateTimeFormats.timeFormat);
                 var delay = moment(toActual.ActualTimestamp).diff(moment(toActual.PlannedTimestamp), 'minutes');
                 this.delay = delay.toString();
                 this.delayText = delay > 0 ? delay + " mins late" : delay == 0 ? "on time" : (delay * -1) + " mins early";
@@ -158,13 +158,13 @@ module TrainDelayed.Search {
                 var can = train.Cancellations[0];
                 var canTxt = "Cancelled " + can.Type;
                 if (can.CancelledAtStanoxCode) {
-                    var canTiploc = StationTiploc.findStationTiploc(can.CancelledAtStanoxCode, tiplocs);
+                    var canTiploc = TrainNotifier.StationTiploc.findStationTiploc(can.CancelledAtStanoxCode, tiplocs);
                     this.cancelledAtStation = canTiploc.Description.toLowerCase();
                     canTxt += " @ " + canTiploc.Description.toLowerCase();
                 } else {
                     this.cancelledAtStation = null;
                 }
-                canTxt += " @ " + moment(can.CancelledTimestamp).format(DateTimeFormats.timeFormat)
+                canTxt += " @ " + moment(can.CancelledTimestamp).format(TrainNotifier.DateTimeFormats.timeFormat)
                     + " - Reason: ";
                 if (can.Description) {
                     canTxt += can.Description;
@@ -179,7 +179,7 @@ module TrainDelayed.Search {
 
             if (train && train.ChangeOfOrigins.length > 0) {
                 var coo = train.ChangeOfOrigins[0];
-                var cooTiploc = StationTiploc.findStationTiploc(coo.NewOriginStanoxCode, tiplocs);
+                var cooTiploc = TrainNotifier.StationTiploc.findStationTiploc(coo.NewOriginStanoxCode, tiplocs);
                 this.changeOfOriginStation = cooTiploc.Description.toLowerCase();
                 this.changeOfOrigin = true;
             } else {

@@ -27,8 +27,8 @@ interface IStationLookup {
 }
 
 $(function () {
-    webApi = new TrainDelayed.WebApi();
-    TrainDelayed.Common.webApi = webApi;
+    webApi = new TrainNotifier.WebApi();
+    TrainNotifier.Common.webApi = webApi;
 
     $('.datepicker').datepicker({
         format: 'dd/mm/yyyy',
@@ -36,8 +36,8 @@ $(function () {
         weekStart: 1,
         todayHighlight: true
     }).on("changeDate", function () {
-        $(this).datepicker('hide');
-    });
+            $(this).datepicker('hide');
+        });
     $("form").submit(function () {
         return doSearch();
     });
@@ -71,9 +71,12 @@ function loadStations() {
 
         locationLookup.initialize();
 
-        $(".station-lookup").typeahead(null, {
-            source: locationLookup.ttAdapter()
-        });
+        $(".station-lookup").typeahead({
+            highlight: true,
+            autoselect: true
+        }, {
+                source: locationLookup.ttAdapter()
+            });
         $("#from-crs").attr("placeholder", "Type from station name here");
         $("#to-crs").attr("placeholder", "Type to station name here");
     });

@@ -1,11 +1,11 @@
 ﻿
-var TrainDelayed;
-(function (TrainDelayed) {
+var TrainNotifier;
+(function (TrainNotifier) {
     var WebApi = (function () {
         function WebApi(serverSettings) {
             this.serverSettings = serverSettings;
             if (!serverSettings) {
-                this.serverSettings = TrainDelayed.Common.serverSettings;
+                this.serverSettings = TrainNotifier.Common.serverSettings;
             }
         }
         WebApi.prototype.getBaseUrl = function () {
@@ -26,17 +26,21 @@ var TrainDelayed;
             return $.getJSON(this.getBaseUrl() + "/Stanox/" + stanox);
         };
 
-        WebApi.prototype.getStationByLocation = function (lat, lon) {
+        WebApi.prototype.getStationByLocation = function (lat, lon, limit) {
+            if (typeof limit === "undefined") { limit = 5; }
             return $.getJSON(this.getBaseUrl() + "/Station/GeoLookup", $.extend({}, this.getArgs(), {
                 lat: lat,
-                lon: lon
+                lon: lon,
+                limit: limit
             }));
         };
 
         WebApi.prototype.getStanoxByCrsCode = function (crsCode) {
-            return $.getJSON(this.getBaseUrl() + "/Stanox/?GetByCRS", $.extend({}, this.getArgs(), {
-                crsCode: crsCode
-            }));
+            return $.getJSON(this.getBaseUrl() + "/Stanox/Single/" + crsCode, this.getArgs());
+        };
+
+        WebApi.prototype.getAllStanoxByCrsCode = function (crsCode) {
+            return $.getJSON(this.getBaseUrl() + "/Stanox/Find/" + crsCode, this.getArgs());
         };
 
         WebApi.prototype.getTrainMovementByUid = function (uid, date) {
@@ -55,60 +59,81 @@ var TrainDelayed;
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/Headcode/" + headcode + "/" + date, this.getArgs());
         };
 
-        WebApi.prototype.getTrainMovementsTerminatingAtLocation = function (stanox, startDate, endDate) {
+        WebApi.prototype.getTrainMovementsTerminatingAtLocation = function (stanox, startDate, endDate, atocCode) {
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/TerminatingAt/Location/" + stanox, $.extend({}, this.getArgs(), {
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                atocCode: atocCode
             }));
         };
 
-        WebApi.prototype.getTrainMovementsTerminatingAtStation = function (crsCode, startDate, endDate) {
+        WebApi.prototype.getTrainMovementsTerminatingAtStation = function (crsCode, startDate, endDate, atocCode) {
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/TerminatingAt/Station/" + crsCode, $.extend({}, this.getArgs(), {
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                atocCode: atocCode
             }));
         };
 
-        WebApi.prototype.getTrainMovementsStartingAtLocation = function (stanox, startDate, endDate) {
-            return $.getJSON(this.getBaseUrl() + "/TrainMovement/StartingAt/Location/" + stanox, $.extend({}, this.getArgs(), {
-                startDate: startDate,
-                endDate: endDate
+        WebApi.prototype.getTrainMovementsNearLocation = function (lat, lon, limit) {
+            if (typeof limit === "undefined") { limit = 10; }
+            return $.getJSON(this.getBaseUrl() + "/TrainMovement/Nearest/", $.extend({}, this.getArgs(), {
+                lat: lat,
+                lon: lon,
+                limit: limit
             }));
         };
 
-        WebApi.prototype.getTrainMovementsStartingAtStation = function (crsCode, startDate, endDate) {
+        WebApi.prototype.getTrainMovementsStartingAtStation = function (crsCode, startDate, endDate, atocCode) {
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/StartingAt/Station/" + crsCode, $.extend({}, this.getArgs(), {
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                atocCode: atocCode
             }));
         };
 
-        WebApi.prototype.getTrainMovementsCallingAtLocation = function (stanox, startDate, endDate) {
+        WebApi.prototype.getTrainMovementsCallingAtLocation = function (stanox, startDate, endDate, atocCode) {
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/CallingAt/Location/" + stanox, $.extend({}, this.getArgs(), {
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                atocCode: atocCode
             }));
         };
 
-        WebApi.prototype.getTrainMovementsCallingAtStation = function (crsCode, startDate, endDate) {
+        WebApi.prototype.getTrainMovementsCallingAtStation = function (crsCode, startDate, endDate, atocCode) {
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/CallingAt/Station/" + crsCode, $.extend({}, this.getArgs(), {
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                atocCode: atocCode
             }));
         };
 
-        WebApi.prototype.getTrainMovementsBetweenLocations = function (fromStanox, toStanox, startDate, endDate) {
+        WebApi.prototype.getTrainMovementsBetweenLocations = function (fromStanox, toStanox, startDate, endDate, atocCode) {
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/Between/Location/" + fromStanox + "/" + toStanox, $.extend({}, this.getArgs(), {
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                atocCode: atocCode
             }));
         };
 
-        WebApi.prototype.getTrainMovementsBetweenStations = function (fromCrsCode, toCrsCode, startDate, endDate) {
+        WebApi.prototype.getTrainMovementsBetweenStations = function (fromCrsCode, toCrsCode, startDate, endDate, atocCode) {
             return $.getJSON(this.getBaseUrl() + "/TrainMovement/Between/Station/" + fromCrsCode + "/" + toCrsCode, $.extend({}, this.getArgs(), {
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                atocCode: atocCode
             }));
+        };
+
+        WebApi.prototype.getTrainMovementsStartingAtLocation = function (stanox, startDate, endDate, atocCode) {
+            return $.getJSON(this.getBaseUrl() + "/TrainMovement/StartingAt/Location/" + stanox, $.extend({}, this.getArgs(), {
+                startDate: startDate,
+                endDate: endDate,
+                atocCode: atocCode
+            }));
+        };
+
+        WebApi.prototype.getTrainMovementLink = function (headcode, crsCode, platform) {
+            return $.getJSON(this.getBaseUrl() + "/TrainMovement/Headcode/" + headcode + "/" + crsCode + "/" + platform + "/", this.getArgs());
         };
 
         WebApi.prototype.getPPMData = function (operatorCode, name) {
@@ -132,16 +157,22 @@ var TrainDelayed;
         };
         return WebApi;
     })();
-    TrainDelayed.WebApi = WebApi;
-})(TrainDelayed || (TrainDelayed = {}));
+    TrainNotifier.WebApi = WebApi;
+})(TrainNotifier || (TrainNotifier = {}));
 
-var TrainDelayed;
-(function (TrainDelayed) {
+var TrainNotifier;
+(function (TrainNotifier) {
+    (function (LiveTrainStopSource) {
+        LiveTrainStopSource[LiveTrainStopSource["Trust"] = 0] = "Trust";
+        LiveTrainStopSource[LiveTrainStopSource["TD"] = 1] = "TD";
+    })(TrainNotifier.LiveTrainStopSource || (TrainNotifier.LiveTrainStopSource = {}));
+    var LiveTrainStopSource = TrainNotifier.LiveTrainStopSource;
+
     (function (EventType) {
         EventType[EventType["Departure"] = 1] = "Departure";
         EventType[EventType["Arrival"] = 2] = "Arrival";
-    })(TrainDelayed.EventType || (TrainDelayed.EventType = {}));
-    var EventType = TrainDelayed.EventType;
+    })(TrainNotifier.EventType || (TrainNotifier.EventType = {}));
+    var EventType = TrainNotifier.EventType;
 
     (function (TrainState) {
         TrainState[TrainState["Activated"] = 1] = "Activated";
@@ -149,22 +180,22 @@ var TrainDelayed;
         TrainState[TrainState["ActivatedAndCancelled"] = 3] = "ActivatedAndCancelled";
         TrainState[TrainState["Terminated"] = 4] = "Terminated";
         TrainState[TrainState["ActivatedAndTerminated"] = 5] = "ActivatedAndTerminated";
-    })(TrainDelayed.TrainState || (TrainDelayed.TrainState = {}));
-    var TrainState = TrainDelayed.TrainState;
+    })(TrainNotifier.TrainState || (TrainNotifier.TrainState = {}));
+    var TrainState = TrainNotifier.TrainState;
 
     (function (AssociationType) {
         AssociationType[AssociationType["NextTrain"] = 0] = "NextTrain";
         AssociationType[AssociationType["Join"] = 1] = "Join";
         AssociationType[AssociationType["Split"] = 2] = "Split";
-    })(TrainDelayed.AssociationType || (TrainDelayed.AssociationType = {}));
-    var AssociationType = TrainDelayed.AssociationType;
+    })(TrainNotifier.AssociationType || (TrainNotifier.AssociationType = {}));
+    var AssociationType = TrainNotifier.AssociationType;
 
     (function (AssociationDateType) {
         AssociationDateType[AssociationDateType["SameDay"] = 0] = "SameDay";
         AssociationDateType[AssociationDateType["PreviousDay"] = 1] = "PreviousDay";
         AssociationDateType[AssociationDateType["NextDay"] = 2] = "NextDay";
-    })(TrainDelayed.AssociationDateType || (TrainDelayed.AssociationDateType = {}));
-    var AssociationDateType = TrainDelayed.AssociationDateType;
+    })(TrainNotifier.AssociationDateType || (TrainNotifier.AssociationDateType = {}));
+    var AssociationDateType = TrainNotifier.AssociationDateType;
 
     var ScheduleStatus = (function () {
         function ScheduleStatus() {
@@ -247,7 +278,7 @@ var TrainDelayed;
         };
         return ScheduleStatus;
     })();
-    TrainDelayed.ScheduleStatus = ScheduleStatus;
+    TrainNotifier.ScheduleStatus = ScheduleStatus;
 
     var CancellationCodes = (function () {
         function CancellationCodes() {
@@ -255,7 +286,15 @@ var TrainDelayed;
         CancellationCodes.EnRoute = "EN ROUTE";
         return CancellationCodes;
     })();
-    TrainDelayed.CancellationCodes = CancellationCodes;
+    TrainNotifier.CancellationCodes = CancellationCodes;
+
+    (function (STPIndicatorValue) {
+        STPIndicatorValue[STPIndicatorValue["Cancellation"] = 1] = "Cancellation";
+        STPIndicatorValue[STPIndicatorValue["STP"] = 2] = "STP";
+        STPIndicatorValue[STPIndicatorValue["Overlay"] = 3] = "Overlay";
+        STPIndicatorValue[STPIndicatorValue["Permanent"] = 4] = "Permanent";
+    })(TrainNotifier.STPIndicatorValue || (TrainNotifier.STPIndicatorValue = {}));
+    var STPIndicatorValue = TrainNotifier.STPIndicatorValue;
 
     var STPIndicator = (function () {
         function STPIndicator() {
@@ -275,28 +314,28 @@ var TrainDelayed;
             }
         };
         STPIndicator.Cancellation = {
-            STPIndicatorId: 1,
+            STPIndicatorId: 1 /* Cancellation */,
             Code: 'C',
             Description: 'Cancellation Of Permanent Schedule'
         };
         STPIndicator.STP = {
-            STPIndicatorId: 2,
+            STPIndicatorId: 2 /* STP */,
             Code: 'N',
             Description: 'STP'
         };
         STPIndicator.Overlay = {
-            STPIndicatorId: 3,
+            STPIndicatorId: 3 /* Overlay */,
             Code: 'O',
             Description: 'Overlay'
         };
         STPIndicator.Permanent = {
-            STPIndicatorId: 4,
+            STPIndicatorId: 4 /* Permanent */,
             Code: 'P',
             Description: 'Permanent'
         };
         return STPIndicator;
     })();
-    TrainDelayed.STPIndicator = STPIndicator;
+    TrainNotifier.STPIndicator = STPIndicator;
 
     var StationTiploc = (function () {
         function StationTiploc() {
@@ -312,85 +351,17 @@ var TrainDelayed;
                 return results[0];
             return null;
         };
+        StationTiploc.stationTiplocMatches = function (tiploc, tiplocs) {
+            return tiplocs.some(function (t) {
+                return t.CRS == tiploc.CRS || t.Stanox == tiploc.Stanox;
+            });
+        };
         StationTiploc.toDisplayString = function (tiploc) {
             return (tiploc.StationName && tiploc.StationName.length > 0 ? tiploc.StationName : tiploc.Description).toLowerCase();
         };
         return StationTiploc;
     })();
-    TrainDelayed.StationTiploc = StationTiploc;
-
-    var RunningTrainEstimater = (function () {
-        function RunningTrainEstimater() {
-        }
-        RunningTrainEstimater.estimateTrainTimes = function (trainMovement) {
-            if (trainMovement.Schedule && trainMovement.Schedule.Stops && trainMovement.Schedule.Stops.length > 0) {
-                var currentDelay = 0;
-                if (trainMovement.Actual && trainMovement.Actual.Stops && trainMovement.Actual.Stops.length > 0) {
-                    var lastStop = trainMovement.Actual.Stops[trainMovement.Actual.Stops.length - 1];
-                    currentDelay = moment(lastStop.ActualTimestamp).diff(moment(lastStop.PlannedTimestamp), 'minutes');
-                }
-
-                trainMovement.Schedule.Stops.forEach(function (stop) {
-                    var estimate = RunningTrainEstimater.estimateTimes(stop, currentDelay);
-                    currentDelay = estimate.CurrentDelay;
-                });
-            }
-        };
-
-        RunningTrainEstimater.estimateTimes = function (scheduleStop, currentDelay) {
-            if (typeof currentDelay === "undefined") { currentDelay = 0; }
-            var arrival, pubArrival, departure, pubDeparture, pass;
-
-            if (currentDelay > 0) {
-                if (scheduleStop.EngineeringAllowance) {
-                    currentDelay -= scheduleStop.EngineeringAllowance;
-                }
-                if (scheduleStop.PathingAllowance) {
-                    currentDelay -= scheduleStop.PathingAllowance;
-                }
-                if (scheduleStop.PerformanceAllowance) {
-                    currentDelay -= scheduleStop.PerformanceAllowance;
-                }
-            }
-            if (currentDelay < 0) {
-                currentDelay = 0;
-            }
-
-            if (scheduleStop.Arrival) {
-                arrival = moment(scheduleStop.Arrival, TrainDelayed.DateTimeFormats.timeFormat);
-                arrival = arrival.add({ minutes: currentDelay });
-            }
-            if (scheduleStop.PublicArrival) {
-                pubArrival = moment(scheduleStop.PublicArrival, TrainDelayed.DateTimeFormats.timeFormat);
-                pubArrival = pubArrival.add({ minutes: currentDelay });
-            }
-
-            if (scheduleStop.Departure) {
-                departure = moment(scheduleStop.Departure, TrainDelayed.DateTimeFormats.timeFormat);
-                departure = departure.add({ minutes: currentDelay });
-            }
-            if (scheduleStop.PublicDeparture) {
-                pubDeparture = moment(scheduleStop.PublicDeparture, TrainDelayed.DateTimeFormats.timeFormat);
-                pubDeparture = pubDeparture.add({ minutes: currentDelay });
-            }
-            if (scheduleStop.Pass) {
-                pass = moment(scheduleStop.Pass, TrainDelayed.DateTimeFormats.timeFormat);
-                pass = pass.add({ minutes: currentDelay });
-            }
-
-            scheduleStop.Estimate = {
-                Arrival: arrival,
-                PublicArrival: pubArrival,
-                Departure: departure,
-                PublicDeparture: pubDeparture,
-                Pass: pass,
-                CurrentDelay: currentDelay
-            };
-            return scheduleStop.Estimate;
-        };
-        return RunningTrainEstimater;
-    })();
-    TrainDelayed.RunningTrainEstimater = RunningTrainEstimater;
+    TrainNotifier.StationTiploc = StationTiploc;
 
     (function (PowerTypeId) {
         PowerTypeId[PowerTypeId["D"] = 1] = "D";
@@ -403,8 +374,8 @@ var TrainDelayed;
         PowerTypeId[PowerTypeId["EPU"] = 8] = "EPU";
         PowerTypeId[PowerTypeId["HST"] = 9] = "HST";
         PowerTypeId[PowerTypeId["LDS"] = 10] = "LDS";
-    })(TrainDelayed.PowerTypeId || (TrainDelayed.PowerTypeId = {}));
-    var PowerTypeId = TrainDelayed.PowerTypeId;
+    })(TrainNotifier.PowerTypeId || (TrainNotifier.PowerTypeId = {}));
+    var PowerTypeId = TrainNotifier.PowerTypeId;
 
     var PowerTypeLookup = (function () {
         function PowerTypeLookup() {
@@ -499,7 +470,7 @@ var TrainDelayed;
         };
         return PowerTypeLookup;
     })();
-    TrainDelayed.PowerTypeLookup = PowerTypeLookup;
+    TrainNotifier.PowerTypeLookup = PowerTypeLookup;
 
     (function (CategoryTypeId) {
         CategoryTypeId[CategoryTypeId["OL"] = 1] = "OL";
@@ -555,8 +526,8 @@ var TrainDelayed;
         CategoryTypeId[CategoryTypeId["H4"] = 51] = "H4";
         CategoryTypeId[CategoryTypeId["H5"] = 52] = "H5";
         CategoryTypeId[CategoryTypeId["H6"] = 53] = "H6";
-    })(TrainDelayed.CategoryTypeId || (TrainDelayed.CategoryTypeId = {}));
-    var CategoryTypeId = TrainDelayed.CategoryTypeId;
+    })(TrainNotifier.CategoryTypeId || (TrainNotifier.CategoryTypeId = {}));
+    var CategoryTypeId = TrainNotifier.CategoryTypeId;
 
     var CategoryTypeLookup = (function () {
         function CategoryTypeLookup() {
@@ -688,8 +659,8 @@ var TrainDelayed;
         CategoryTypeLookup._xu = { CategoryTypeId: 10 /* XU */, Code: "XU", Description: "Unadvertised Express" };
         CategoryTypeLookup._xx = { CategoryTypeId: 11 /* XX */, Code: "XX", Description: "Express Passenger" };
         CategoryTypeLookup._xz = { CategoryTypeId: 12 /* XZ */, Code: "XZ", Description: "Sleeper (Domestic)" };
-        CategoryTypeLookup._br = { CategoryTypeId: 13 /* BR */, Code: "BR", Description: "Bus � Replacement due to engineering work" };
-        CategoryTypeLookup._bs = { CategoryTypeId: 14 /* BS */, Code: "BS", Description: "Bus � WTT Service" };
+        CategoryTypeLookup._br = { CategoryTypeId: 13 /* BR */, Code: "BR", Description: "Bus Replacement due to engineering work" };
+        CategoryTypeLookup._bs = { CategoryTypeId: 14 /* BS */, Code: "BS", Description: "Bus WTT Service" };
         CategoryTypeLookup._ee = { CategoryTypeId: 15 /* EE */, Code: "EE", Description: "Empty Coaching Stock (ECS)" };
         CategoryTypeLookup._el = { CategoryTypeId: 16 /* EL */, Code: "EL", Description: "ECS, London Underground/Metro Service" };
         CategoryTypeLookup._es = { CategoryTypeId: 17 /* ES */, Code: "ES", Description: "ECS & Staff" };
@@ -731,5 +702,5 @@ var TrainDelayed;
         CategoryTypeLookup._h6 = { CategoryTypeId: 53 /* H6 */, Code: "H6", Description: "RfD European Channel Tunnel Joint Venture" };
         return CategoryTypeLookup;
     })();
-    TrainDelayed.CategoryTypeLookup = CategoryTypeLookup;
-})(TrainDelayed || (TrainDelayed = {}));
+    TrainNotifier.CategoryTypeLookup = CategoryTypeLookup;
+})(TrainNotifier || (TrainNotifier = {}));

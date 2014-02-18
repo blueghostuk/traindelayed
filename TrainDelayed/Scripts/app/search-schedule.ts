@@ -17,8 +17,8 @@ var titleModel = new TrainDelayed.Search.TitleViewModel();
 var webApi: IWebApi;
 
 $(function () {
-    webApi = new TrainDelayed.WebApi();
-    TrainDelayed.Common.webApi = webApi;
+    webApi = new TrainNotifier.WebApi();
+    TrainNotifier.Common.webApi = webApi;
 
     ko.applyBindings(titleModel, $("#parent").get(0));
 
@@ -58,10 +58,10 @@ function loadHashCommand() {
             }
             getCallingBetween(from, to, date);
             var neg2 = moment(date).subtract({
-                hours: TrainDelayed.DateTimeFormats.timeFrameHours
+                hours: TrainNotifier.DateTimeFormats.timeFrameHours
             });
             var plus2 = moment(date).add({
-                hours: TrainDelayed.DateTimeFormats.timeFrameHours
+                hours: TrainNotifier.DateTimeFormats.timeFrameHours
             });
             $("#neg-2hrs").attr("href", "search/from/" + from + "/to/" + to + "/" + neg2.format("YYYY-MM-DD/HH-mm"));
             $("#plus-2hrs").attr("href", "search/from/" + from + "/to/" + to + "/" + plus2.format("YYYY-MM-DD/HH-mm"));
@@ -84,8 +84,8 @@ function getCallingBetween(from: string, to: string, date?: Moment) {
             if (!date) {
                 date = moment();
             }
-            titleModel.from(TrainDelayed.StationTiploc.toDisplayString(fromTiploc));
-            titleModel.to(TrainDelayed.StationTiploc.toDisplayString(toTiploc));
+            titleModel.from(TrainNotifier.StationTiploc.toDisplayString(fromTiploc));
+            titleModel.to(TrainNotifier.StationTiploc.toDisplayString(toTiploc));
             getCallingBetweenByStanox(fromTiploc, toTiploc, date);
         }).fail(function () {
             hide($(".progress"));
@@ -95,17 +95,17 @@ function getCallingBetween(from: string, to: string, date?: Moment) {
 
 function getCallingBetweenByStanox(from: IStationTiploc, to: IStationTiploc, date: Moment) {
     var startDate = moment(date).subtract({
-        hours: TrainDelayed.DateTimeFormats.timeFrameBeforeHours
+        hours: TrainNotifier.DateTimeFormats.timeFrameBeforeHours
     });
     var endDate = moment(date).add({
-        hours: TrainDelayed.DateTimeFormats.timeFrameHours
+        hours: TrainNotifier.DateTimeFormats.timeFrameHours
     });
 
     titleModel.dateString(startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
 
     var query: JQueryPromise<any>;
-    var startDateQuery = startDate.format(TrainDelayed.DateTimeFormats.dateTimeApiFormat);
-    var endDateQuery = endDate.format(TrainDelayed.DateTimeFormats.dateTimeApiFormat);
+    var startDateQuery = startDate.format(TrainNotifier.DateTimeFormats.dateTimeApiFormat);
+    var endDateQuery = endDate.format(TrainNotifier.DateTimeFormats.dateTimeApiFormat);
     if (from.CRS && from.CRS.length == 3 && to.CRS && to.CRS.length == 3) {
         query = webApi.getTrainMovementsBetweenStations(
             from.CRS,

@@ -15,14 +15,14 @@ function hide(element) {
     $(element).addClass("hide");
 }
 
-var TrainDelayed;
-(function (TrainDelayed) {
+var TrainNotifier;
+(function (TrainNotifier) {
     var Common = (function () {
         function Common() {
         }
         return Common;
     })();
-    TrainDelayed.Common = Common;
+    TrainNotifier.Common = Common;
     ;
 
     var DateTimeFormats = (function () {
@@ -30,10 +30,10 @@ var TrainDelayed;
         }
         DateTimeFormats.formatTimeString = function (time) {
             if (time) {
-                var timeMoment = moment(time, TrainDelayed.DateTimeFormats.timeFormat);
-                var ts = timeMoment.format(TrainDelayed.DateTimeFormats.shortTimeFormat);
+                var timeMoment = moment(time, TrainNotifier.DateTimeFormats.timeFormat);
+                var ts = timeMoment.format(TrainNotifier.DateTimeFormats.shortTimeFormat);
                 if (timeMoment.seconds() === 30) {
-                    ts += TrainDelayed.CommonStrings.halfMinute;
+                    ts += TrainNotifier.CommonStrings.halfMinute;
                 }
                 return ts;
             }
@@ -46,7 +46,7 @@ var TrainDelayed;
                 var timeMoment = moment(dateTime);
                 var ts = timeMoment.format(format);
                 if (timeMoment.seconds() === 30) {
-                    ts += TrainDelayed.CommonStrings.halfMinute;
+                    ts += TrainNotifier.CommonStrings.halfMinute;
                 }
                 return ts;
             }
@@ -66,7 +66,7 @@ var TrainDelayed;
         DateTimeFormats.timeFrameBeforeHours = 2;
         return DateTimeFormats;
     })();
-    TrainDelayed.DateTimeFormats = DateTimeFormats;
+    TrainNotifier.DateTimeFormats = DateTimeFormats;
     ;
 
     var CommonStrings = (function () {
@@ -75,6 +75,6 @@ var TrainDelayed;
         CommonStrings.halfMinute = "½";
         return CommonStrings;
     })();
-    TrainDelayed.CommonStrings = CommonStrings;
+    TrainNotifier.CommonStrings = CommonStrings;
     ;
-})(TrainDelayed || (TrainDelayed = {}));
+})(TrainNotifier || (TrainNotifier = {}));
