@@ -15,9 +15,8 @@ namespace TrainDelayed
                 "~/Scripts/knockout-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                "~/Scripts/hogan*",
                 "~/Scripts/bootstrap*",
-                "~/Scripts/typeahead*"));
+                "~/Scripts/typeahead.bundle*"));
 
             bundles.Add(new ScriptBundle("~/bundles/moment").Include(
                 "~/Scripts/moment.js"));
