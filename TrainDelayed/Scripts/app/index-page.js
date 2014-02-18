@@ -28,31 +28,31 @@ $(function () {
     loadStations();
 });
 
-function getTokens(station) {
-    var results = [];
-    results.push(station.CRS);
-    results.push(station.Tiploc);
-    var stationSplit = station.StationName.split(" ");
-    for (var i = 0; i < stationSplit.length; i++) {
-        results.push(stationSplit[i]);
-    }
-    return results;
-}
-
 function loadStations() {
     webApi.getStations().done(function (results) {
-        for (var i = 0; i < results.length; i++) {
-            locations.push({
-                value: results[i].StationName,
-                crs: results[i].CRS,
-                tokens: getTokens(results[i])
-            });
-        }
-        $(".station-lookup").typeahead({
+        locations = results.map(function (value) {
+            return {
+                value: value.StationName,
+                crs: value.CRS
+            };
+        });
+
+        var locationLookup = new Bloodhound({
             name: 'stations-lookup',
-            local: locations,
-            template: '<p><strong>{{value}}</strong>&nbsp;({{crs}})</p>',
-            engine: Hogan
+            datumTokenizer: function (datum) {
+                var nameTokens = Bloodhound.tokenizers.whitespace(datum.value);
+                var crsTokens = Bloodhound.tokenizers.whitespace(datum.crs);
+
+                return nameTokens.concat(crsTokens);
+            },
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            local: locations
+        });
+
+        locationLookup.initialize();
+
+        $(".station-lookup").typeahead(null, {
+            source: locationLookup.ttAdapter()
         });
         $("#from-crs").attr("placeholder", "Type from station name here");
         $("#to-crs").attr("placeholder", "Type to station name here");

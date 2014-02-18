@@ -13,13 +13,6 @@
         left: 0;
     }
 
-    .twitter-typeahead .tt-hint {
-        color: #a1a1a1;
-        z-index: 1;
-        padding: 6px 12px;
-        border: 1px solid transparent;
-    }
-
     .twitter-typeahead .tt-query {
         z-index: 2;
         border-radius: 4px !important;
@@ -54,6 +47,7 @@
 .tt-suggestion {
     display: block;
     padding: 3px 20px;
+    cursor: pointer;
 }
 
     .tt-suggestion.tt-is-under-cursor {
