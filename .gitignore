@@ -97,10 +97,7 @@ UpgradeLog*.XML
 packages
 
 #program bin
-bin/TrainNotifier.Common.dll
-bin/TrainDelayed.dll
-bin/TrainDelayed.dll.config
-bin/TrainDelayed.pdb
+TrainDelayed/bin/*.dll
 
 # Local App.config transformation
 *.Debug-Local.config
