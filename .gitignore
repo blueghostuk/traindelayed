@@ -98,6 +98,7 @@ packages
 
 #program bin
 TrainDelayed/bin/*.dll
+TrainDelayed/bin/*.dll.config
 
 # Local App.config transformation
 *.Debug-Local.config
