@@ -21,12 +21,12 @@ module TrainDelayed.Search {
         public destStation: string;
         public fromStation: string;
         public fromPlatform: string;
-        public changeOfOriginStation: string;
+        public changeOfOriginStation: string = null;
         public expectedDeparture: string;
         public actualDeparture: string;
         public toStation: string;
         public toPlatform: string;
-        public cancelledAtStation: string;
+        public cancelledAtStation: string = null;
         public expectedArrival: string;
         public actualArrival: string;
         public delay: string;
@@ -37,100 +37,39 @@ module TrainDelayed.Search {
         public tocUrl: string;
         public changeOfOrigin: boolean = false;
         public cancelled: boolean = false;
-        public title: string = "";
+        public title: string = null;
 
-        constructor(fromTiploc: IStationTiploc, toTiploc: IStationTiploc, train: ITrainMovementResult, tiplocs: IStationTiploc[]) {
+        constructor(fromTiploc: StationTiploc, toTiploc: StationTiploc, delay: Delay, tiplocs: StationTiploc[]) {
+            
+            this.headcode = delay.Headcode;
+            this.url = TrainNotifier.Common.serverSettings.trainLink + "/" + delay.Uid + "/" + moment(delay.From.Expected).format(TrainNotifier.DateTimeFormats.dateUrlFormat);
 
-            if (!train.Actual)
-                return;
+            var originTiploc = delay.Origin;
+            this.originStation = TrainNotifier.TiplocHelper.toDisplayString(originTiploc);
 
-            this.headcode = train.Actual.HeadCode;
-            this.url = TrainNotifier.Common.serverSettings.trainLink + "/"
-                + train.Schedule.TrainUid + "/"
-            + moment(train.Actual.OriginDepartTimestamp).format(TrainNotifier.DateTimeFormats.dateUrlFormat);
+            var destTiploc = delay.Dest;
+            this.destStation = TrainNotifier.TiplocHelper.toDisplayString(destTiploc);
 
-            var origin = train.Schedule.Stops[0];
-            var originTiploc = TrainNotifier.StationTiploc.findStationTiploc(origin.TiplocStanoxCode, tiplocs);
-            this.originStation = TrainNotifier.StationTiploc.toDisplayString(originTiploc);
+            this.fromStation = TrainNotifier.TiplocHelper.toDisplayString(fromTiploc);
 
-            var dest = train.Schedule.Stops[train.Schedule.Stops.length - 1];
-            var destTiploc = TrainNotifier.StationTiploc.findStationTiploc(dest.TiplocStanoxCode, tiplocs);
-            this.destStation = TrainNotifier.StationTiploc.toDisplayString(destTiploc);
-
-            this.fromStation = TrainNotifier.StationTiploc.toDisplayString(fromTiploc);
-            var fromExpected: IRunningScheduleTrainStop = null;
-            for (var i = 0; i < train.Schedule.Stops.length; i++) {
-                var scheduleStop = train.Schedule.Stops[i];
-                if (scheduleStop.TiplocStanoxCode === fromTiploc.Stanox) {
-                    fromExpected = scheduleStop;
-                    break;
-                }
-            }
-            if (fromExpected) {
-                this.expectedDeparture = fromExpected.PublicDeparture ?
-                TrainNotifier.DateTimeFormats.formatTimeString(fromExpected.PublicDeparture) :
-                    "Unknown";
-                this.fromPlatform = fromExpected.Platform;
-            } else {
-                this.expectedDeparture = "Unknown";
-                this.fromPlatform = null;
-            }
-            var fromActual: IRunningTrainActualStop = null;
-            var fromDepartureStops = train.Actual.Stops.filter(function (stop: IRunningTrainActualStop) {
-                return stop.EventType === TrainNotifier.EventType.Departure;
-            });
-            for (var i = 0; i < fromDepartureStops.length; i++) {
-                var actualStop = fromDepartureStops[i];
-                if (actualStop.TiplocStanoxCode === fromTiploc.Stanox) {
-                    fromActual = actualStop;
-                    break;
-                }
-            }
-            if (fromActual) {
-                this.actualDeparture = fromActual.ActualTimestamp ?
-                TrainNotifier.DateTimeFormats.formatDateTimeString(fromActual.ActualTimestamp, TrainNotifier.DateTimeFormats.timeFormat) :
-                    "Unknown";
-                this.fromPlatform = fromActual.Platform || this.fromPlatform;
+            this.expectedDeparture = TrainNotifier.DateTimeFormats.formatDateTimeString(delay.From.Expected, TrainNotifier.DateTimeFormats.timeFormat);
+            this.fromPlatform = delay.From.Platform;
+            if (delay.From.Actual) {
+                this.actualDeparture = TrainNotifier.DateTimeFormats.formatDateTimeString(delay.From.Actual, TrainNotifier.DateTimeFormats.timeFormat);
+                this.fromPlatform = delay.From.Platform || this.fromPlatform;
             } else {
                 this.actualDeparture = "Unknown";
             }
 
-            this.toStation = TrainNotifier.StationTiploc.toDisplayString(toTiploc);
-            var toExpected: IRunningScheduleTrainStop = null;
-            for (var i = 0; i < train.Schedule.Stops.length; i++) {
-                var scheduleArrivalStop = train.Schedule.Stops[i];
-                if (scheduleArrivalStop.TiplocStanoxCode === toTiploc.Stanox) {
-                    toExpected = scheduleArrivalStop;
-                    break;
-                }
-            }
-            if (toExpected) {
-                this.expectedArrival = toExpected.PublicArrival ?
-                TrainNotifier.DateTimeFormats.formatTimeString(toExpected.PublicArrival) :
-                    "Unknown";
-                this.toPlatform = toExpected.Platform;
-            } else {
-                this.expectedArrival = "Unknown";
-                this.toPlatform = null;
-            }
-            var toActual: IRunningTrainActualStop = null;
-            var toArrivalStops = train.Actual.Stops.filter(function (stop: IRunningTrainActualStop) {
-                return stop.EventType === TrainNotifier.EventType.Arrival;
-            });
-            for (var i = 0; i < toArrivalStops.length; i++) {
-                var actualArrivalStop = toArrivalStops[i];
-                if (actualArrivalStop.TiplocStanoxCode === toTiploc.Stanox) {
-                    toActual = actualArrivalStop;
-                    break;
-                }
-            }
-            if (toActual) {
-                this.actualArrival = TrainNotifier.DateTimeFormats.formatDateTimeString(toActual.ActualTimestamp, TrainNotifier.DateTimeFormats.timeFormat);
-                var delay = moment(toActual.ActualTimestamp).diff(moment(toActual.PlannedTimestamp), 'minutes');
-                this.delay = delay.toString();
-                this.delayText = delay > 0 ? delay + " mins late" : delay == 0 ? "on time" : (delay * -1) + " mins early";
-                this.delayCss = delay >= 30 ? "danger" : delay > 0 ? "warning" : "success";
-                this.toPlatform = toActual.Platform || this.toPlatform;
+            this.toStation = TrainNotifier.TiplocHelper.toDisplayString(toTiploc);
+            this.expectedArrival = TrainNotifier.DateTimeFormats.formatDateTimeString(delay.To.Expected, TrainNotifier.DateTimeFormats.timeFormat);
+            this.toPlatform = delay.To.Platform;            
+            if (delay.To.Actual) {
+                this.actualArrival = TrainNotifier.DateTimeFormats.formatDateTimeString(delay.To.Actual, TrainNotifier.DateTimeFormats.timeFormat);
+                this.delay = delay.DelayTime.toString();
+                this.delayText = delay.DelayTime > 0 ? delay.DelayTime + " mins late" : delay.DelayTime == 0 ? "on time" : (delay.DelayTime * -1) + " mins early";
+                this.delayCss = delay.DelayTime >= 30 ? "danger" : delay.DelayTime > 0 ? "warning" : "success";
+                this.toPlatform = delay.To.Platform || this.toPlatform;
             } else {
                 this.actualArrival = "Unknown";
                 this.delay = "Unknown";
@@ -139,10 +78,10 @@ module TrainDelayed.Search {
                 this.delayCss = "";
             }            
 
-            var tocSet = false;
+            //var tocSet = false;
             var toc: TrainDelayed.TrainOperatingCompany;
-            if (train.Schedule.AtocCode) {
-                toc = tocs[train.Schedule.AtocCode.Code];
+            if (delay.Operator) {
+                toc = tocs[delay.Operator.Code];
             }
             if (toc) {
                 this.tocCode = toc.code;
@@ -154,38 +93,38 @@ module TrainDelayed.Search {
                 this.tocUrl = null;
             }
 
-            if (train && train.Cancellations.length > 0) {
-                var can = train.Cancellations[0];
-                var canTxt = "Cancelled " + can.Type;
-                if (can.CancelledAtStanoxCode) {
-                    var canTiploc = TrainNotifier.StationTiploc.findStationTiploc(can.CancelledAtStanoxCode, tiplocs);
-                    this.cancelledAtStation = canTiploc.Description.toLowerCase();
-                    canTxt += " @ " + canTiploc.Description.toLowerCase();
-                } else {
-                    this.cancelledAtStation = null;
-                }
-                canTxt += " @ " + moment(can.CancelledTimestamp).format(TrainNotifier.DateTimeFormats.timeFormat)
-                    + " - Reason: ";
-                if (can.Description) {
-                    canTxt += can.Description;
-                }
-                canTxt += " (" + can.ReasonCode + ")";
-                this.title = canTxt;
-                this.cancelled = true;
-            } else {
-                this.cancelled = false;
-                this.cancelledAtStation = null;
-            }
+            //if (train && train.Cancellations.length > 0) {
+            //    var can = train.Cancellations[0];
+            //    var canTxt = "Cancelled " + can.Type;
+            //    if (can.CancelledAtStanoxCode) {
+            //        var canTiploc = TrainNotifier.StationTiploc.findStationTiplocByStanox(can.CancelledAtStanoxCode, tiplocs);
+            //        this.cancelledAtStation = canTiploc.Description.toLowerCase();
+            //        canTxt += " @ " + canTiploc.Description.toLowerCase();
+            //    } else {
+            //        this.cancelledAtStation = null;
+            //    }
+            //    canTxt += " @ " + moment(can.CancelledTimestamp).format(TrainNotifier.DateTimeFormats.timeFormat)
+            //        + " - Reason: ";
+            //    if (can.Description) {
+            //        canTxt += can.Description;
+            //    }
+            //    canTxt += " (" + can.ReasonCode + ")";
+            //    this.title = canTxt;
+            //    this.cancelled = true;
+            //} else {
+            //    this.cancelled = false;
+            //    this.cancelledAtStation = null;
+            //}
 
-            if (train && train.ChangeOfOrigins.length > 0) {
-                var coo = train.ChangeOfOrigins[0];
-                var cooTiploc = TrainNotifier.StationTiploc.findStationTiploc(coo.NewOriginStanoxCode, tiplocs);
-                this.changeOfOriginStation = cooTiploc.Description.toLowerCase();
-                this.changeOfOrigin = true;
-            } else {
-                this.changeOfOriginStation = null;
-                this.changeOfOrigin = false;
-            }
+            //if (train && train.ChangeOfOrigins.length > 0) {
+            //    var coo = train.ChangeOfOrigins[0];
+            //    var cooTiploc = TrainNotifier.StationTiploc.findStationTiplocByStanox(coo.NewOriginStanoxCode, tiplocs);
+            //    this.changeOfOriginStation = cooTiploc.Description.toLowerCase();
+            //    this.changeOfOrigin = true;
+            //} else {
+            //    this.changeOfOriginStation = null;
+            //    this.changeOfOrigin = false;
+            //}
         }
 
     }

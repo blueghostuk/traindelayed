@@ -1,10 +1,3 @@
-/// <reference path="Tocs.ts" />
-/// <reference path="searchModels.ts" />
-/// <reference path="../typings/jquery.hashchange/jquery.hashchange.d.ts" />
-/// <reference path="../typings/moment/moment.d.ts" />
-/// <reference path="../typings/knockout/knockout.d.ts" />
-/// <reference path="../typings/jquery/jquery.d.ts" />
-
 var titleFormat = "ddd Do MMM YYYY";
 var dateFormat = "ddd DD MMM YY";
 var dateFormatQuery = "YYYY-MM-DD";
@@ -14,11 +7,10 @@ var shortTimeFormat = "HH:mm";
 
 var titleModel = new TrainDelayed.Search.TitleViewModel();
 
-var webApi: IWebApi;
+var webApi: TrainNotifier.WebApi;
 
 $(function () {
     webApi = new TrainNotifier.WebApi();
-    TrainNotifier.Common.webApi = webApi;
 
     ko.applyBindings(titleModel, $("#parent").get(0));
 
@@ -72,28 +64,23 @@ function loadHashCommand() {
     return false;
 }
 
-function getCallingBetween(from: string, to: string, date?: Moment) {
+function getCallingBetween(from: string, to: string, date: Moment = moment()) {
     preAjax();
     titleModel.results.removeAll();
     $.when(
         webApi.getStanoxByCrsCode(from),
         webApi.getStanoxByCrsCode(to))
-        .done(function (from, to) {
-            var fromTiploc: IStationTiploc = from[0];
-            var toTiploc: IStationTiploc = to[0];
-            if (!date) {
-                date = moment();
-            }
-            titleModel.from(TrainNotifier.StationTiploc.toDisplayString(fromTiploc));
-            titleModel.to(TrainNotifier.StationTiploc.toDisplayString(toTiploc));
-            getCallingBetweenByStanox(fromTiploc, toTiploc, date);
+        .done(function (from: StationTiploc, to: StationTiploc) {
+            titleModel.from(TrainNotifier.TiplocHelper.toDisplayString(from));
+            titleModel.to(TrainNotifier.TiplocHelper.toDisplayString(to));
+            getCallingBetweenByStanox(from, to, date);
         }).fail(function () {
             hide($(".progress"));
             show($("#error-row"));
         });
 }
 
-function getCallingBetweenByStanox(from: IStationTiploc, to: IStationTiploc, date: Moment) {
+function getCallingBetweenByStanox(from: StationTiploc, to: StationTiploc, date: Moment) {
     var startDate = moment(date).subtract({
         hours: TrainNotifier.DateTimeFormats.timeFrameBeforeHours
     });
@@ -103,42 +90,21 @@ function getCallingBetweenByStanox(from: IStationTiploc, to: IStationTiploc, dat
 
     titleModel.dateString(startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
 
-    var query: JQueryPromise<any>;
-    var startDateQuery = startDate.format(TrainNotifier.DateTimeFormats.dateTimeApiFormat);
-    var endDateQuery = endDate.format(TrainNotifier.DateTimeFormats.dateTimeApiFormat);
-    if (from.CRS && from.CRS.length == 3 && to.CRS && to.CRS.length == 3) {
-        query = webApi.getTrainMovementsBetweenStations(
-            from.CRS,
-            to.CRS,
-            startDateQuery,
-            endDateQuery);
-    } else {
-        query = webApi.getTrainMovementsBetweenLocations(
-            from.Stanox,
-            to.Stanox,
-            startDateQuery,
-            endDateQuery);
-    }
-    query.done(function (data: ITrainMovementResults) {
-        if (data && data.Movements.length > 0) {
-            var filteredData = data.Movements.filter(function (movement: ITrainMovementResult) {
-                return movement.Schedule.AtocCode &&
-                    movement.Schedule.AtocCode.Code.length > 0 &&
-                    movement.Schedule.AtocCode.Code != TrainDelayed.TrainOperatingCompany.Freight;
-            });
-
-            var viewModels: TrainDelayed.Search.Train[] = filteredData.map(function (movement: ITrainMovementResult) {
-                return new TrainDelayed.Search.Train(from, to, movement, data.Tiplocs);
-            });
-            for (var i = 0; i < viewModels.length; i++) {
-                if (viewModels[i].headcode) {
-                    titleModel.results.push(viewModels[i]);
+    $.when(webApi.getTiplocs(), webApi.getDelays(from.CRS, to.CRS, startDate, endDate))
+        .done(function (stations: StationTiploc[], delays: Delay[]) {
+            if (delays && delays.length > 0) {
+                var viewModels: TrainDelayed.Search.Train[] = delays.map(function (delay: Delay) {
+                    return new TrainDelayed.Search.Train(from, to, delay, stations);
+                });
+                for (var i = 0; i < viewModels.length; i++) {
+                    if (viewModels[i].headcode) {
+                        titleModel.results.push(viewModels[i]);
+                    }
                 }
+            } else {
+                show($("#no-results-row"));
             }
-        } else {
-            show($("#no-results-row"));
-        }
-    }).always(function () {
+        }).always(function () {
             hide($(".progress"));
         }).fail(function () {
             show($("#error-row"));

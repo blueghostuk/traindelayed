@@ -1,190 +1,204 @@
 /*!
- * typeahead.js 0.10.1
+ * typeahead.js 0.10.4
  * https://github.com/twitter/typeahead.js
- * Copyright 2013 Twitter, Inc. and other contributors; Licensed MIT
+ * Copyright 2013-2014 Twitter, Inc. and other contributors; Licensed MIT
  */
 
 (function($) {
-    var _ = {
-        isMsie: function() {
-            return /(msie|trident)/i.test(navigator.userAgent) ? navigator.userAgent.match(/(msie |rv:)(\d+(.\d+)?)/i)[2] : false;
-        },
-        isBlankString: function(str) {
-            return !str || /^\s*$/.test(str);
-        },
-        escapeRegExChars: function(str) {
-            return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-        },
-        isString: function(obj) {
-            return typeof obj === "string";
-        },
-        isNumber: function(obj) {
-            return typeof obj === "number";
-        },
-        isArray: $.isArray,
-        isFunction: $.isFunction,
-        isObject: $.isPlainObject,
-        isUndefined: function(obj) {
-            return typeof obj === "undefined";
-        },
-        bind: $.proxy,
-        each: function(collection, cb) {
-            $.each(collection, reverseArgs);
-            function reverseArgs(index, value) {
-                return cb(value, index);
-            }
-        },
-        map: $.map,
-        filter: $.grep,
-        every: function(obj, test) {
-            var result = true;
-            if (!obj) {
-                return result;
-            }
-            $.each(obj, function(key, val) {
-                if (!(result = test.call(null, val, key, obj))) {
-                    return false;
+    var _ = function() {
+        "use strict";
+        return {
+            isMsie: function() {
+                return /(msie|trident)/i.test(navigator.userAgent) ? navigator.userAgent.match(/(msie |rv:)(\d+(.\d+)?)/i)[2] : false;
+            },
+            isBlankString: function(str) {
+                return !str || /^\s*$/.test(str);
+            },
+            escapeRegExChars: function(str) {
+                return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+            },
+            isString: function(obj) {
+                return typeof obj === "string";
+            },
+            isNumber: function(obj) {
+                return typeof obj === "number";
+            },
+            isArray: $.isArray,
+            isFunction: $.isFunction,
+            isObject: $.isPlainObject,
+            isUndefined: function(obj) {
+                return typeof obj === "undefined";
+            },
+            toStr: function toStr(s) {
+                return _.isUndefined(s) || s === null ? "" : s + "";
+            },
+            bind: $.proxy,
+            each: function(collection, cb) {
+                $.each(collection, reverseArgs);
+                function reverseArgs(index, value) {
+                    return cb(value, index);
                 }
-            });
-            return !!result;
-        },
-        some: function(obj, test) {
-            var result = false;
-            if (!obj) {
-                return result;
-            }
-            $.each(obj, function(key, val) {
-                if (result = test.call(null, val, key, obj)) {
-                    return false;
+            },
+            map: $.map,
+            filter: $.grep,
+            every: function(obj, test) {
+                var result = true;
+                if (!obj) {
+                    return result;
                 }
-            });
-            return !!result;
-        },
-        mixin: $.extend,
-        getUniqueId: function() {
-            var counter = 0;
-            return function() {
-                return counter++;
-            };
-        }(),
-        templatify: function templatify(obj) {
-            return $.isFunction(obj) ? obj : template;
-            function template() {
-                return String(obj);
-            }
-        },
-        defer: function(fn) {
-            setTimeout(fn, 0);
-        },
-        debounce: function(func, wait, immediate) {
-            var timeout, result;
-            return function() {
-                var context = this, args = arguments, later, callNow;
-                later = function() {
-                    timeout = null;
-                    if (!immediate) {
+                $.each(obj, function(key, val) {
+                    if (!(result = test.call(null, val, key, obj))) {
+                        return false;
+                    }
+                });
+                return !!result;
+            },
+            some: function(obj, test) {
+                var result = false;
+                if (!obj) {
+                    return result;
+                }
+                $.each(obj, function(key, val) {
+                    if (result = test.call(null, val, key, obj)) {
+                        return false;
+                    }
+                });
+                return !!result;
+            },
+            mixin: $.extend,
+            getUniqueId: function() {
+                var counter = 0;
+                return function() {
+                    return counter++;
+                };
+            }(),
+            templatify: function templatify(obj) {
+                return $.isFunction(obj) ? obj : template;
+                function template() {
+                    return String(obj);
+                }
+            },
+            defer: function(fn) {
+                setTimeout(fn, 0);
+            },
+            debounce: function(func, wait, immediate) {
+                var timeout, result;
+                return function() {
+                    var context = this, args = arguments, later, callNow;
+                    later = function() {
+                        timeout = null;
+                        if (!immediate) {
+                            result = func.apply(context, args);
+                        }
+                    };
+                    callNow = immediate && !timeout;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                    if (callNow) {
                         result = func.apply(context, args);
                     }
+                    return result;
                 };
-                callNow = immediate && !timeout;
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-                if (callNow) {
-                    result = func.apply(context, args);
-                }
-                return result;
-            };
-        },
-        throttle: function(func, wait) {
-            var context, args, timeout, result, previous, later;
-            previous = 0;
-            later = function() {
-                previous = new Date();
-                timeout = null;
-                result = func.apply(context, args);
-            };
-            return function() {
-                var now = new Date(), remaining = wait - (now - previous);
-                context = this;
-                args = arguments;
-                if (remaining <= 0) {
-                    clearTimeout(timeout);
+            },
+            throttle: function(func, wait) {
+                var context, args, timeout, result, previous, later;
+                previous = 0;
+                later = function() {
+                    previous = new Date();
                     timeout = null;
-                    previous = now;
                     result = func.apply(context, args);
-                } else if (!timeout) {
-                    timeout = setTimeout(later, remaining);
-                }
-                return result;
-            };
-        },
-        noop: function() {}
-    };
-    var html = {
-        wrapper: '<span class="twitter-typeahead"></span>',
-        dropdown: '<span class="tt-dropdown-menu"></span>',
-        dataset: '<div class="tt-dataset-%CLASS%"></div>',
-        suggestions: '<span class="tt-suggestions"></span>',
-        suggestion: '<div class="tt-suggestion">%BODY%</div>'
-    };
-    var css = {
-        wrapper: {
-            position: "relative",
-            display: "inline-block"
-        },
-        hint: {
-            position: "absolute",
-            top: "0",
-            left: "0",
-            borderColor: "transparent",
-            boxShadow: "none"
-        },
-        input: {
-            position: "relative",
-            verticalAlign: "top",
-            backgroundColor: "transparent"
-        },
-        inputWithNoHint: {
-            position: "relative",
-            verticalAlign: "top"
-        },
-        dropdown: {
-            position: "absolute",
-            top: "100%",
-            left: "0",
-            zIndex: "100",
-            display: "none"
-        },
-        suggestions: {
-            display: "block"
-        },
-        suggestion: {
-            whiteSpace: "nowrap",
-            cursor: "pointer"
-        },
-        suggestionChild: {
-            whiteSpace: "normal"
-        },
-        ltr: {
-            left: "0",
-            right: "auto"
-        },
-        rtl: {
-            left: "auto",
-            right: " 0"
+                };
+                return function() {
+                    var now = new Date(), remaining = wait - (now - previous);
+                    context = this;
+                    args = arguments;
+                    if (remaining <= 0) {
+                        clearTimeout(timeout);
+                        timeout = null;
+                        previous = now;
+                        result = func.apply(context, args);
+                    } else if (!timeout) {
+                        timeout = setTimeout(later, remaining);
+                    }
+                    return result;
+                };
+            },
+            noop: function() {}
+        };
+    }();
+    var html = function() {
+        return {
+            wrapper: '<span class="twitter-typeahead"></span>',
+            dropdown: '<span class="tt-dropdown-menu"></span>',
+            dataset: '<div class="tt-dataset-%CLASS%"></div>',
+            suggestions: '<span class="tt-suggestions"></span>',
+            suggestion: '<div class="tt-suggestion"></div>'
+        };
+    }();
+    var css = function() {
+        "use strict";
+        var css = {
+            wrapper: {
+                position: "relative",
+                display: "inline-block"
+            },
+            hint: {
+                position: "absolute",
+                top: "0",
+                left: "0",
+                borderColor: "transparent",
+                boxShadow: "none",
+                opacity: "1"
+            },
+            input: {
+                position: "relative",
+                verticalAlign: "top",
+                backgroundColor: "transparent"
+            },
+            inputWithNoHint: {
+                position: "relative",
+                verticalAlign: "top"
+            },
+            dropdown: {
+                position: "absolute",
+                top: "100%",
+                left: "0",
+                zIndex: "100",
+                display: "none"
+            },
+            suggestions: {
+                display: "block"
+            },
+            suggestion: {
+                whiteSpace: "nowrap",
+                cursor: "pointer"
+            },
+            suggestionChild: {
+                whiteSpace: "normal"
+            },
+            ltr: {
+                left: "0",
+                right: "auto"
+            },
+            rtl: {
+                left: "auto",
+                right: " 0"
+            }
+        };
+        if (_.isMsie()) {
+            _.mixin(css.input, {
+                backgroundImage: "url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7)"
+            });
         }
-    };
-    if (_.isMsie()) {
-        _.mixin(css.input, {
-            backgroundImage: "url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7)"
-        });
-    }
-    if (_.isMsie() && _.isMsie() <= 7) {
-        _.mixin(css.input, {
-            marginTop: "-1px"
-        });
-    }
+        if (_.isMsie() && _.isMsie() <= 7) {
+            _.mixin(css.input, {
+                marginTop: "-1px"
+            });
+        }
+        return css;
+    }();
     var EventBus = function() {
+        "use strict";
         var namespace = "typeahead:";
         function EventBus(o) {
             if (!o || !o.el) {
@@ -201,6 +215,7 @@
         return EventBus;
     }();
     var EventEmitter = function() {
+        "use strict";
         var splitter = /\s+/, nextTick = getNextTick();
         return {
             onSync: onSync,
@@ -243,7 +258,7 @@
             return this;
         }
         function trigger(types) {
-            var that = this, type, callbacks, args, syncFlush, asyncFlush;
+            var type, callbacks, args, syncFlush, asyncFlush;
             if (!this._callbacks) {
                 return this;
             }
@@ -260,14 +275,14 @@
             return flush;
             function flush() {
                 var cancelled;
-                for (var i = 0; !cancelled && i < callbacks.length; i += 1) {
+                for (var i = 0, len = callbacks.length; !cancelled && i < len; i += 1) {
                     cancelled = callbacks[i].apply(context, args) === false;
                 }
                 return !cancelled;
             }
         }
         function getNextTick() {
-            var nextTickFn, messageChannel;
+            var nextTickFn;
             if (window.setImmediate) {
                 nextTickFn = function nextTickSetImmediate(fn) {
                     setImmediate(function() {
@@ -290,6 +305,7 @@
         }
     }();
     var highlight = function(doc) {
+        "use strict";
         var defaults = {
             node: null,
             pattern: null,
@@ -308,7 +324,7 @@
             regex = getRegex(o.pattern, o.caseSensitive, o.wordsOnly);
             traverse(o.node, hightlightTextNode);
             function hightlightTextNode(textNode) {
-                var match, patternNode;
+                var match, patternNode, wrapperNode;
                 if (match = regex.exec(textNode.data)) {
                     wrapperNode = doc.createElement(o.tagName);
                     o.className && (wrapperNode.className = o.className);
@@ -333,7 +349,7 @@
         };
         function getRegex(patterns, caseSensitive, wordsOnly) {
             var escapedPatterns = [], regexStr;
-            for (var i = 0; i < patterns.length; i++) {
+            for (var i = 0, len = patterns.length; i < len; i++) {
                 escapedPatterns.push(_.escapeRegExChars(patterns[i]));
             }
             regexStr = wordsOnly ? "\\b(" + escapedPatterns.join("|") + ")\\b" : "(" + escapedPatterns.join("|") + ")";
@@ -341,6 +357,7 @@
         }
     }(window.document);
     var Input = function() {
+        "use strict";
         var specialKeyCodeMap;
         specialKeyCodeMap = {
             9: "tab",
@@ -364,7 +381,7 @@
             this.$hint = $(o.hint);
             this.$input = $(o.input).on("blur.tt", onBlur).on("focus.tt", onFocus).on("keydown.tt", onKeydown);
             if (this.$hint.length === 0) {
-                this.setHintValue = this.getHintValue = this.clearHint = _.noop;
+                this.setHint = this.getHint = this.clearHint = this.clearHintIfInvalid = _.noop;
             }
             if (!_.isMsie()) {
                 this.$input.on("input.tt", onInput);
@@ -383,11 +400,11 @@
             return (str || "").replace(/^\s*/g, "").replace(/\s{2,}/g, " ");
         };
         _.mixin(Input.prototype, EventEmitter, {
-            _onBlur: function onBlur($e) {
+            _onBlur: function onBlur() {
                 this.resetInputValue();
                 this.trigger("blurred");
             },
-            _onFocus: function onFocus($e) {
+            _onFocus: function onFocus() {
                 this.trigger("focused");
             },
             _onKeydown: function onKeydown($e) {
@@ -397,14 +414,14 @@
                     this.trigger(keyName + "Keyed", $e);
                 }
             },
-            _onInput: function onInput($e) {
+            _onInput: function onInput() {
                 this._checkInputValue();
             },
             _managePreventDefault: function managePreventDefault(keyName, $e) {
                 var preventDefault, hintValue, inputValue;
                 switch (keyName) {
                   case "tab":
-                    hintValue = this.getHintValue();
+                    hintValue = this.getHint();
                     inputValue = this.getInputValue();
                     preventDefault = hintValue && hintValue !== inputValue && !withModifier($e);
                     break;
@@ -436,8 +453,9 @@
                 inputValue = this.getInputValue();
                 areEquivalent = areQueriesEquivalent(inputValue, this.query);
                 hasDifferentWhitespace = areEquivalent ? this.query.length !== inputValue.length : false;
+                this.query = inputValue;
                 if (!areEquivalent) {
-                    this.trigger("queryChanged", this.query = inputValue);
+                    this.trigger("queryChanged", this.query);
                 } else if (hasDifferentWhitespace) {
                     this.trigger("whitespaceChanged", this.query);
                 }
@@ -459,19 +477,27 @@
             },
             setInputValue: function setInputValue(value, silent) {
                 this.$input.val(value);
-                !silent && this._checkInputValue();
-            },
-            getHintValue: function getHintValue() {
-                return this.$hint.val();
-            },
-            setHintValue: function setHintValue(value) {
-                this.$hint.val(value);
+                silent ? this.clearHint() : this._checkInputValue();
             },
             resetInputValue: function resetInputValue() {
-                this.$input.val(this.query);
+                this.setInputValue(this.query, true);
+            },
+            getHint: function getHint() {
+                return this.$hint.val();
+            },
+            setHint: function setHint(value) {
+                this.$hint.val(value);
             },
             clearHint: function clearHint() {
-                this.$hint.val("");
+                this.setHint("");
+            },
+            clearHintIfInvalid: function clearHintIfInvalid() {
+                var val, hint, valIsPrefixOfHint, isValid;
+                val = this.getInputValue();
+                hint = this.getHint();
+                valIsPrefixOfHint = val !== hint && hint.indexOf(val) === 0;
+                isValid = val !== "" && valIsPrefixOfHint && !this.hasOverflow();
+                !isValid && this.clearHint();
             },
             getLanguageDirection: function getLanguageDirection() {
                 return (this.$input.css("direction") || "ltr").toLowerCase();
@@ -505,7 +531,7 @@
             return $('<pre aria-hidden="true"></pre>').css({
                 position: "absolute",
                 visibility: "hidden",
-                whiteSpace: "nowrap",
+                whiteSpace: "pre",
                 fontFamily: $input.css("font-family"),
                 fontSize: $input.css("font-size"),
                 fontStyle: $input.css("font-style"),
@@ -526,6 +552,7 @@
         }
     }();
     var Dataset = function() {
+        "use strict";
         var datasetKey = "ttDataset", valueKey = "ttValue", datumKey = "ttDatum";
         function Dataset(o) {
             o = o || {};
@@ -579,15 +606,14 @@
                     nodes = _.map(suggestions, getSuggestionNode);
                     $suggestions.append.apply($suggestions, nodes);
                     that.highlight && highlight({
+                        className: "tt-highlight",
                         node: $suggestions[0],
                         pattern: query
                     });
                     return $suggestions;
                     function getSuggestionNode(suggestion) {
-                        var $el, innerHtml, outerHtml;
-                        innerHtml = that.templates.suggestion(suggestion);
-                        outerHtml = html.suggestion.replace("%BODY%", innerHtml);
-                        $el = $(outerHtml).data(datasetKey, that.name).data(valueKey, that.displayFn(suggestion)).data(datumKey, suggestion);
+                        var $el;
+                        $el = $(html.suggestion).append(that.templates.suggestion(suggestion)).data(datasetKey, that.name).data(valueKey, that.displayFn(suggestion)).data(datumKey, suggestion);
                         $el.children().each(function() {
                             $(this).css(css.suggestionChild);
                         });
@@ -613,13 +639,21 @@
             update: function update(query) {
                 var that = this;
                 this.query = query;
-                this.source(query, renderIfQueryIsSame);
-                function renderIfQueryIsSame(suggestions) {
-                    query === that.query && that._render(query, suggestions);
+                this.canceled = false;
+                this.source(query, render);
+                function render(suggestions) {
+                    if (!that.canceled && query === that.query) {
+                        that._render(query, suggestions);
+                    }
                 }
             },
+            cancel: function cancel() {
+                this.canceled = true;
+            },
             clear: function clear() {
-                this._render(this.query || "");
+                this.cancel();
+                this.$el.empty();
+                this.trigger("rendered");
             },
             isEmpty: function isEmpty() {
                 return this.$el.is(":empty");
@@ -652,6 +686,7 @@
         }
     }();
     var Dropdown = function() {
+        "use strict";
         function Dropdown(o) {
             var that = this, onSuggestionClick, onSuggestionMouseEnter, onSuggestionMouseLeave;
             o = o || {};
@@ -678,7 +713,7 @@
                 this._removeCursor();
                 this._setCursor($($e.currentTarget), true);
             },
-            _onSuggestionMouseLeave: function onSuggestionMouseLeave($e) {
+            _onSuggestionMouseLeave: function onSuggestionMouseLeave() {
                 this._removeCursor();
             },
             _onRendered: function onRendered() {
@@ -811,19 +846,37 @@
         }
     }();
     var Typeahead = function() {
+        "use strict";
         var attrsKey = "ttAttrs";
         function Typeahead(o) {
-            var $menu, $input, $hint, datasets;
+            var $menu, $input, $hint;
             o = o || {};
             if (!o.input) {
                 $.error("missing input");
             }
+            this.isActivated = false;
             this.autoselect = !!o.autoselect;
             this.minLength = _.isNumber(o.minLength) ? o.minLength : 1;
-            this.$node = buildDomStructure(o.input, o.withHint);
+            this.$node = buildDom(o.input, o.withHint);
             $menu = this.$node.find(".tt-dropdown-menu");
             $input = this.$node.find(".tt-input");
             $hint = this.$node.find(".tt-hint");
+            $input.on("blur.tt", function($e) {
+                var active, isActive, hasActive;
+                active = document.activeElement;
+                isActive = $menu.is(active);
+                hasActive = $menu.has(active).length > 0;
+                if (_.isMsie() && (isActive || hasActive)) {
+                    $e.preventDefault();
+                    $e.stopImmediatePropagation();
+                    _.defer(function() {
+                        $input.focus();
+                    });
+                }
+            });
+            $menu.on("mousedown.tt", function($e) {
+                $e.preventDefault();
+            });
             this.eventBus = o.eventBus || new EventBus({
                 el: $input
             });
@@ -835,15 +888,7 @@
                 input: $input,
                 hint: $hint
             }).onSync("focused", this._onFocused, this).onSync("blurred", this._onBlurred, this).onSync("enterKeyed", this._onEnterKeyed, this).onSync("tabKeyed", this._onTabKeyed, this).onSync("escKeyed", this._onEscKeyed, this).onSync("upKeyed", this._onUpKeyed, this).onSync("downKeyed", this._onDownKeyed, this).onSync("leftKeyed", this._onLeftKeyed, this).onSync("rightKeyed", this._onRightKeyed, this).onSync("queryChanged", this._onQueryChanged, this).onSync("whitespaceChanged", this._onWhitespaceChanged, this);
-            $menu.on("mousedown.tt", function($e) {
-                if (_.isMsie() && _.isMsie() < 9) {
-                    $input[0].onbeforedeactivate = function() {
-                        window.event.returnValue = false;
-                        $input[0].onbeforedeactivate = null;
-                    };
-                }
-                $e.preventDefault();
-            });
+            this._setLanguageDirection();
         }
         _.mixin(Typeahead.prototype, {
             _onSuggestionClicked: function onSuggestionClicked(type, $el) {
@@ -854,7 +899,6 @@
             },
             _onCursorMoved: function onCursorMoved() {
                 var datum = this.dropdown.getDatumForCursor();
-                this.input.clearHint();
                 this.input.setInputValue(datum.value, true);
                 this.eventBus.trigger("cursorchanged", datum.raw, datum.datasetName);
             },
@@ -874,10 +918,12 @@
                 this.eventBus.trigger("closed");
             },
             _onFocused: function onFocused() {
-                this.dropdown.empty();
+                this.isActivated = true;
                 this.dropdown.open();
             },
             _onBlurred: function onBlurred() {
+                this.isActivated = false;
+                this.dropdown.empty();
                 this.dropdown.close();
             },
             _onEnterKeyed: function onEnterKeyed(type, $e) {
@@ -898,7 +944,7 @@
                     this._select(datum);
                     $e.preventDefault();
                 } else {
-                    this._autocomplete();
+                    this._autocomplete(true);
                 }
             },
             _onEscKeyed: function onEscKeyed() {
@@ -907,19 +953,13 @@
             },
             _onUpKeyed: function onUpKeyed() {
                 var query = this.input.getQuery();
-                if (!this.dropdown.isOpen && query.length >= this.minLength) {
-                    this.dropdown.update(query);
-                }
+                this.dropdown.isEmpty && query.length >= this.minLength ? this.dropdown.update(query) : this.dropdown.moveCursorUp();
                 this.dropdown.open();
-                this.dropdown.moveCursorUp();
             },
             _onDownKeyed: function onDownKeyed() {
                 var query = this.input.getQuery();
-                if (!this.dropdown.isOpen && query.length >= this.minLength) {
-                    this.dropdown.update(query);
-                }
+                this.dropdown.isEmpty && query.length >= this.minLength ? this.dropdown.update(query) : this.dropdown.moveCursorDown();
                 this.dropdown.open();
-                this.dropdown.moveCursorDown();
             },
             _onLeftKeyed: function onLeftKeyed() {
                 this.dir === "rtl" && this._autocomplete();
@@ -928,9 +968,8 @@
                 this.dir === "ltr" && this._autocomplete();
             },
             _onQueryChanged: function onQueryChanged(e, query) {
-                this.input.clearHint();
-                this.dropdown.empty();
-                query.length >= this.minLength && this.dropdown.update(query);
+                this.input.clearHintIfInvalid();
+                query.length >= this.minLength ? this.dropdown.update(query) : this.dropdown.empty();
                 this.dropdown.open();
                 this._setLanguageDirection();
             },
@@ -947,29 +986,31 @@
                 }
             },
             _updateHint: function updateHint() {
-                var datum, inputValue, query, escapedQuery, frontMatchRegEx, match;
+                var datum, val, query, escapedQuery, frontMatchRegEx, match;
                 datum = this.dropdown.getDatumForTopSuggestion();
                 if (datum && this.dropdown.isVisible() && !this.input.hasOverflow()) {
-                    inputValue = this.input.getInputValue();
-                    query = Input.normalizeQuery(inputValue);
+                    val = this.input.getInputValue();
+                    query = Input.normalizeQuery(val);
                     escapedQuery = _.escapeRegExChars(query);
-                    frontMatchRegEx = new RegExp("^(?:" + escapedQuery + ")(.*$)", "i");
+                    frontMatchRegEx = new RegExp("^(?:" + escapedQuery + ")(.+$)", "i");
                     match = frontMatchRegEx.exec(datum.value);
-                    this.input.setHintValue(inputValue + (match ? match[1] : ""));
+                    match ? this.input.setHint(val + match[1]) : this.input.clearHint();
+                } else {
+                    this.input.clearHint();
                 }
             },
-            _autocomplete: function autocomplete() {
-                var hint, query, datum;
-                hint = this.input.getHintValue();
+            _autocomplete: function autocomplete(laxCursor) {
+                var hint, query, isCursorAtEnd, datum;
+                hint = this.input.getHint();
                 query = this.input.getQuery();
-                if (hint && query !== hint && this.input.isCursorAtEnd()) {
+                isCursorAtEnd = laxCursor || this.input.isCursorAtEnd();
+                if (hint && query !== hint && isCursorAtEnd) {
                     datum = this.dropdown.getDatumForTopSuggestion();
                     datum && this.input.setInputValue(datum.value);
                     this.eventBus.trigger("autocompleted", datum.raw, datum.datasetName);
                 }
             },
             _select: function select(datum) {
-                this.input.clearHint();
                 this.input.setQuery(datum.value);
                 this.input.setInputValue(datum.value, true);
                 this._setLanguageDirection();
@@ -983,11 +1024,18 @@
             close: function close() {
                 this.dropdown.close();
             },
-            getQuery: function getQuery() {
-                return this.input.getQuery();
+            setVal: function setVal(val) {
+                val = _.toStr(val);
+                if (this.isActivated) {
+                    this.input.setInputValue(val);
+                } else {
+                    this.input.setQuery(val);
+                    this.input.setInputValue(val, true);
+                }
+                this._setLanguageDirection();
             },
-            setQuery: function setQuery(val) {
-                this.input.setInputValue(val);
+            getVal: function getVal() {
+                return this.input.getQuery();
             },
             destroy: function destroy() {
                 this.input.destroy();
@@ -997,15 +1045,16 @@
             }
         });
         return Typeahead;
-        function buildDomStructure(input, withHint) {
+        function buildDom(input, withHint) {
             var $input, $wrapper, $dropdown, $hint;
             $input = $(input);
             $wrapper = $(html.wrapper).css(css.wrapper);
             $dropdown = $(html.dropdown).css(css.dropdown);
             $hint = $input.clone().css(css.hint).css(getBackgroundStyles($input));
-            $hint.val("").removeData().addClass("tt-hint").removeAttr("id name placeholder").prop("disabled", true).attr({
+            $hint.val("").removeData().addClass("tt-hint").removeAttr("id name placeholder required").prop("readonly", true).attr({
                 autocomplete: "off",
-                spellcheck: "false"
+                spellcheck: "false",
+                tabindex: -1
             });
             $input.data(attrsKey, {
                 dir: $input.attr("dir"),
@@ -1044,6 +1093,7 @@
         }
     }();
     (function() {
+        "use strict";
         var old, typeaheadKey, methods;
         old = $.fn.typeahead;
         typeaheadKey = "ttTypeahead";
@@ -1089,17 +1139,17 @@
                 }
             },
             val: function val(newVal) {
-                return !arguments.length ? getQuery(this.first()) : this.each(setQuery);
-                function setQuery() {
+                return !arguments.length ? getVal(this.first()) : this.each(setVal);
+                function setVal() {
                     var $input = $(this), typeahead;
                     if (typeahead = $input.data(typeaheadKey)) {
-                        typeahead.setQuery(newVal);
+                        typeahead.setVal(newVal);
                     }
                 }
-                function getQuery($input) {
+                function getVal($input) {
                     var typeahead, query;
                     if (typeahead = $input.data(typeaheadKey)) {
-                        query = typeahead.getQuery();
+                        query = typeahead.getVal();
                     }
                     return query;
                 }
@@ -1116,8 +1166,12 @@
             }
         };
         $.fn.typeahead = function(method) {
-            if (methods[method]) {
-                return methods[method].apply(this, [].slice.call(arguments, 1));
+            var tts;
+            if (methods[method] && method !== "initialize") {
+                tts = this.filter(function() {
+                    return !!$(this).data(typeaheadKey);
+                });
+                return methods[method].apply(tts, [].slice.call(arguments, 1));
             } else {
                 return methods.initialize.apply(this, arguments);
             }

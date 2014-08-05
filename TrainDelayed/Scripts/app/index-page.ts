@@ -1,18 +1,10 @@
-/// <reference path="common.ts" />
-/// <reference path="webApi.ts" />
-/// <reference path="../typings/knockout/knockout.d.ts" />
-/// <reference path="../typings/bootstrap.datepicker/bootstrap.datepicker.d.ts" />
-/// <reference path="../typings/moment/moment.d.ts" />
-/// <reference path="../typings/bootstrap/bootstrap.d.ts" />
-/// <reference path="../typings/jquery/jquery.d.ts" />
-
 var timeFormat = "/HH-mm";
 var dateFormat = "/YYYY-MM-DD";
 
 var fromLocal = ko.observableArray();
 var toLocal = ko.observableArray();
 
-var webApi: IWebApi;
+var webApi: TrainNotifier.WebApi;
 var locations: Array<IStationLookup> = [];
 
 declare var Bloodhound: any;
@@ -28,7 +20,6 @@ interface IStationLookup {
 
 $(function () {
     webApi = new TrainNotifier.WebApi();
-    TrainNotifier.Common.webApi = webApi;
 
     $('.datepicker').datepicker({
         format: 'dd/mm/yyyy',
@@ -48,9 +39,9 @@ $(function () {
 });
 
 function loadStations() {
-    webApi.getStations().done(function (results: IStationTiploc[]) {
+    webApi.getTiplocs().done(function (results: StationTiploc[]) {
 
-        locations = results.map(function (value) {
+        locations = results.filter(function (value) { return value.StationName != null; }).map(function (value) {
             return {
                 value: value.StationName,
                 crs: value.CRS
@@ -134,7 +125,7 @@ function doSearch() {
 
 function lookupLocalFrom() {
     navigator.geolocation.getCurrentPosition(function (position) {
-        webApi.getStationByLocation(position.coords.latitude, position.coords.longitude).done(function (stations: IStationTiploc[]) {
+        webApi.getStationByLocation(position.coords.latitude, position.coords.longitude).done(function (stations: StationTiploc[]) {
             fromLocal.removeAll();
             if (stations && stations.length > 0) {
                 for (var i in stations) {
@@ -151,7 +142,7 @@ function lookupLocalFrom() {
 
 function lookupLocalTo() {
     navigator.geolocation.getCurrentPosition(function (position) {
-        webApi.getStationByLocation(position.coords.latitude, position.coords.longitude).done(function (stations: IStationTiploc[]) {
+        webApi.getStationByLocation(position.coords.latitude, position.coords.longitude).done(function (stations: StationTiploc[]) {
             toLocal.removeAll();
             if (stations && stations.length > 0) {
                 for (var i in stations) {

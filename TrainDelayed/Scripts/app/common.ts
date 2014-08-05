@@ -2,7 +2,7 @@
 /// <reference path="webApi.ts" />
 /// <reference path="../typings/moment/moment.d.ts" />
 
-interface IServerSettings {
+interface ServerSettings {
     apiUrl: string;
     trainLink: string;
     apiName: string;
@@ -27,8 +27,7 @@ function hide(element) {
 module TrainNotifier {
 
     export class Common {
-        static serverSettings: IServerSettings;
-        static webApi: IWebApi;
+        static serverSettings: ServerSettings;
     };
 
     export class DateTimeFormats {

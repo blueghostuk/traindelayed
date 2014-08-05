@@ -11,7 +11,6 @@ var webApi;
 
 $(function () {
     webApi = new TrainNotifier.WebApi();
-    TrainNotifier.Common.webApi = webApi;
 
     ko.applyBindings(titleModel, $("#parent").get(0));
 
@@ -65,17 +64,13 @@ function loadHashCommand() {
 }
 
 function getCallingBetween(from, to, date) {
+    if (typeof date === "undefined") { date = moment(); }
     preAjax();
     titleModel.results.removeAll();
     $.when(webApi.getStanoxByCrsCode(from), webApi.getStanoxByCrsCode(to)).done(function (from, to) {
-        var fromTiploc = from[0];
-        var toTiploc = to[0];
-        if (!date) {
-            date = moment();
-        }
-        titleModel.from(TrainNotifier.StationTiploc.toDisplayString(fromTiploc));
-        titleModel.to(TrainNotifier.StationTiploc.toDisplayString(toTiploc));
-        getCallingBetweenByStanox(fromTiploc, toTiploc, date);
+        titleModel.from(TrainNotifier.TiplocHelper.toDisplayString(from));
+        titleModel.to(TrainNotifier.TiplocHelper.toDisplayString(to));
+        getCallingBetweenByStanox(from, to, date);
     }).fail(function () {
         hide($(".progress"));
         show($("#error-row"));
@@ -92,22 +87,10 @@ function getCallingBetweenByStanox(from, to, date) {
 
     titleModel.dateString(startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
 
-    var query;
-    var startDateQuery = startDate.format(TrainNotifier.DateTimeFormats.dateTimeApiFormat);
-    var endDateQuery = endDate.format(TrainNotifier.DateTimeFormats.dateTimeApiFormat);
-    if (from.CRS && from.CRS.length == 3 && to.CRS && to.CRS.length == 3) {
-        query = webApi.getTrainMovementsBetweenStations(from.CRS, to.CRS, startDateQuery, endDateQuery);
-    } else {
-        query = webApi.getTrainMovementsBetweenLocations(from.Stanox, to.Stanox, startDateQuery, endDateQuery);
-    }
-    query.done(function (data) {
-        if (data && data.Movements.length > 0) {
-            var filteredData = data.Movements.filter(function (movement) {
-                return movement.Schedule.AtocCode && movement.Schedule.AtocCode.Code.length > 0 && movement.Schedule.AtocCode.Code != TrainDelayed.TrainOperatingCompany.Freight;
-            });
-
-            var viewModels = filteredData.map(function (movement) {
-                return new TrainDelayed.Search.Train(from, to, movement, data.Tiplocs);
+    $.when(webApi.getTiplocs(), webApi.getDelays(from.CRS, to.CRS, startDate, endDate)).done(function (stations, delays) {
+        if (delays && delays.length > 0) {
+            var viewModels = delays.map(function (delay) {
+                return new TrainDelayed.Search.Train(from, to, delay, stations);
             });
             for (var i = 0; i < viewModels.length; i++) {
                 if (viewModels[i].headcode) {

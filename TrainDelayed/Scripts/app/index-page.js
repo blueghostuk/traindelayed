@@ -9,7 +9,6 @@ var locations = [];
 
 $(function () {
     webApi = new TrainNotifier.WebApi();
-    TrainNotifier.Common.webApi = webApi;
 
     $('.datepicker').datepicker({
         format: 'dd/mm/yyyy',
@@ -29,8 +28,10 @@ $(function () {
 });
 
 function loadStations() {
-    webApi.getStations().done(function (results) {
-        locations = results.map(function (value) {
+    webApi.getTiplocs().done(function (results) {
+        locations = results.filter(function (value) {
+            return value.StationName != null;
+        }).map(function (value) {
             return {
                 value: value.StationName,
                 crs: value.CRS
