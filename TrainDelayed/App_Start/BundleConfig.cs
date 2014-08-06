@@ -7,18 +7,12 @@ namespace TrainDelayed
         // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+            bundles.Add(new ScriptBundle("~/bundles/libs").Include(
                 "~/Scripts/jquery-{version}.js",
-                "~/Scripts/jquery.ba-hashchange.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
-                "~/Scripts/knockout-{version}.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                "~/Scripts/jquery.ba-hashchange.js",
+                "~/Scripts/knockout-{version}.js",
                 "~/Scripts/bootstrap*",
-                "~/Scripts/typeahead.bundle*"));
-
-            bundles.Add(new ScriptBundle("~/bundles/moment").Include(
+                "~/Scripts/typeahead.bundle*",
                 "~/Scripts/moment.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/index").Include(
