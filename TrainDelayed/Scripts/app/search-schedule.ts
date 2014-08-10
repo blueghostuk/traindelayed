@@ -1,8 +1,4 @@
-var titleFormat = "ddd Do MMM YYYY";
-var dateFormat = "ddd DD MMM YY";
 var dateFormatQuery = "YYYY-MM-DD";
-var dateApiQuery = "YYYY-MM-DDTHH:mm";
-var timeFormat = "HH:mm:ss";
 var shortTimeFormat = "HH:mm";
 
 var titleModel = new TrainDelayed.Search.TitleViewModel();
@@ -13,6 +9,7 @@ $(function () {
     webApi = new TrainNotifier.WebApi();
 
     ko.applyBindings(titleModel, $("#parent").get(0));
+    ko.applyBindings(titleModel, $("#results").get(0));
 
     loadHashCommand();
 

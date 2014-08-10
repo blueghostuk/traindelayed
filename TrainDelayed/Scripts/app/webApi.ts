@@ -115,12 +115,22 @@
             return null;
         }
 
-        public static toDisplayString(tiploc: StationTiploc, lowercase: boolean = true) {
+        public static toDisplayString(tiploc: StationTiploc, lowercase: boolean = true, shorten: boolean = false) {
             var value = (tiploc.StationName && tiploc.StationName.length > 0 ? tiploc.StationName :
                 tiploc.Description && tiploc.Description.length > 0 ? tiploc.Description : tiploc.Tiploc);
-            if (lowercase)
+            var shortValue = shorten ? TiplocHelper.toShortDisplayString(tiploc.CRS) : null;
+            if (!shortValue && lowercase)
                 return value.toLowerCase();
-            return value;
+            return shortValue!= null ? shortValue : value;
+        }
+
+        private static toShortDisplayString(crsCode: string) {
+            if (!crsCode)
+                return null;
+            var shortCode = shortStations[crsCode];
+            if (shortCode)
+                return shortCode;
+            return null;
         }
     }
 }

@@ -27,16 +27,16 @@
 }
 <div class="row">
     <div class="col-md-12" id="parent">
-        <div class="row alert alert-info hide" id="no-results-row">
+        <div class="alert alert-info hide" id="no-results-row">
             <strong>No Results Found</strong>
         </div>
-        <div class="row alert alert-error hide" id="error-row">
+        <div class="alert alert-error hide" id="error-row">
             <strong>Error fetching data. Please Refresh to try again</strong>
         </div>
         <div class="progress progress-striped active">
             <div class="progress-bar" role="progressbar" style="width: 100%"></div>
         </div>
-        <div class="row title-details" id="title" data-bind="visible: from">
+        <div class="title-details" id="title" style="display:none;" data-bind="visible: from">
             <span data-bind="text: from" class="stationName xl"></span><span data-bind="visible: to">&nbsp;to&nbsp;</span><span data-bind="text: to" class="stationName xl"></span>
             <br />
             <span data-bind="text: dateString"></span>
@@ -45,133 +45,147 @@
             </span>
             <hr style="margin: 5px 0px;" />
         </div>
-        <div class="row">
-            <ul class="pager">
-                <li class="previous"><a href="#" id="neg-2hrs">&lt; Earlier</a></li>
-                <li class="next"><a href="#" id="plus-2hrs">Later &gt;</a></li>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <ul class="pager">
+            <li class="previous"><a href="#" id="neg-2hrs">&lt; Earlier</a></li>
+            <li class="next"><a href="#" id="plus-2hrs">Later &gt;</a></li>
+        </ul>
+    </div>
+</div>
+<div class="row" style="display:none;" id="results" data-bind="visible: results().length > 0">
+    <div class="col-md-12  hidden-xs">
+        <table class="table table-hover table-bordered table-header-colour">
+            <thead>
+                <tr>
+                    <!-- 1,2,3,4 -->
+                    <th colspan="4"></th>
+                    <!-- 5,6,7 -->
+                    <th colspan="3" title="This is your 'from' station">Calling At <span data-bind="text: from" class="stationName"></span></th>
+                    <!-- 8,9,10,11 -->
+                    <th colspan="4" title="This is your 'to' station">Calling At <span data-bind="text: to" class="stationName"></span></th>
+                    <!-- 12 -->
+                    <th></th>
+                </tr>
+                <tr>
+                    <!-- 1 -->
+                    <th title="ID of this train">ID</th>
+                    <!-- 2 -->
+                    <th title="Train Operating Company">TOC</th>
+                    <!-- 3 -->
+                    <th title="Where the train started">From</th>
+                    <!-- 4 -->
+                    <th title="Where the train was going to">To</th>
+                    <!-- 5 -->
+                    <th title="Departure Platform">Pl.</th>
+                    <!-- 6 -->
+                    <th title="This is the published departure time">Exp. Dept.</th>
+                    <!-- 7 -->
+                    <th title="This is the actual departure time (if known)">Act. Dept.</th>
+                    <!-- 8 -->
+                    <th title="Arrival Platform">Pl.</th>
+                    <!-- 9 -->
+                    <th title="This is the published arrival time">Exp. Arr.</th>
+                    <!-- 10 -->
+                    <th title="This is the actual arrival time (if known)">Act. Arr.</th>
+                    <!-- 11 -->
+                    <th title="How many minutes early/late was the train from the published schedule">Delay</th>
+                    <!-- 12 -->
+                    <th title="Link to TOC Website (maybe direct to claim form PDF/Web Form)">Web Link</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: results">
+                <tr data-bind="css: { warning: changeOfOrigin, danger: cancelled }, attr: { Title: title }">
+                    <!-- 1 -->
+                    <td><a data-bind="text: headcode, attr: { href: url }" target="_blank" title="View the full details of this train"></a></td>
+                    <!-- 2 -->
+                    <td data-bind="text: tocCode, attr: { title : tocName }"></td>
+                    <!-- 3 -->
+                    <td>
+                        <!-- ko if: changeOfOrigin -->
+                        <span data-bind="text: originStation" class="stationName" style="text-decoration: line-through;"></span>
+                        <br />
+                        Starts from <span data-bind="text: changeOfOriginStation" class="stationName"></span>
+                        <!-- /ko -->
+                        <!-- ko if: !changeOfOrigin -->
+                        <span data-bind="text: originStation" class="stationName"></span>
+                        <!-- /ko -->
+                    </td>
+                    <!-- 4 -->
+                    <td data-bind="text: destStation" class="stationName"></td>
+                    <!-- 5 -->
+                    <td data-bind="text: fromPlatform"></td>
+                    <!-- 6 -->
+                    <td data-bind="text: expectedDeparture"></td>
+                    <!-- 7 -->
+                    <td data-bind="text: actualDeparture"></td>
+                    <!-- 8 -->
+                    <td data-bind="text: toPlatform"></td>
+                    <!-- 9 -->
+                    <td data-bind="text: expectedArrival"></td>
+                    <!-- 10 -->
+                    <td data-bind="text: actualArrival"></td>
+                    <!-- 11 -->
+                    <td data-bind="text: delayText, css: delayCss"></td>
+                    <!-- 12 -->
+                    <td><a data-bind="text: tocCode, attr: { href: tocUrl }, visible: tocUrl" target="_blank" title="Go to Train Operating Company Website"></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-xs-12 visible-xs">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Due</th>
+                    <th>Delay</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: results">
+                <tr data-bind="css: { warning: changeOfOrigin, danger: cancelled }, attr: { Title: title }">
+                    <td>
+                        <a data-bind="text: expectedDeparture, attr: { href: url }" target="_blank" title="View the full details of this train"></a>
+                    </td>
+                    <td>
+                        <!-- ko if: changeOfOrigin -->
+                        <a data-bind="attr: { href: url }" target="_blank" title="View the full details of this train">
+                            <span data-bind="text: originStation" class="stationName" style="text-decoration: line-through;"></span>
+                            <br />
+                            Starts from <span data-bind="text: changeOfOriginStation" class="stationName"></span>
+                        </a>
+                        <!-- /ko -->
+                        <!-- ko if: !changeOfOrigin -->
+                        <a data-bind="text: originStationShort, attr: { href: url }" target="_blank" title="View the full details of this train" class="stationName"></a>
+                        <!-- /ko -->
+                    </td>
+                    <td>
+                        <a data-bind="text: destStationShort, attr: { href: url }" target="_blank" title="View the full details of this train" class="stationName"></a>
+                    </td>
+                    <td>
+                        <a data-bind="text: expectedArrival, attr: { href: url }" target="_blank" title="View the full details of this train"></a>
+                    </td>
+                    <td data-bind="css: delayCss">
+                        <a data-bind="text: delayText, attr: { href: url }" target="_blank" title="View the full details of this train"></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-info" role="alert">
+            <strong>Delay Key</strong>
+            <ul>
+                <li><strong>L</strong> - Minutes late</li>
+                <li><strong>E</strong> - Minutes early</li>
+                <li><strong>RT</strong> - on time</li>
             </ul>
-            <div style="display:none;" data-bind="visible: results().length > 0">
-                <table class="table table-hover table-bordered table-header-colour hidden-xs">
-                    <thead>
-                        <tr>
-                            <!-- 1,2,3,4 -->
-                            <th colspan="4"></th>
-                            <!-- 5,6,7 -->
-                            <th colspan="3" title="This is your 'from' station">Calling At <span data-bind="text: from" class="stationName"></span></th>
-                            <!-- 8,9,10,11 -->
-                            <th colspan="4" title="This is your 'to' station">Calling At <span data-bind="text: to" class="stationName"></span></th>
-                            <!-- 12 -->
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <!-- 1 -->
-                            <th title="ID of this train">ID</th>
-                            <!-- 2 -->
-                            <th title="Train Operating Company">TOC</th>
-                            <!-- 3 -->
-                            <th title="Where the train started">From</th>
-                            <!-- 4 -->
-                            <th title="Where the train was going to">To</th>
-                            <!-- 5 -->
-                            <th title="Departure Platform">Pfm.</th>
-                            <!-- 6 -->
-                            <th class="hidden-xs hidden-sm visible-md visible-lg" title="This is the published departure time">Expected Departure</th>
-                            <th class="visible-xs visible-sm hidden-md hidden-lg" title="This is the published departure time">Exp. Dept.</th>
-                            <!-- 7 -->
-                            <th class="hidden-xs hidden-sm visible-md visible-lg" title="This is the actual departure time (if known)">Actual Departure</th>
-                            <th class="visible-xs visible-sm hidden-md hidden-lg" title="This is the actual departure time (if known)">Act. Dept.</th>
-                            <!-- 8 -->
-                            <th title="Arrival Platform">Pfm.</th>
-                            <!-- 9 -->
-                            <th class="hidden-xs hidden-sm visible-md visible-lg" title="This is the published arrival time">Expected Arrival</th>
-                            <th class="visible-xs visible-sm hidden-md hidden-lg" title="This is the published arrival time">Exp. Arr.</th>
-                            <!-- 10 -->
-                            <th class="hidden-xs hidden-sm visible-md visible-lg" title="This is the actual arrival time (if known)">Actual Arrival</th>
-                            <th class="visible-xs visible-sm hidden-md hidden-lg" title="This is the actual arrival time (if known)">Act. Arr.</th>
-                            <!-- 11 -->
-                            <th title="How many minutes early/late was the train from the published schedule">Delay</th>
-                            <!-- 12 -->
-                            <th title="Link to TOC Website (maybe direct to claim form PDF/Web Form)">Web Link</th>
-                        </tr>
-                    </thead>
-                    <tbody data-bind="foreach: results">
-                        <tr data-bind="css: { warning: changeOfOrigin, danger: cancelled }, attr: { Title: title }">
-                            <!-- 1 -->
-                            <td><a data-bind="text: headcode, attr: { href: url }" target="_blank" title="View the full details of this train"></a></td>
-                            <!-- 2 -->
-                            <td data-bind="text: tocCode, attr: { title : tocName }"></td>
-                            <!-- 3 -->
-                            <td>
-                                <!-- ko if: changeOfOrigin -->
-                                <span data-bind="text: originStation" class="stationName" style="text-decoration: line-through;"></span>
-                                <br />
-                                Starts from <span data-bind="text: changeOfOriginStation" class="stationName"></span>
-                                <!-- /ko -->
-                                <!-- ko if: !changeOfOrigin -->
-                                <span data-bind="text: originStation" class="stationName"></span>
-                                <!-- /ko -->
-                            </td>
-                            <!-- 4 -->
-                            <td data-bind="text: destStation" class="stationName"></td>
-                            <!-- 5 -->
-                            <td data-bind="text: fromPlatform"></td>
-                            <!-- 6 -->
-                            <td data-bind="text: expectedDeparture"></td>
-                            <!-- 7 -->
-                            <td data-bind="text: actualDeparture"></td>
-                            <!-- 8 -->
-                            <td data-bind="text: toPlatform"></td>
-                            <!-- 9 -->
-                            <td data-bind="text: expectedArrival"></td>
-                            <!-- 10 -->
-                            <td data-bind="text: actualArrival"></td>
-                            <!-- 11 -->
-                            <td data-bind="text: delayText, css: delayCss"></td>
-                            <!-- 12 -->
-                            <td><a data-bind="text: tocName, attr: { href: tocUrl }, visible: tocUrl" target="_blank" title="Go to Train Operating Company Website"></a></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table visible-xs" style="width:100%;">
-                    <thead>
-                        <tr>
-                            <th>Time</th>
-                            <th>From</th>
-                            <th>To</th>
-                            <th>Due</th>
-                            <th>Delay</th>
-                        </tr>
-                    </thead>
-                    <tbody data-bind="foreach: results">
-                        <tr data-bind="css: { warning: changeOfOrigin, danger: cancelled }, attr: { Title: title }">
-                            <td>
-                                <a data-bind="text: expectedDeparture, attr: { href: url }" target="_blank" title="View the full details of this train"></a>
-                            </td>
-                            <td>
-                                <!-- ko if: changeOfOrigin -->
-                                <a data-bind="attr: { href: url }" target="_blank" title="View the full details of this train">
-                                    <span data-bind="text: originStation" class="stationName" style="text-decoration: line-through;"></span>
-                                    <br />
-                                    Starts from <span data-bind="text: changeOfOriginStation" class="stationName"></span>
-                                </a>
-                                <!-- /ko -->
-                                <!-- ko if: !changeOfOrigin -->
-                                <a data-bind="text: originStation, attr: { href: url }" target="_blank" title="View the full details of this train" class="stationName"></a>
-                                <!-- /ko -->
-                            </td>
-                            <td>
-                                <a data-bind="text: destStation, attr: { href: url }" target="_blank" title="View the full details of this train" class="stationName"></a>
-                            </td>
-                            <td>
-                                <a data-bind="text: expectedArrival, attr: { href: url }" target="_blank" title="View the full details of this train"></a>
-                            </td>
-                            <td data-bind="css: delayCss">
-                                <a data-bind="text: delayText, attr: { href: url }" target="_blank" title="View the full details of this train"></a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
     </div>
 </div>

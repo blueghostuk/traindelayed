@@ -24,9 +24,11 @@ var TrainDelayed;
 
                 var originTiploc = delay.Origin;
                 this.originStation = TrainNotifier.TiplocHelper.toDisplayString(originTiploc);
+                this.originStationShort = TrainNotifier.TiplocHelper.toDisplayString(originTiploc, true, true);
 
                 var destTiploc = delay.Dest;
                 this.destStation = TrainNotifier.TiplocHelper.toDisplayString(destTiploc);
+                this.destStationShort = TrainNotifier.TiplocHelper.toDisplayString(destTiploc, true, true);
 
                 this.fromStation = TrainNotifier.TiplocHelper.toDisplayString(fromTiploc);
 
@@ -45,7 +47,7 @@ var TrainDelayed;
                 if (delay.To.Actual) {
                     this.actualArrival = TrainNotifier.DateTimeFormats.formatDateTimeString(delay.To.Actual, TrainNotifier.DateTimeFormats.timeFormat);
                     this.delay = delay.DelayTime.toString();
-                    this.delayText = delay.DelayTime > 0 ? delay.DelayTime + " mins late" : delay.DelayTime == 0 ? "on time" : (delay.DelayTime * -1) + " mins early";
+                    this.delayText = delay.DelayTime > 0 ? delay.DelayTime + "L" : delay.DelayTime == 0 ? "RT" : (delay.DelayTime * -1) + "E";
                     this.delayCss = delay.DelayTime >= 30 ? "danger" : delay.DelayTime > 0 ? "warning" : "success";
                     this.toPlatform = delay.To.Platform || this.toPlatform;
                 } else {

@@ -1,4 +1,3 @@
-
 var TrainDelayed;
 (function (TrainDelayed) {
     var TrainOperatingCompany = (function () {

@@ -110,12 +110,23 @@
             return null;
         };
 
-        TiplocHelper.toDisplayString = function (tiploc, lowercase) {
+        TiplocHelper.toDisplayString = function (tiploc, lowercase, shorten) {
             if (typeof lowercase === "undefined") { lowercase = true; }
+            if (typeof shorten === "undefined") { shorten = false; }
             var value = (tiploc.StationName && tiploc.StationName.length > 0 ? tiploc.StationName : tiploc.Description && tiploc.Description.length > 0 ? tiploc.Description : tiploc.Tiploc);
-            if (lowercase)
+            var shortValue = shorten ? TiplocHelper.toShortDisplayString(tiploc.CRS) : null;
+            if (!shortValue && lowercase)
                 return value.toLowerCase();
-            return value;
+            return shortValue != null ? shortValue : value;
+        };
+
+        TiplocHelper.toShortDisplayString = function (crsCode) {
+            if (!crsCode)
+                return null;
+            var shortCode = shortStations[crsCode];
+            if (shortCode)
+                return shortCode;
+            return null;
         };
         TiplocHelper.tiplocByStanoxCache = {};
         TiplocHelper.tiplocByCrsCodeCache = {};

@@ -1,21 +1,10 @@
-// Interface
-interface ITrainOperatingCompany {
-    code: string;
-    name: string;
-    webLink: string;
-}
-
 // Module
 module TrainDelayed {
-
     // Class
-    export class TrainOperatingCompany implements ITrainOperatingCompany {
-
+    export class TrainOperatingCompany {
         static Freight: string = "ZZ";
-
         // Constructor
         constructor(public code: string, public name: string, public webLink?:string) { }
-
     }
 }
 
