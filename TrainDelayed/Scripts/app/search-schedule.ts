@@ -30,8 +30,8 @@ function loadHashCommand() {
 
         var elements = cmdString.split('/');
         if (elements.length >= 4) {
-            var from = elements[1];
-            var to = elements[3];
+            var from = elements[1].toUpperCase();
+            var to = elements[3].toUpperCase();
             var date = null;
             if (elements.length >= 5) {
                 date = moment(elements[4], dateFormatQuery);
