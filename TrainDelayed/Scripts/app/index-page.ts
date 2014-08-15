@@ -41,7 +41,7 @@ $(function () {
 function loadStations() {
     webApi.getTiplocs().done(function (results: StationTiploc[]) {
 
-        locations = results.filter(function (value) { return value.StationName != null; }).map(function (value) {
+        locations = results.filter(function (value) { return value.StationName && value.CRS && value.CRS.length > 0; }).map(function (value) {
             return {
                 value: value.StationName,
                 crs: value.CRS
@@ -75,7 +75,8 @@ function loadStations() {
 
 function findStation(value: string): IStationLookup {
     var matches = locations.filter(function (item) {
-        return item.value.toLowerCase() == value.toLowerCase();
+        return item.value.toLowerCase() == value.toLowerCase() &&
+            item.crs && item.crs.length > 0;
     });
     return matches.length > 0 ? matches[0] : null;
 }
