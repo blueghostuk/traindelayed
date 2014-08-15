@@ -21,14 +21,6 @@ interface IStationLookup {
 $(function () {
     webApi = new TrainNotifier.WebApi();
 
-    $('.datepicker').datepicker({
-        format: 'dd/mm/yyyy',
-        startDate: moment().subtract({ days: 14 }).toDate(),
-        weekStart: 1,
-        todayHighlight: true
-    }).on("changeDate", function () {
-            $(this).datepicker('hide');
-        });
     $("form").submit(function () {
         return doSearch();
     });
@@ -102,7 +94,7 @@ function doSearch() {
         var date = "";
         var dateVal = $("#date-picker").val();
         if (dateVal && dateVal.length > 0) {
-            dateVal = moment(dateVal, "DD-MM-YYYY");
+            dateVal = moment(dateVal, "YYYY-MM-DD");
             if (dateVal.isValid()) {
                 date = dateVal.format(dateFormat);
             }

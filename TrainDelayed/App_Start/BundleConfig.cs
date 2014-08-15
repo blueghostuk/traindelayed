@@ -32,7 +32,6 @@ namespace TrainDelayed
                 // minification seems to fuck this up so include manually in _Layout.cshtml
                 //"~/Content/bootstrap/cerulean*",
                 "~/Content/typeahead-fix.css",
-                "~/Content/bootstrap-datepicker.css",
                 "~/Content/style.css"));
         }
     }
