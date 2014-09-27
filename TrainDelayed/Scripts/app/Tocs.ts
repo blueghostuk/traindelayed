@@ -16,6 +16,7 @@ tocs["EM"] = new TrainDelayed.TrainOperatingCompany("EM", "East Midlands Trains"
 tocs["ES"] = new TrainDelayed.TrainOperatingCompany("ES", "Eurostar (UK)", "http://www.eurostar.com/uk-en/travel-information/service-information/disruption-compensation");
 tocs["FC"] = new TrainDelayed.TrainOperatingCompany("FC", "First Capital Connect", "http://www.firstcapitalconnect.co.uk/customer-care/delay-repay/");
 tocs["GC"] = new TrainDelayed.TrainOperatingCompany("GC", "Grand Central", "http://www.grandcentralrail.com/customer-service/getting-a-refund/");
+tocs["GW"] = new TrainDelayed.TrainOperatingCompany("GN", "Great Northern", "http://www.thameslinkrailway.com/contact-us/delay-repay/claim-form/");
 tocs["GR"] = new TrainDelayed.TrainOperatingCompany("GR", "National Express East Coast", "http://www.eastcoast.co.uk/about-us/passengers-charter1/delay-repay/");
 tocs["GW"] = new TrainDelayed.TrainOperatingCompany("GW", "First Great Western", "http://www.firstgreatwestern.co.uk/~/media/PDF/About%20us/Compensation20for20Delays2020April20200620313451001.pdf");
 tocs["GX"] = new TrainDelayed.TrainOperatingCompany("GX", "Gatwick Express", "http://www.gatwickexpress.com/en/your-journey/delay-repay/");
@@ -36,6 +37,7 @@ tocs["SE"] = new TrainDelayed.TrainOperatingCompany("SE", "Southeastern", "http:
 tocs["SN"] = new TrainDelayed.TrainOperatingCompany("SN", "Southern", "http://www.southernrailway.com/your-journey/delay-repay/");
 tocs["SR"] = new TrainDelayed.TrainOperatingCompany("SR", "ScotRail", "http://www.scotrail.co.uk/aboutus/passenger-charter/view-chapter6b57.html");
 tocs["SW"] = new TrainDelayed.TrainOperatingCompany("SW", "South West Trains", "http://www.southwesttrains.co.uk/compensation.aspx?accept=perm");
+tocs["GW"] = new TrainDelayed.TrainOperatingCompany("TL", "Thameslink", "http://www.thameslinkrailway.com/contact-us/delay-repay/claim-form/");
 tocs["TP"] = new TrainDelayed.TrainOperatingCompany("TP", "First TransPennine Express", "http://www.tpexpress.co.uk/contact-us/");
 tocs["TW"] = new TrainDelayed.TrainOperatingCompany("TW", "Tyne & Wear Metro");
 tocs["VT"] = new TrainDelayed.TrainOperatingCompany("VT", "Virgin Trains", "http://www.virgintrains.co.uk/assets/pdf/feedback/vt-customer-comment.pdf");
