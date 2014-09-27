@@ -95,7 +95,7 @@ function getCallingBetweenByStanox(from: StationTiploc, to: StationTiploc, date:
                 }).concat(cancellations.map(function (cancellation) {
                         return new TrainDelayed.Search.Train(from, to, cancellation, stations);
                     })).sort(function (a, b) {
-                        return a.expectedArrival > b.expectedArrival ? 1 : -1;
+                        return moment(a.expectedDeparture, TrainNotifier.DateTimeFormats.timeFormat).isAfter(moment(b.expectedDeparture, TrainNotifier.DateTimeFormats.timeFormat)) ? 1 : -1;
                     });
                 for (var i = 0; i < viewModels.length; i++) {
                     if (viewModels[i].headcode) {
