@@ -65,6 +65,24 @@
                     return $.Deferred<Delay[]>().resolve(delays).promise();
                 });
         }
+
+        getCancellations(fromCrs: string, toCrs: string, startDate: Moment, endDate: Moment): JQueryPromise<Cancellation[]> {
+            var self = this;
+            return $.when(
+                this.getTiplocs(),
+                $.getJSON(this.getBaseUrl() + "/cancellations/" + fromCrs + "/" + toCrs,
+                    $.extend({}, this.getArgs(), {
+                        startDate: startDate.format(DateTimeFormats.dateTimeApiFormat),
+                        endDate: endDate.format(DateTimeFormats.dateTimeApiFormat)
+                    }))).then(function (stations: Array<StationTiploc>, cancellationsResult) {
+                    var cancellations: Array<Cancellation> = cancellationsResult[0];
+                    for (var i = 0; i < cancellations.length; i++) {
+                        cancellations[i].Origin = TiplocHelper.findStationTiplocByStanox(cancellations[i].OriginStanox, stations);
+                        cancellations[i].Dest = TiplocHelper.findStationTiplocByStanox(cancellations[i].DestStanox, stations);
+                    }
+                    return $.Deferred<Cancellation[]>().resolve(cancellations).promise();
+                });
+        }
     }
 
     export class TiplocHelper {
@@ -121,7 +139,7 @@
             var shortValue = shorten ? TiplocHelper.toShortDisplayString(tiploc.CRS) : null;
             if (!shortValue && lowercase)
                 return value.toLowerCase();
-            return shortValue!= null ? shortValue : value;
+            return shortValue != null ? shortValue : value;
         }
 
         private static toShortDisplayString(crsCode: string) {
@@ -139,23 +157,32 @@ interface AtocCode {
     Name: string;
 }
 
-interface Delay {
-    DelayTime: number;
-    DestStanox: string;
-    Dest: StationTiploc;
-    From: DelayStop;
+interface TrainResult {
     Headcode: string;
-    Operator: AtocCode;
+    Uid: string;
     OriginStanox: string;
     Origin: StationTiploc;
+    DestStanox: string;
+    Dest: StationTiploc;
+    Operator: AtocCode;
+}
+
+interface Delay extends TrainResult {
+    DelayTime: number;
+    From: DelayStop;
     To: DelayStop;
-    Uid: string;
 }
 
 interface DelayStop {
     Actual: string;
     Expected: string;
     Platform: string;
+}
+
+interface Cancellation extends TrainResult {
+    FromExpected: string;
+    ToExpected: string;
+    OriginDepartTimestamp: string;
 }
 
 interface Tiploc {

@@ -13,3 +13,6 @@ shortStations["SOU"] = "Ston C";
 shortStations["EUS"] = "Ldn Eus";
 shortStations["PAD"] = "Ldn Pad";
 shortStations["CDF"] = "Cardiff C";
+shortStations["LTV"] = "Lichfield TV";
+shortStations["LIF"] = "Lichfield TV";
+shortStations["LIC"] = "Lichfield C";

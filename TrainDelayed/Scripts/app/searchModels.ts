@@ -40,51 +40,26 @@ module TrainDelayed.Search {
         public cancelled: boolean = false;
         public title: string = null;
 
-        constructor(fromTiploc: StationTiploc, toTiploc: StationTiploc, delay: Delay, tiplocs: StationTiploc[]) {
+        constructor(fromTiploc: StationTiploc, toTiploc: StationTiploc, train: any, tiplocs: StationTiploc[]) {
 
-            this.headcode = delay.Headcode;
-            this.url = TrainNotifier.Common.serverSettings.trainLink + "/" + delay.Uid + "/" + moment(delay.From.Expected).format(TrainNotifier.DateTimeFormats.dateUrlFormat);
+            var delayOrCancellation: TrainResult = train;
 
-            var originTiploc = delay.Origin;
+            this.headcode = delayOrCancellation.Headcode;
+
+            var originTiploc = delayOrCancellation.Origin;
             this.originStation = TrainNotifier.TiplocHelper.toDisplayString(originTiploc);
             this.originStationShort = TrainNotifier.TiplocHelper.toDisplayString(originTiploc, true, true);
 
-            var destTiploc = delay.Dest;
+            var destTiploc = delayOrCancellation.Dest;
             this.destStation = TrainNotifier.TiplocHelper.toDisplayString(destTiploc);
             this.destStationShort = TrainNotifier.TiplocHelper.toDisplayString(destTiploc, true, true);
 
             this.fromStation = TrainNotifier.TiplocHelper.toDisplayString(fromTiploc);
-
-            this.expectedDeparture = TrainNotifier.DateTimeFormats.formatDateTimeString(delay.From.Expected, TrainNotifier.DateTimeFormats.timeFormat);
-            this.fromPlatform = delay.From.Platform;
-            if (delay.From.Actual) {
-                this.actualDeparture = TrainNotifier.DateTimeFormats.formatDateTimeString(delay.From.Actual, TrainNotifier.DateTimeFormats.timeFormat);
-                this.fromPlatform = delay.From.Platform || this.fromPlatform;
-            } else {
-                this.actualDeparture = "Unknown";
-            }
-
             this.toStation = TrainNotifier.TiplocHelper.toDisplayString(toTiploc);
-            this.expectedArrival = TrainNotifier.DateTimeFormats.formatDateTimeString(delay.To.Expected, TrainNotifier.DateTimeFormats.timeFormat);
-            this.toPlatform = delay.To.Platform;
-            if (delay.To.Actual) {
-                this.actualArrival = TrainNotifier.DateTimeFormats.formatDateTimeString(delay.To.Actual, TrainNotifier.DateTimeFormats.timeFormat);
-                this.delay = delay.DelayTime.toString();
-                this.delayText = delay.DelayTime > 0 ? delay.DelayTime + "L" : delay.DelayTime == 0 ? "RT" : (delay.DelayTime * -1) + "E";
-                this.delayCss = delay.DelayTime >= 30 ? "danger" : delay.DelayTime > 0 ? "warning" : "success";
-                this.toPlatform = delay.To.Platform || this.toPlatform;
-            } else {
-                this.actualArrival = "Unknown";
-                this.delay = "Unknown";
-                this.delayText = "not known";
-                this.delayText = "not known";
-                this.delayCss = "";
-            }
 
-            //var tocSet = false;
             var toc: TrainDelayed.TrainOperatingCompany;
-            if (delay.Operator) {
-                toc = tocs[delay.Operator.Code];
+            if (delayOrCancellation.Operator) {
+                toc = tocs[train.Operator.Code];
             }
             if (toc) {
                 this.tocCode = toc.code;
@@ -96,38 +71,47 @@ module TrainDelayed.Search {
                 this.tocUrl = null;
             }
 
-            //if (train && train.Cancellations.length > 0) {
-            //    var can = train.Cancellations[0];
-            //    var canTxt = "Cancelled " + can.Type;
-            //    if (can.CancelledAtStanoxCode) {
-            //        var canTiploc = TrainNotifier.StationTiploc.findStationTiplocByStanox(can.CancelledAtStanoxCode, tiplocs);
-            //        this.cancelledAtStation = canTiploc.Description.toLowerCase();
-            //        canTxt += " @ " + canTiploc.Description.toLowerCase();
-            //    } else {
-            //        this.cancelledAtStation = null;
-            //    }
-            //    canTxt += " @ " + moment(can.CancelledTimestamp).format(TrainNotifier.DateTimeFormats.timeFormat)
-            //        + " - Reason: ";
-            //    if (can.Description) {
-            //        canTxt += can.Description;
-            //    }
-            //    canTxt += " (" + can.ReasonCode + ")";
-            //    this.title = canTxt;
-            //    this.cancelled = true;
-            //} else {
-            //    this.cancelled = false;
-            //    this.cancelledAtStation = null;
-            //}
+            if (train.From) {
+                var delay: Delay = train;
+                this.url = TrainNotifier.Common.serverSettings.trainLink + "/" + delay.Uid + "/" + moment(delay.From.Expected).format(TrainNotifier.DateTimeFormats.dateUrlFormat);
+                this.expectedDeparture = TrainNotifier.DateTimeFormats.formatDateTimeString(delay.From.Expected, TrainNotifier.DateTimeFormats.timeFormat);
+                this.fromPlatform = delay.From.Platform;
+                if (delay.From.Actual) {
+                    this.actualDeparture = TrainNotifier.DateTimeFormats.formatDateTimeString(delay.From.Actual, TrainNotifier.DateTimeFormats.timeFormat);
+                    this.fromPlatform = delay.From.Platform || this.fromPlatform;
+                } else {
+                    this.actualDeparture = "Unknown";
+                }
+                this.expectedArrival = TrainNotifier.DateTimeFormats.formatDateTimeString(delay.To.Expected, TrainNotifier.DateTimeFormats.timeFormat);
+                this.toPlatform = delay.To.Platform;
 
-            //if (train && train.ChangeOfOrigins.length > 0) {
-            //    var coo = train.ChangeOfOrigins[0];
-            //    var cooTiploc = TrainNotifier.StationTiploc.findStationTiplocByStanox(coo.NewOriginStanoxCode, tiplocs);
-            //    this.changeOfOriginStation = cooTiploc.Description.toLowerCase();
-            //    this.changeOfOrigin = true;
-            //} else {
-            //    this.changeOfOriginStation = null;
-            //    this.changeOfOrigin = false;
-            //}
+                if (delay.To.Actual) {
+                    this.actualArrival = TrainNotifier.DateTimeFormats.formatDateTimeString(delay.To.Actual, TrainNotifier.DateTimeFormats.timeFormat);
+                    this.delay = delay.DelayTime.toString();
+                    this.delayText = delay.DelayTime > 0 ? delay.DelayTime + "L" : delay.DelayTime == 0 ? "RT" : (delay.DelayTime * -1) + "E";
+                    this.delayCss = delay.DelayTime >= 30 ? "danger" : delay.DelayTime > 0 ? "warning" : "success";
+                    this.toPlatform = delay.To.Platform || this.toPlatform;
+                } else {
+                    this.actualArrival = "Unknown";
+                    this.delay = "Unknown";
+                    this.delayText = "not known";
+                    this.delayCss = "";
+                }
+            } else {
+                this.cancelled = true;
+                var cancellation: Cancellation = train;
+                this.url = TrainNotifier.Common.serverSettings.trainLink + "/" + cancellation.Uid + "/" + moment(cancellation.OriginDepartTimestamp).format(TrainNotifier.DateTimeFormats.dateUrlFormat);
+                this.expectedDeparture = TrainNotifier.DateTimeFormats.formatTimeString(cancellation.FromExpected);
+                this.fromPlatform = "";
+                this.actualDeparture = "";
+                this.expectedArrival = TrainNotifier.DateTimeFormats.formatTimeString(cancellation.ToExpected);
+                this.toPlatform = "";
+                this.actualArrival = "";
+
+                this.delay = "C";
+                this.delayText = "C";
+                this.delayCss = "";
+            }
         }
 
     }

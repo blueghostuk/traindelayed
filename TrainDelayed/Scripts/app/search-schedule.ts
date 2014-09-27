@@ -87,12 +87,16 @@ function getCallingBetweenByStanox(from: StationTiploc, to: StationTiploc, date:
 
     titleModel.dateString(startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
 
-    $.when(webApi.getTiplocs(), webApi.getDelays(from.CRS, to.CRS, startDate, endDate))
-        .done(function (stations: StationTiploc[], delays: Delay[]) {
+    $.when(webApi.getTiplocs(), webApi.getDelays(from.CRS, to.CRS, startDate, endDate), webApi.getCancellations(from.CRS, to.CRS, startDate, endDate))
+        .done(function (stations: StationTiploc[], delays: Delay[], cancellations: Cancellation[]) {
             if (delays && delays.length > 0) {
                 var viewModels: TrainDelayed.Search.Train[] = delays.map(function (delay: Delay) {
                     return new TrainDelayed.Search.Train(from, to, delay, stations);
-                });
+                }).concat(cancellations.map(function (cancellation) {
+                        return new TrainDelayed.Search.Train(from, to, cancellation, stations);
+                    })).sort(function (a, b) {
+                        return a.expectedArrival > b.expectedArrival ? 1 : -1;
+                    });
                 for (var i = 0; i < viewModels.length; i++) {
                     if (viewModels[i].headcode) {
                         titleModel.results.push(viewModels[i]);
