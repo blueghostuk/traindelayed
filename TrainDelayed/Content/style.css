@@ -41,4 +41,24 @@ div#title {
     span.xs {
         font-size: small;
     }
+
+    .glyphicon {
+        display: none !important;
+    }
+
+    h1 {
+        font-size: x-large;
+    }
+
+    p.info-text {
+        font-size: x-small;
+    }
+
+    footer {
+        font-size: xx-small;
+    }
+
+    hr {
+        margin: 0;
+    }
 }
