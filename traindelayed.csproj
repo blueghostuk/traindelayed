@@ -67,6 +67,9 @@
     <Content Include="Scripts\bloodhound.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="_includes\end.html" />
+    <Content Include="_includes\footer.html" />
+    <Content Include="_includes\scripts.html" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -85,6 +88,7 @@
     <Content Include="Scripts\typeahead.jquery.js" />
     <Content Include="Scripts\typeahead.jquery.min.js" />
     <Content Include="search-results.html" />
+    <Content Include="_includes\ads.html" />
     <Content Include="_layouts\default.html" />
   </ItemGroup>
   <ItemGroup />
@@ -113,6 +117,7 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
+    <Content Include="_includes\head.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
 </Project>

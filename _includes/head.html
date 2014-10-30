@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Search for delays to trains in the United Kingdom on the National Rail Network" />
+    <title>{{ page.title }}</title>
+    <style type="text/css">
+        @@import url(//fonts.googleapis.com/css?family=Telex);
+    </style>
+    <link rel="stylesheet" href="Content/cerulean.min.css" />
+    <link rel="stylesheet" href="Content/typeahead-fix.css" />
+    <link rel="stylesheet" href="Content/typeahead-fix.css" />
+    <link rel="stylesheet" href="Content/style.css" />
+    <style>
+        .traindelayed-responsive {
+            width: 320px;
+            height: 50px;
+            margin-left: -15px;
+        }
+
+        @media(min-width: 500px) {
+            .traindelayed-responsive {
+                width: 468px;
+                height: 60px;
+            }
+        }
+
+        @media(min-width: 800px) {
+            .traindelayed-responsive {
+                width: 728px;
+                height: 90px;
+            }
+        }
+    </style>
+    {{ page.css }}
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-40610278-1', 'traindelay.co.uk');
+        ga('send', 'pageview');
+
+    </script>
+</head>
