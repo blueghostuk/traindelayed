@@ -3,5 +3,14 @@ api: api.trainnotifier.co.uk
 trainurl: http://www.trainnotifier.co.uk/trains
 apiname: traindelays
 name: traindelay.co.uk
+# exclude showads to not show them
+showads: yes
+adclient: ca-pub-5958326255808267
+adslot: 5554766058
+# exclude useanalytics to not use them
+useanalytics: yes
+analyticsid: UA-40610278-1
+analyticsite: traindelay.co.uk
 
+# exclude visual studio and other stuff from deployment
 exclude: ["bin",".nuget",".gitattributes",".gitignore","CNAME","TrainDelayed.*","traindelayed.*","Gemfile*","README.md","LICENSE","Scripts/typings","Scripts/app/*.ts","Scripts/app/*.js.map"]
