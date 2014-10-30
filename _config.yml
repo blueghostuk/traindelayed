@@ -4,4 +4,4 @@ trainurl: http://www.trainnotifier.co.uk/trains
 apiname: traindelays
 name: traindelay.co.uk
 
-exclude: ["bin",".nuget",".gitattributes",".gitignore","CNAME","TrainDelayed.*","traindelayed.*","Gemfile*", "README.md", "LICENSE"]
+exclude: ["bin",".nuget",".gitattributes",".gitignore","CNAME","TrainDelayed.*","traindelayed.*","Gemfile*","README.md","LICENSE","Scripts/typings","Scripts/app/*.ts","Scripts/app/*.js.map"]
