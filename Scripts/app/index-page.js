@@ -8,6 +8,11 @@ var webApi;
 var locations = [];
 
 $(function () {
+    var now = moment();
+
+    $("#date-picker").val(now.format("YYYY-MM-DD"));
+    $("#time-picker").val(now.format("HH:mm"));
+
     webApi = new TrainNotifier.WebApi();
 
     $("form").submit(function () {
@@ -138,3 +143,4 @@ function lookupLocalTo() {
         });
     });
 }
+//# sourceMappingURL=index-page.js.map

@@ -113,3 +113,6 @@ PublishProfiles/azure-vm.pubxml
 
 # code doc
 */bin/*.xml
+
+# jekyll deploy
+_site/**/*

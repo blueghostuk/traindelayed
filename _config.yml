@@ -1,0 +1,5 @@
+﻿url: http://localhost:4000/
+api: api.trainnotifier.co.uk
+trainurl: http://www.trainnotifier.co.uk/trains
+apiname: traindelays
+name: traindelay.co.uk

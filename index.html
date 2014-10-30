@@ -1,11 +1,15 @@
-﻿---
+---
 layout: default
 title: traindelay.co.uk
+menu: <li class="active"><a>Home</a></li><li><a href="/about">About</a></li>
+css: index.css
+js:
+    - src: app/index-page.js
 ---
 
 <div class="row">
     <div class="col-md-6 col-xs-12 col-sm-12" style="margin-top: 65px;">
-        <h1>traindelay.co.uk</h1>
+        <h1>{{ site.name }}</h1>
         <p class="info-text">
             Search historical records of the UK National Rail Network (currently dating back 14 days) to see if your train was delayed. <small>(Direct trains only)</small>
         </p>
@@ -38,12 +42,12 @@ title: traindelay.co.uk
             <br />
             <div class="input-group input-group-sm" style="width:100%;">
                 <span class="input-group-addon">On:&nbsp;<span class="glyphicon glyphicon-calendar"></span></span>
-                <input type="date" class="form-control" value="@DateTime.Today.ToString(" yyyy-mm-dd")" id="date-picker" />
+                <input type="date" class="form-control" id="date-picker" />
             </div>
             <br />
             <div class="input-group input-group-sm" style="width:100%;">
                 <span class="input-group-addon">At:&nbsp;<span class="glyphicon glyphicon-time"></span></span>
-                <input type="time" class="form-control" value="@DateTime.Now.ToString(" hh:mm")" id="time-picker" />
+                <input type="time" class="form-control" id="time-picker" />
             </div>
             <br />
             <p>

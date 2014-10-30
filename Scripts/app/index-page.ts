@@ -19,6 +19,12 @@ interface IStationLookup {
 }
 
 $(function () {
+
+    var now = moment();
+
+    $("#date-picker").val(now.format("YYYY-MM-DD"));
+    $("#time-picker").val(now.format("HH:mm"));
+
     webApi = new TrainNotifier.WebApi();
 
     $("form").submit(function () {

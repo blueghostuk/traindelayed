@@ -1,4 +1,4 @@
-﻿{% include head.html %}
+{% include head.html %}
 <body>
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -8,11 +8,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">traindelay.co.uk</a>
+                <a class="navbar-brand" href="#">{{ site.name }}</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    
+                    {{ page.menu }}
                 </ul>
             </div>
         </div>

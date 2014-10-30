@@ -1,3 +1,7 @@
+/// <reference path="../typings/knockout/knockout.d.ts" />
+/// <reference path="common.ts" />
+/// <reference path="Tocs.ts" />
+/// <reference path="webApi.ts" />
 var TrainDelayed;
 (function (TrainDelayed) {
     (function (Search) {
@@ -96,3 +100,4 @@ var TrainDelayed;
     })(TrainDelayed.Search || (TrainDelayed.Search = {}));
     var Search = TrainDelayed.Search;
 })(TrainDelayed || (TrainDelayed = {}));
+//# sourceMappingURL=searchModels.js.map

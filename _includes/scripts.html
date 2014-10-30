@@ -1,16 +1,19 @@
-﻿<script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="Scripts/jquery.ba-hashchange.js"></script>
-<script type="text/javascript" src="Scripts/knockout-3.2.0.min.js"></script>
-<script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
-<script type="text/javascript" src="Scripts/typeahead.bundle.min.js"></script>
-<script type="text/javascript" src="Scripts/moment.min.js"></script>
-<script type="text/javascript" src="Scripts/app/common.js"></script>
-<script type="text/javascript" src="Scripts/app/webApi.js"></script>
-<script type="text/javascript" src="Scripts/app/Tocs.js"></script>
+<script type="text/javascript" src="{{ site.url }}Scripts/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="{{ site.url }}Scripts/jquery.ba-hashchange.js"></script>
+<script type="text/javascript" src="{{ site.url }}Scripts/knockout-3.2.0.js"></script>
+<script type="text/javascript" src="{{ site.url }}Scripts/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ site.url }}Scripts/typeahead.bundle.min.js"></script>
+<script type="text/javascript" src="{{ site.url }}Scripts/moment.min.js"></script>
+<script type="text/javascript" src="{{ site.url }}Scripts/app/common.js"></script>
+<script type="text/javascript" src="{{ site.url }}Scripts/app/webApi.js"></script>
+<script type="text/javascript" src="{{ site.url }}Scripts/app/Tocs.js"></script>
 <script type="text/javascript">
     TrainNotifier.Common.serverSettings = {
-        apiUrl: "api.trainnotifier.co.uk",
-        trainLink: "http://www.trainnotifier.co.uk/trains",
-        apiName: "traindelays"
+        apiUrl: "{{ site.api }}",
+        trainLink: "{{ site.trainurl }}",
+        apiName: "{{ site.apiname }}"
     };
 </script>
+{% if page.js %}{% for item in page.js %}
+<script type="text/javascript" src="{{ site.url }}Scripts/{{ item.src }}"></script>
+{% endfor %}{% endif %}

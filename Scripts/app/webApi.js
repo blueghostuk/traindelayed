@@ -149,3 +149,4 @@
     })();
     TrainNotifier.TiplocHelper = TiplocHelper;
 })(TrainNotifier || (TrainNotifier = {}));
+//# sourceMappingURL=webApi.js.map
