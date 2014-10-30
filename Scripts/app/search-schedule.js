@@ -1,4 +1,4 @@
-var dateFormatQuery = "YYYY-MM-DD";
+﻿var dateFormatQuery = "YYYY-MM-DD";
 var shortTimeFormat = "HH:mm";
 
 var titleModel = new TrainDelayed.Search.TitleViewModel();
@@ -26,24 +26,17 @@ $(function () {
 function loadHashCommand() {
     if (document.location.hash.length > 0) {
         var cmdString = document.location.hash;
-        cmdString = cmdString.replace("!", "");
+        cmdString = cmdString.replace("#!", "");
 
         var elements = cmdString.split('/');
-        if (elements.length >= 4) {
-            var from = elements[1].toUpperCase();
-            var to = elements[3].toUpperCase();
-            var date = null;
-            if (elements.length >= 5) {
-                date = moment(elements[4], dateFormatQuery);
-            } else {
-                date = moment();
-            }
-            if (elements.length === 6) {
-                var time = elements[5].split('-');
-                if (time.length === 2) {
-                    date.hour(time[0]);
-                    date.minute(time[1]);
-                }
+        if (elements.length == 4) {
+            var from = elements[0].toUpperCase();
+            var to = elements[1].toUpperCase();
+            var date = moment(elements[2], dateFormatQuery);
+            var time = elements[3].split('-');
+            if (time.length === 2) {
+                date.hours(parseInt(time[0]));
+                date.minutes(parseInt(time[1]));
             }
             getCallingBetween(from, to, date);
             var neg2 = moment(date).subtract({
@@ -52,8 +45,8 @@ function loadHashCommand() {
             var plus2 = moment(date).add({
                 hours: TrainNotifier.DateTimeFormats.timeFrameHours
             });
-            $("#neg-2hrs").attr("href", "search/from/" + from + "/to/" + to + "/" + neg2.format("YYYY-MM-DD/HH-mm"));
-            $("#plus-2hrs").attr("href", "search/from/" + from + "/to/" + to + "/" + plus2.format("YYYY-MM-DD/HH-mm"));
+            $("#neg-2hrs").attr("href", "search-results/#!" + from + "/" + to + "/" + neg2.format("YYYY-MM-DD/HH-mm"));
+            $("#plus-2hrs").attr("href", "search-results/#!" + from + "/" + to + "/" + plus2.format("YYYY-MM-DD/HH-mm"));
         } else {
             // TODO: display error
         }
