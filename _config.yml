@@ -3,3 +3,5 @@ api: api.trainnotifier.co.uk
 trainurl: http://www.trainnotifier.co.uk/trains
 apiname: traindelays
 name: traindelay.co.uk
+
+exclude: ["bin",".nuget",".gitattributes",".gitignore","CNAME","TrainDelayed.*","traindelayed.*","Gemfile*", "README.md", "LICENSE"]
