@@ -1,4 +1,4 @@
-﻿var dateFormatQuery = "YYYY-MM-DD";
+var dateFormatQuery = "YYYY-MM-DD";
 var shortTimeFormat = "HH:mm";
 
 var titleModel = new TrainDelayed.Search.TitleViewModel();
@@ -45,8 +45,8 @@ function loadHashCommand() {
             var plus2 = moment(date).add({
                 hours: TrainNotifier.DateTimeFormats.timeFrameHours
             });
-            $("#neg-2hrs").attr("href", "search-results/#!" + from + "/" + to + "/" + neg2.format("YYYY-MM-DD/HH-mm"));
-            $("#plus-2hrs").attr("href", "search-results/#!" + from + "/" + to + "/" + plus2.format("YYYY-MM-DD/HH-mm"));
+            $("#neg-2hrs").attr("href", "#!" + from + "/" + to + "/" + neg2.format("YYYY-MM-DD/HH-mm"));
+            $("#plus-2hrs").attr("href", "#!" + from + "/" + to + "/" + plus2.format("YYYY-MM-DD/HH-mm"));
         } else {
             // TODO: display error
         }
