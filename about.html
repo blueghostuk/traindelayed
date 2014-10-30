@@ -1,0 +1,85 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+}
+@using System.Web.Optimization;
+@using System.Configuration;
+@section CustomCss{
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+    </style>
+}
+@section TopMenu{
+    <li><a href="/">Home</a></li>
+    <li class="active"><a>About</a></li>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h2>About</h2>
+        <p>
+            This website aims to make it easier to claim for delays to your train journey. There are a variety of reasons you may not have claimed for your journey, suffice it to say
+            the data this website provides will tell you officially how late your train was using data provided <a href="http://www.networkrail.co.uk/data-feeds/terms-and-conditions/">under license</a> by <a href="http://www.networkrail.co.uk/">network rail</a>.
+            <br />
+            You can access this website on PC/Tablet/Mobile. The website is optimised to work on all devices.
+            <br />
+            This website is run in my own spare time and as such I cannot devote 100% of time to it. If there are problems it may take a while to fix, although I would aim to resolve major issues pretty quickly.
+        </p>
+        <h2>
+            Delay-Repay compensation scheme
+        </h2>
+        <p>
+            You can usually be compensated when your train is delayed, typically 30 minutes or more. Against each train on this website (when viewed in a desktop or tablet browser) is a link to the train companies compensation form which you can increasingly often fill out online.
+            <br />
+            Compensation policies and procedures can vary dependent on the train operator, so please check their website on how to claim.
+        </p>
+        <h2>
+            Updates
+        </h2>
+        <p>
+            There are a variety of features planned including:
+            <ul>
+                <li>
+                    User Registration for:
+                    <ul>
+                        <li>Enter favourite journeys</li>
+                        <li>Email Notifications of delays or cancellations on favourite routes</li>
+                        <li>Push notifications to mobile</li>
+                    </ul>
+                </li>
+                <li>
+                    iOS (Apple) and Android (Google) applications - for now the website will perform perfectly adequately on mobile devices
+                </li>
+            </ul>
+        </p>
+        <h2>Accuracy and reliability</h2>
+        <h3>Data Quality</h3>
+        <p>
+            Some trains can sometimes be missing data, this is often due to the fact the train did not run or did not report properly to the supplied data feed by network rail. Other times it can be do with errors with this website or its associated server side components.
+        </p>
+        <h3>Server</h3>
+        <p>
+            This website and the associated server side components that power it are hosted on a Microsoft Azure Server, which should be pretty reliable.
+        </p>
+        <h2>Technology</h2>
+        <p>
+            This website is build on top of the data provided by sister website <a href="http://www.trainnotifier.co.uk/">trainnotifier.co.uk</a>.<br />
+            Both websites are open source and the code for this website can be found on <a href="https://github.com/blueghostuk/traindelayed">github</a>.
+        </p>
+        <h2>
+            Adverts
+        </h2>
+        <p>
+            This website is run without external funding. The only meagre income is from adverts. If at all possible do not use an ad-blocker when viewing this website. Thanks
+        </p>
+        <h2>
+            Contact Details
+        </h2>
+        <p>
+            Contact me on twitter with any suggestions or problems: <br /> <a href="https://twitter.com/intent/tweet?screen_name=blueghostuk" class="twitter-mention-button" data-related="blueghostuk">Tweet to @@blueghostuk</a>
+<script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+        </p>
+    </div>
+</div>
