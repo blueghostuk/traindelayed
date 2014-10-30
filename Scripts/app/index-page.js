@@ -105,7 +105,7 @@ function doSearch() {
         } else {
             time = moment().format(timeFormat);
         }
-        document.location.href = "search/from/" + fromCrs + "/to/" + toCrs + date + time;
+        document.location.href = "search-results/#!" + fromCrs + "/to/" + toCrs + date + time;
     }
     return false;
 }
