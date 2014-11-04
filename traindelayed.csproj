@@ -73,6 +73,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="packages.config" />
+    <Content Include="_includes\analytics.html" />
     <Content Include="_includes\end.html" />
     <Content Include="_includes\footer.html" />
     <Content Include="_includes\scripts.html" />
@@ -96,7 +97,6 @@
     <Content Include="search-results\index.html" />
     <Content Include="_includes\ads.html" />
     <Content Include="_layouts\default.html" />
-    <Content Include="_config.yml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
