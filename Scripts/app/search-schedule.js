@@ -48,7 +48,6 @@ function loadHashCommand() {
             $("#neg-2hrs").attr("href", "#!" + from + "/" + to + "/" + neg2.format("YYYY-MM-DD/HH-mm"));
             $("#plus-2hrs").attr("href", "#!" + from + "/" + to + "/" + plus2.format("YYYY-MM-DD/HH-mm"));
         } else {
-            // TODO: display error
         }
     }
     return false;
@@ -101,4 +100,3 @@ function getCallingBetweenByStanox(from, to, date) {
         show($("#error-row"));
     });
 }
-//# sourceMappingURL=search-schedule.js.map

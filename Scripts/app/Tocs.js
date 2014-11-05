@@ -1,9 +1,6 @@
-// Module
 var TrainDelayed;
 (function (TrainDelayed) {
-    // Class
     var TrainOperatingCompany = (function () {
-        // Constructor
         function TrainOperatingCompany(code, name, webLink) {
             this.code = code;
             this.name = name;
@@ -52,4 +49,3 @@ tocs["WR"] = new TrainDelayed.TrainOperatingCompany("WR", "West Coast Railway Co
 tocs["WS"] = new TrainDelayed.TrainOperatingCompany("WS", "Wrexham & Shropshire");
 tocs["XC"] = new TrainDelayed.TrainOperatingCompany("XC", "CrossCountry", "http://www.crosscountrytrains.co.uk/customer-service/contact-us");
 tocs["ZZ"] = new TrainDelayed.TrainOperatingCompany("ZZ", "Freight");
-//# sourceMappingURL=Tocs.js.map
