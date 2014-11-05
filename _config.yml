@@ -1,6 +1,6 @@
 ﻿url: http://www.traindelay.co.uk
 api: api.trainnotifier.co.uk
-trainurl: http://www.trainnotifier.co.uk/train/!#
+trainurl: http://www.trainnotifier.co.uk/train/#!
 apiname: traindelays
 name: traindelay.co.uk
 # exclude showads to not show them
