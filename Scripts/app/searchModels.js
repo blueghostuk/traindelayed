@@ -1,7 +1,3 @@
-/// <reference path="../typings/knockout/knockout.d.ts" />
-/// <reference path="common.ts" />
-/// <reference path="Tocs.ts" />
-/// <reference path="webApi.ts" />
 var TrainDelayed;
 (function (TrainDelayed) {
     (function (Search) {
@@ -54,7 +50,7 @@ var TrainDelayed;
 
                 if (train.From) {
                     var delay = train;
-                    this.url = TrainNotifier.Common.serverSettings.trainLink + "/" + delay.Uid + "/" + moment(delay.From.Expected).format(TrainNotifier.DateTimeFormats.dateUrlFormat);
+                    this.url = TrainNotifier.Common.serverSettings.trainLink + "/" + delay.Uid + "/" + moment(delay.From.Expected).format(TrainNotifier.DateTimeFormats.dateQueryFormat);
                     this.expectedDeparture = TrainNotifier.DateTimeFormats.formatDateTimeString(delay.From.Expected, TrainNotifier.DateTimeFormats.timeFormat);
                     this.fromPlatform = delay.From.Platform;
                     if (delay.From.Actual) {
@@ -81,7 +77,7 @@ var TrainDelayed;
                 } else {
                     this.cancelled = true;
                     var cancellation = train;
-                    this.url = TrainNotifier.Common.serverSettings.trainLink + "/" + cancellation.Uid + "/" + moment(cancellation.OriginDepartTimestamp).format(TrainNotifier.DateTimeFormats.dateUrlFormat);
+                    this.url = TrainNotifier.Common.serverSettings.trainLink + "/" + cancellation.Uid + "/" + moment(cancellation.OriginDepartTimestamp).format(TrainNotifier.DateTimeFormats.dateQueryFormat);
                     this.expectedDeparture = TrainNotifier.DateTimeFormats.formatTimeString(cancellation.FromExpected);
                     this.fromPlatform = "";
                     this.actualDeparture = "";
@@ -100,4 +96,3 @@ var TrainDelayed;
     })(TrainDelayed.Search || (TrainDelayed.Search = {}));
     var Search = TrainDelayed.Search;
 })(TrainDelayed || (TrainDelayed = {}));
-//# sourceMappingURL=searchModels.js.map
