@@ -73,7 +73,7 @@ module TrainDelayed.Search {
 
             if (train.From) {
                 var delay: Delay = train;
-                this.url = TrainNotifier.Common.serverSettings.trainLink + "/" + delay.Uid + "/" + moment(delay.From.Expected).format(TrainNotifier.DateTimeFormats.dateUrlFormat);
+                this.url = TrainNotifier.Common.serverSettings.trainLink + "/" + delay.Uid + "/" + moment(delay.From.Expected).format(TrainNotifier.DateTimeFormats.dateQueryFormat);
                 this.expectedDeparture = TrainNotifier.DateTimeFormats.formatDateTimeString(delay.From.Expected, TrainNotifier.DateTimeFormats.timeFormat);
                 this.fromPlatform = delay.From.Platform;
                 if (delay.From.Actual) {
@@ -100,7 +100,7 @@ module TrainDelayed.Search {
             } else {
                 this.cancelled = true;
                 var cancellation: Cancellation = train;
-                this.url = TrainNotifier.Common.serverSettings.trainLink + "/" + cancellation.Uid + "/" + moment(cancellation.OriginDepartTimestamp).format(TrainNotifier.DateTimeFormats.dateUrlFormat);
+                this.url = TrainNotifier.Common.serverSettings.trainLink + "/" + cancellation.Uid + "/" + moment(cancellation.OriginDepartTimestamp).format(TrainNotifier.DateTimeFormats.dateQueryFormat);
                 this.expectedDeparture = TrainNotifier.DateTimeFormats.formatTimeString(cancellation.FromExpected);
                 this.fromPlatform = "";
                 this.actualDeparture = "";
