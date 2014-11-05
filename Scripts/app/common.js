@@ -1,7 +1,4 @@
-﻿/// <reference path="../typings/bootstrap/bootstrap.d.ts" />
-/// <reference path="webApi.ts" />
-/// <reference path="../typings/moment/moment.d.ts" />
-
+﻿
 function preAjax() {
     show($(".progress"));
     hide($("#error-row"));
@@ -62,7 +59,6 @@ var TrainNotifier;
         DateTimeFormats.dateTimeFormat = "DD/MM/YY HH:mm:ss";
         DateTimeFormats.dateTimeHashFormat = "YYYY-MM-DD/HH-mm";
         DateTimeFormats.dateQueryFormat = "YYYY-MM-DD";
-        DateTimeFormats.dateUrlFormat = "YYYY/MM/DD";
         DateTimeFormats.dateTitleFormat = "ddd Do MMM YYYY";
         DateTimeFormats.dateTimeApiFormat = "YYYY-MM-DDTHH:mm";
         DateTimeFormats.timeFrameHours = 2;
@@ -81,4 +77,3 @@ var TrainNotifier;
     TrainNotifier.CommonStrings = CommonStrings;
     ;
 })(TrainNotifier || (TrainNotifier = {}));
-//# sourceMappingURL=common.js.map
