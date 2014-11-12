@@ -13,4 +13,4 @@ analyticsid: UA-40610278-1
 analyticsite: traindelay.co.uk
 
 # exclude visual studio and other stuff from deployment
-exclude: ["bin",".nuget",".gitattributes",".gitignore","packages.config","CNAME","TrainDelayed.*","traindelayed.*","Gemfile*","README.md","LICENSE","Scripts/typings","Scripts/app/*.ts","Scripts/app/*.js.map"]
+exclude: ["bin",".nuget",".gitattributes",".gitignore","packages.config","CNAME","TrainDelayed.*","traindelayed.*","packages.config","Gemfile*","README.md","LICENSE","Scripts/typings","Scripts/app/*.ts","Scripts/app/*.js.map"]
