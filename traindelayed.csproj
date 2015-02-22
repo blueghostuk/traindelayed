@@ -55,15 +55,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="about\index.html" />
-    <Content Include="Content\app\about.css" />
-    <Content Include="Content\app\index.css" />
-    <Content Include="Content\app\search-results.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\cerulean.css" />
-    <Content Include="Content\cerulean.min.css" />
     <Content Include="Content\app\style.css" />
     <Content Include="Content\app\typeahead-fix.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

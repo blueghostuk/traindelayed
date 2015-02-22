@@ -1,4 +1,7 @@
-﻿
+﻿body {
+    padding-top: 25px;
+}
+
 .tt-dataset-stations-lookup, .stationName {
     text-transform: capitalize;
 }
