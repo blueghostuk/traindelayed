@@ -2,7 +2,6 @@
 layout: default
 title: traindelay.co.uk
 menu: <li class="active"><a>Home</a></li><li><a href="about/">About</a></li>
-css: index.css
 js:
     - src: app/index-page.js
 ---
@@ -19,7 +18,7 @@ js:
                 <input type="text" class="form-control station-lookup stationName" id="from-crs" autocomplete="off" placeholder="Type from station name here" />
                 <div class="input-group-btn">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Local <i class="fa fa-location-arrow"></i></button>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu" id="fromLocal">
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu" id="from-local">
                         <li><a href="#"><i class="fa fa-spin fa-refresh"></i></a></li>
                         <!-- ko: foreach: $data -->
                         <li>
@@ -38,7 +37,7 @@ js:
 
                 <div class="input-group-btn">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Local <i class="fa fa-location-arrow"></i></button>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu" id="toLocal">
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu" id="to-local">
                         <li><a href="#"><i class="fa fa-spin fa-refresh"></i></a></li>
                         <!-- ko: foreach: $data -->
                         <li>
