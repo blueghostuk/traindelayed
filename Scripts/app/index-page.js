@@ -101,6 +101,7 @@ function doSearch() {
     return false;
 }
 function lookupLocalFrom() {
+    $("#from-local > li:first").show();
     navigator.geolocation.getCurrentPosition(function (position) {
         webApi.getStationByLocation(position.coords.latitude, position.coords.longitude).done(function (stations) {
             fromLocal.removeAll();
@@ -113,10 +114,12 @@ function lookupLocalFrom() {
                     });
                 }
             }
+            $("#from-local > li:first").hide();
         });
     });
 }
 function lookupLocalTo() {
+    $("#to-local > li:first").show();
     navigator.geolocation.getCurrentPosition(function (position) {
         webApi.getStationByLocation(position.coords.latitude, position.coords.longitude).done(function (stations) {
             toLocal.removeAll();
@@ -129,6 +132,7 @@ function lookupLocalTo() {
                     });
                 }
             }
+            $("#to-local > li:first").hide();
         });
     });
 }
