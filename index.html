@@ -15,38 +15,49 @@ js:
         </p>
         <form>
             <div class="input-group input-group-sm">
-                <span class="input-group-addon">From:&nbsp;<span class="glyphicon glyphicon-search"></span></span>
+                <span class="input-group-addon">From:&nbsp;<i class="fa fa-search"></i></span>
                 <input type="text" class="form-control station-lookup stationName" id="from-crs" autocomplete="off" placeholder="Type from station name here" />
-                <span class="input-group-addon">
-                    <a class="dropdown-toggle" id="from-local-link" data-toggle="dropdown" onclick="lookupLocalFrom(); return false;" href="#">Local</a>
-                    <ul class="dropdown-menu" role="menu" id="from-local" aria-labelledby="from-local-link" data-bind="foreach: $data">
-                        <li><a data-bind="text: $data, attr: { onclick: '$(\'#from-crs\').val(\'' + $data + '\'); return false;' }" href="#"></a></li>
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Local <i class="fa fa-location-arrow"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu" id="fromLocal">
+                        <li><a href="#"><i class="fa fa-spin fa-refresh"></i></a></li>
+                        <!-- ko: foreach: $data -->
+                        <li>
+                            <a data-bind="attr: { onclick: '$(\'#from-crs\').val(\'' + $data + '\'); return false;' }" href="#">
+                                <i class="fa fa-train"></i><span data-bind="text: $data"></span>
+                            </a>
+                        </li>
+                        <!-- /ko -->
                     </ul>
-                    &nbsp;
-                    <span class="glyphicon glyphicon-map-marker"></span>
-                </span>
+                </div>
             </div>
             <br />
             <div class="input-group input-group-sm">
-                <span class="input-group-addon">To:&nbsp;<span class="glyphicon glyphicon-search"></span></span>
+                <span class="input-group-addon">To:&nbsp;<i class="fa fa-search"></i></span>
                 <input type="text" class="form-control station-lookup stationName" id="to-crs" autocomplete="off" placeholder="Type to station name here" />
-                <span class="input-group-addon">
-                    <a class="dropdown-toggle" id="to-local-link" data-toggle="dropdown" onclick="lookupLocalTo(); return false;" href="#">Local</a>
-                    <ul class="dropdown-menu" role="menu" id="to-local" aria-labelledby="to-local-link" data-bind="foreach: $data">
-                        <li><a data-bind="text: $data, attr: { onclick: '$(\'#to-crs\').val(\'' + $data + '\'); return false;' }" href="#"></a></li>
+
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Local <i class="fa fa-location-arrow"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu" id="toLocal">
+                        <li><a href="#"><i class="fa fa-spin fa-refresh"></i></a></li>
+                        <!-- ko: foreach: $data -->
+                        <li>
+                            <a data-bind="attr: { onclick: '$(\'#to-crs\').val(\'' + $data + '\'); return false;' }" href="#">
+                                <i class="fa fa-train"></i><span data-bind="text: $data"></span>
+                            </a>
+                        </li>
+                        <!-- /ko -->
                     </ul>
-                    &nbsp;
-                    <span class="glyphicon glyphicon-map-marker"></span>
-                </span>
+                </div>
             </div>
             <br />
             <div class="input-group input-group-sm" style="width:100%;">
-                <span class="input-group-addon">On:&nbsp;<span class="glyphicon glyphicon-calendar"></span></span>
+                <span class="input-group-addon">On:&nbsp;<i class="fa fa-calendar"></i></span>
                 <input type="date" class="form-control" id="date-picker" />
             </div>
             <br />
             <div class="input-group input-group-sm" style="width:100%;">
-                <span class="input-group-addon">At:&nbsp;<span class="glyphicon glyphicon-time"></span></span>
+                <span class="input-group-addon">At:&nbsp;<i class="fa fa-clock-o"></i></span>
                 <input type="time" class="form-control" id="time-picker" />
             </div>
             <br />
