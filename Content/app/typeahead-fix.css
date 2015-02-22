@@ -1,18 +1,18 @@
 ﻿.twitter-typeahead {
     width: 100%;
-    height: 34px;
+    height: 30px;
     position: relative;
 }
 
     .twitter-typeahead .tt-input {
-        height: 34px;
+        height: 30px;
     }
 
     .twitter-typeahead .tt-query,
     .twitter-typeahead .tt-hint {
         margin-bottom: 0;
         width: 100%;
-        height: 34px;
+        height: 30px;
         position: absolute;
         top: 0;
         left: 0;
