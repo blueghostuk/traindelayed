@@ -1,5 +1,4 @@
-﻿var shortStations = {};
-
+var shortStations = {};
 shortStations["BHM"] = "Bham NS";
 shortStations["BHI"] = "Bham Int";
 shortStations["BMO"] = "Bham Moor St";

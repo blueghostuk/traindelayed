@@ -1,20 +1,16 @@
-﻿
 function preAjax() {
     show($(".progress"));
     hide($("#error-row"));
     hide($("#no-results-row"));
 }
-
 function show(element) {
     $(element).removeClass("hide");
     $(element).show();
 }
-
 function hide(element) {
     $(element).hide();
     $(element).addClass("hide");
 }
-
 var TrainNotifier;
 (function (TrainNotifier) {
     var Common = (function () {
@@ -24,7 +20,6 @@ var TrainNotifier;
     })();
     TrainNotifier.Common = Common;
     ;
-
     var DateTimeFormats = (function () {
         function DateTimeFormats() {
         }
@@ -39,9 +34,8 @@ var TrainNotifier;
             }
             return null;
         };
-
         DateTimeFormats.formatDateTimeString = function (dateTime, format) {
-            if (typeof format === "undefined") { format = DateTimeFormats.shortTimeFormat; }
+            if (format === void 0) { format = DateTimeFormats.shortTimeFormat; }
             if (dateTime) {
                 var timeMoment = moment(dateTime);
                 var ts = timeMoment.format(format);
@@ -67,7 +61,6 @@ var TrainNotifier;
     })();
     TrainNotifier.DateTimeFormats = DateTimeFormats;
     ;
-
     var CommonStrings = (function () {
         function CommonStrings() {
         }

@@ -1,33 +1,24 @@
 var dateFormatQuery = "YYYY-MM-DD";
 var shortTimeFormat = "HH:mm";
-
 var titleModel = new TrainDelayed.Search.TitleViewModel();
-
 var webApi;
-
 $(function () {
     webApi = new TrainNotifier.WebApi();
-
     ko.applyBindings(titleModel, $("#parent").get(0));
     ko.applyBindings(titleModel, $("#results").get(0));
-
     loadHashCommand();
-
     $(window).hashchange(function () {
         loadHashCommand();
     });
-
     $("#neg-2hrs,#plus-2hrs").click(function () {
         document.location.href = $(this).attr("href");
         window.location.reload();
     });
 });
-
 function loadHashCommand() {
     if (document.location.hash.length > 0) {
         var cmdString = document.location.hash;
         cmdString = cmdString.replace("#!", "");
-
         var elements = cmdString.split('/');
         if (elements.length == 4) {
             var from = elements[0].toUpperCase();
@@ -47,14 +38,14 @@ function loadHashCommand() {
             });
             $("#neg-2hrs").attr("href", "#!" + from + "/" + to + "/" + neg2.format("YYYY-MM-DD/HH-mm"));
             $("#plus-2hrs").attr("href", "#!" + from + "/" + to + "/" + plus2.format("YYYY-MM-DD/HH-mm"));
-        } else {
+        }
+        else {
         }
     }
     return false;
 }
-
 function getCallingBetween(from, to, date) {
-    if (typeof date === "undefined") { date = moment(); }
+    if (date === void 0) { date = moment(); }
     preAjax();
     titleModel.results.removeAll();
     $.when(webApi.getStanoxByCrsCode(from), webApi.getStanoxByCrsCode(to)).done(function (from, to) {
@@ -66,7 +57,6 @@ function getCallingBetween(from, to, date) {
         show($("#error-row"));
     });
 }
-
 function getCallingBetweenByStanox(from, to, date) {
     var startDate = moment(date).subtract({
         hours: TrainNotifier.DateTimeFormats.timeFrameBeforeHours
@@ -74,9 +64,7 @@ function getCallingBetweenByStanox(from, to, date) {
     var endDate = moment(date).add({
         hours: TrainNotifier.DateTimeFormats.timeFrameHours
     });
-
     titleModel.dateString(startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
-
     $.when(webApi.getTiplocs(), webApi.getDelays(from.CRS, to.CRS, startDate, endDate), webApi.getCancellations(from.CRS, to.CRS, startDate, endDate)).done(function (stations, delays, cancellations) {
         if (delays && delays.length > 0) {
             var viewModels = delays.map(function (delay) {
@@ -91,7 +79,8 @@ function getCallingBetweenByStanox(from, to, date) {
                     titleModel.results.push(viewModels[i]);
                 }
             }
-        } else {
+        }
+        else {
             show($("#no-results-row"));
         }
     }).always(function () {

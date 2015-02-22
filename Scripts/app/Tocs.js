@@ -11,7 +11,6 @@ var TrainDelayed;
     })();
     TrainDelayed.TrainOperatingCompany = TrainOperatingCompany;
 })(TrainDelayed || (TrainDelayed = {}));
-
 var tocs = {};
 tocs["AW"] = new TrainDelayed.TrainOperatingCompany("AW", "Arriva Trains Wales", "http://www.arrivatrainswales.co.uk/PassengersCharter/");
 tocs["CC"] = new TrainDelayed.TrainOperatingCompany("CC", "c2c", "http://www.c2c-online.co.uk/about_us/passengers_charter/what_happens_if_things_go_wrong");
