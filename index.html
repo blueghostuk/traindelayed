@@ -23,7 +23,7 @@ js:
                         <!-- ko foreach: $data -->
                         <li>
                             <a data-bind="attr: { onclick: '$(\'#from-crs\').val(\'' + $data + '\'); return false;' }" href="#">
-                                <i class="fa fa-train"></i><span data-bind="text: $data"></span>
+                                <i class="fa fa-train"></i>&nbsp;<span data-bind="text: $data"></span>
                             </a>
                         </li>
                         <!-- /ko -->
@@ -42,7 +42,7 @@ js:
                         <!-- ko foreach: $data -->
                         <li>
                             <a data-bind="attr: { onclick: '$(\'#to-crs\').val(\'' + $data + '\'); return false;' }" href="#">
-                                <i class="fa fa-train"></i><span data-bind="text: $data"></span>
+                                <i class="fa fa-train"></i>&nbsp;<span data-bind="text: $data"></span>
                             </a>
                         </li>
                         <!-- /ko -->
