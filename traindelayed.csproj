@@ -58,6 +58,9 @@
     <Content Include="Content\app\style.css">
       <DependentUpon>style.less</DependentUpon>
     </Content>
+    <Content Include="Content\app\style.min.css">
+      <DependentUpon>style.css</DependentUpon>
+    </Content>
     <Content Include="Content\app\typeahead-fix.css">
       <DependentUpon>typeahead-fix.less</DependentUpon>
     </Content>

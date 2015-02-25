@@ -15,6 +15,9 @@ div#title span.xl {
   font-weight: bold;
   font-size: x-large;
 }
+span.input-group-addon {
+  width: 67px;
+}
 @media (max-width: 768px) {
   div#title {
     font-size: 14px;
@@ -57,4 +60,3 @@ div#title span.xl {
     margin: 0;
   }
 }
-/*# sourceMappingURL=style.css.map */
