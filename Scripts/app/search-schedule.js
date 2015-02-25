@@ -10,10 +10,6 @@ $(function () {
     $(window).hashchange(function () {
         loadHashCommand();
     });
-    $("#neg-2hrs,#plus-2hrs").click(function () {
-        document.location.href = $(this).attr("href");
-        window.location.reload();
-    });
 });
 function loadHashCommand() {
     if (document.location.hash.length > 0) {
