@@ -40,7 +40,7 @@ tocs["SW"] = new TrainDelayed.TrainOperatingCompany("SW", "South West Trains", "
 tocs["GW"] = new TrainDelayed.TrainOperatingCompany("TL", "Thameslink", "http://www.thameslinkrailway.com/contact-us/delay-repay/claim-form/");
 tocs["TP"] = new TrainDelayed.TrainOperatingCompany("TP", "First TransPennine Express", "http://www.tpexpress.co.uk/contact-us/");
 tocs["TW"] = new TrainDelayed.TrainOperatingCompany("TW", "Tyne & Wear Metro");
-tocs["VT"] = new TrainDelayed.TrainOperatingCompany("VT", "Virgin Trains", "http://www.virgintrains.co.uk/assets/pdf/feedback/vt-customer-comment.pdf");
+tocs["VT"] = new TrainDelayed.TrainOperatingCompany("VT", "Virgin Trains", "http://www.virgintrains.co.uk/contact/?reload=delayclaim");
 tocs["WR"] = new TrainDelayed.TrainOperatingCompany("WR", "West Coast Railway Company");
 tocs["WS"] = new TrainDelayed.TrainOperatingCompany("WS", "Wrexham & Shropshire");
 tocs["XC"] = new TrainDelayed.TrainOperatingCompany("XC", "CrossCountry", "http://www.crosscountrytrains.co.uk/customer-service/contact-us");
