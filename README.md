@@ -4,4 +4,4 @@ Shows Rail Delays using the API from @ https://github.com/blueghostuk/trainnotif
 
 This website is hosted via GitHub Pages @ http://www.traindelay.co.uk
 
-Copyright (C) 2012-14 Michael Pritchard
+Copyright (C) 2012-15 Michael Pritchard
