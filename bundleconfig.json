@@ -1,0 +1,13 @@
+[
+  {
+    "outputFileName": "Scripts/libs.js",
+    "inputFiles": [
+      "Scripts/jquery-2.1.4.min.js",
+      "Scripts/jquery.ba-hashchange.min.js",
+      "Scripts/knockout-3.2.0.js",
+      "Scripts/bootstrap.min.js",
+      "Scripts/typeahead.bundle.min.js",
+      "Scripts/moment.min.js"
+    ]
+  }
+]
