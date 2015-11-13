@@ -67,3 +67,4 @@ PublishProfiles/azure-vm.pubxml
 
 # jekyll deploy
 _site/**/*
+.vs/config/applicationhost.config
