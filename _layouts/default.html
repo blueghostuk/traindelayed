@@ -1,4 +1,4 @@
-{% include head.html %}
+{% include head.min.html %}
 <body>
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -33,12 +33,12 @@
     </div>
     <div class="container">
         {{ content }}
-        {% include ads.html %}
+        {% include ads.min.html %}
     </div>
     <div class="container">
-        {% include footer.html %}
+        {% include footer.min.html %}
     </div>
-    {% include scripts.html %}
+    {% include scripts.min.html %}
+    {% include cookie-consent.min.html %}
 </body>
-{% include cookie-consent.html %}
-{% include end.html %}
+{% include end.min.html %}
