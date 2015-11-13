@@ -14,7 +14,7 @@ $(function () {
         $("#alert-20151311").on("closed.bs.alert",() => {
             document.cookie = "alert-20151311=true";
         });
-        $("#alert-20151311").show();
+        $("#alert-20151311").removeClass("hide");
     }
 });
 
