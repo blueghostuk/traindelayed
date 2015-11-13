@@ -8,6 +8,16 @@ interface ServerSettings {
     apiName: string;
 }
 
+$(function () {
+
+    if (document.cookie.replace(/(?:(?:^|.*;\s*)alert-20151311\s*\=\s*([^;]*).*$)|^.*$/, "$1") !== "true") {
+        $("#alert-20151311").on("closed.bs.alert",() => {
+            document.cookie = "alert-20151311=true";
+        });
+        $("#alert-20151311").show();
+    }
+});
+
 function preAjax() {
     show($(".progress"));
     hide($("#error-row"));
