@@ -56,13 +56,13 @@ function getCallingBetween(from: string, to: string, date: Moment = moment()) {
         webApi.getStanoxByCrsCode(from),
         webApi.getStanoxByCrsCode(to))
         .done(function (from: StationTiploc, to: StationTiploc) {
-            titleModel.from(TrainNotifier.TiplocHelper.toDisplayString(from));
-            titleModel.to(TrainNotifier.TiplocHelper.toDisplayString(to));
-            getCallingBetweenByStanox(from, to, date);
-        }).fail(function () {
-            hide($(".progress"));
-            show($("#error-row"));
-        });
+        titleModel.from(TrainNotifier.TiplocHelper.toDisplayString(from));
+        titleModel.to(TrainNotifier.TiplocHelper.toDisplayString(to));
+        getCallingBetweenByStanox(from, to, date);
+    }).fail(function () {
+        hide($(".progress"));
+        show($("#error-row"));
+    });
 }
 
 function getCallingBetweenByStanox(from: StationTiploc, to: StationTiploc, date: Moment) {
@@ -75,28 +75,30 @@ function getCallingBetweenByStanox(from: StationTiploc, to: StationTiploc, date:
 
     titleModel.dateString(startDate.format(shortTimeFormat) + "-" + endDate.format(shortTimeFormat));
 
-    $.when(webApi.getTiplocs(), webApi.getDelays(from.CRS, to.CRS, startDate, endDate), webApi.getCancellations(from.CRS, to.CRS, startDate, endDate))
-        .done(function (stations: StationTiploc[], delays: Delay[], cancellations: Cancellation[]) {
-            if (delays && delays.length > 0) {
-                var viewModels: TrainDelayed.Search.Train[] = delays.map(function (delay: Delay) {
-                    return new TrainDelayed.Search.Train(from, to, delay, stations);
-                }).concat(cancellations.map(function (cancellation) {
+    webApi.getTiplocs().then
+
+    $.when(webApi.getTiplocs(), webApi.getDelays(from.CRS, to.CRS, startDate, endDate)/*, webApi.getCancellations(from.CRS, to.CRS, startDate, endDate)*/)
+        .done(function (stations: StationTiploc[], delays: Delay[]/*, cancellations: Cancellation[]*/) {
+        if (delays && delays.length > 0) {
+            var viewModels: TrainDelayed.Search.Train[] = delays.map(function (delay: Delay) {
+                return new TrainDelayed.Search.Train(from, to, delay, stations);
+            })/*.concat(cancellations.map(function (cancellation) {
                         return new TrainDelayed.Search.Train(from, to, cancellation, stations);
-                    })).sort(function (a, b) {
-                        return moment(a.expectedDeparture, TrainNotifier.DateTimeFormats.timeFormat).isAfter(moment(b.expectedDeparture, TrainNotifier.DateTimeFormats.timeFormat)) ? 1 : -1;
-                    });
-                for (var i = 0; i < viewModels.length; i++) {
-                    if (viewModels[i].headcode) {
-                        titleModel.results.push(viewModels[i]);
-                    }
+                    }))*/.sort(function (a, b) {
+                return moment(a.expectedDeparture, TrainNotifier.DateTimeFormats.timeFormat).isAfter(moment(b.expectedDeparture, TrainNotifier.DateTimeFormats.timeFormat)) ? 1 : -1;
+            });
+            for (var i = 0; i < viewModels.length; i++) {
+                if (viewModels[i].headcode) {
+                    titleModel.results.push(viewModels[i]);
                 }
-            } else {
-                show($("#no-results-row"));
             }
-        }).always(function () {
-            hide($(".progress"));
-        }).fail(function () {
-            show($("#error-row"));
-        });
+        } else {
+            show($("#no-results-row"));
+        }
+    }).always(function () {
+        hide($(".progress"));
+    }).fail(function () {
+        show($("#error-row"));
+    });
 
 }
