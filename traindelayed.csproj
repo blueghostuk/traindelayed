@@ -86,10 +86,12 @@
     <Content Include="Content\app\style.css.map">
       <DependentUpon>style.css</DependentUpon>
     </Content>
+    <Content Include="Scripts\app\sw.js" />
     <Content Include="Scripts\bloodhound.js" />
     <Content Include="Scripts\bloodhound.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="bundleconfig.json" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -102,9 +104,27 @@
     <Content Include="Scripts\typeahead.bundle.min.js" />
     <Content Include="Scripts\typeahead.jquery.js" />
     <Content Include="Scripts\typeahead.jquery.min.js" />
+    <Content Include="_includes\ads.min.html">
+      <DependentUpon>ads.html</DependentUpon>
+    </Content>
     <Content Include="_includes\analytics.html" />
+    <Content Include="_includes\analytics.min.html">
+      <DependentUpon>analytics.html</DependentUpon>
+    </Content>
+    <Content Include="_includes\cookie-consent.min.html">
+      <DependentUpon>cookie-consent.html</DependentUpon>
+    </Content>
     <Content Include="_includes\end.html" />
+    <Content Include="_includes\end.min.html">
+      <DependentUpon>end.html</DependentUpon>
+    </Content>
     <Content Include="_includes\footer.html" />
+    <Content Include="_includes\footer.min.html">
+      <DependentUpon>footer.html</DependentUpon>
+    </Content>
+    <Content Include="_includes\head.min.html">
+      <DependentUpon>head.html</DependentUpon>
+    </Content>
     <Content Include="_includes\scripts.html" />
     <Content Include="Scripts\jquery.ba-hashchange.js" />
     <Content Include="Scripts\jquery.ba-hashchange.min.js" />
@@ -114,6 +134,13 @@
     <Content Include="Scripts\moment-datepicker.js" />
     <Content Include="search-results\index.html" />
     <Content Include="_includes\ads.html" />
+    <Content Include="_includes\scripts.min.html">
+      <DependentUpon>scripts.html</DependentUpon>
+    </Content>
+    <Content Include="_includes\service-worker.html" />
+    <Content Include="_includes\service-worker.min.html">
+      <DependentUpon>service-worker.html</DependentUpon>
+    </Content>
     <Content Include="_layouts\default.html" />
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +162,20 @@
     <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
     <Content Include="_includes\cookie-consent.html" />
   </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>None</TypeScriptModuleKind>
+    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

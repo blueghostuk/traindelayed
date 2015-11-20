@@ -8,56 +8,60 @@
       "Scripts/bootstrap.min.js",
       "Scripts/typeahead.bundle.min.js",
       "Scripts/moment.min.js"
-    ],
-    "sourceMap": false
+    ]
   },
   {
     "outputFileName": "_includes/ads.html",
     "inputFiles": [
       "_includes/ads.html"
-    ],
-    "sourceMap": false
+    ]
   },
   {
     "outputFileName": "_includes/analytics.html",
     "inputFiles": [
       "_includes/analytics.html"
-    ],
-    "sourceMap": false
+    ]
   },
   {
     "outputFileName": "_includes/cookie-consent.html",
     "inputFiles": [
       "_includes/cookie-consent.html"
-    ],
-    "sourceMap": false
+    ]
   },
   {
     "outputFileName": "_includes/end.html",
     "inputFiles": [
       "_includes/end.html"
-    ],
-    "sourceMap": false
+    ]
   },
   {
     "outputFileName": "_includes/footer.html",
     "inputFiles": [
       "_includes/footer.html"
-    ],
-    "sourceMap": false
+    ]
   },
   {
     "outputFileName": "_includes/head.html",
     "inputFiles": [
       "_includes/head.html"
-    ],
-    "sourceMap": false
+    ]
   },
   {
     "outputFileName": "_includes/scripts.html",
     "inputFiles": [
       "_includes/scripts.html"
-    ],
-    "sourceMap": false
+    ]
+  },
+  {
+    "outputFileName": "_includes/service-worker.html",
+    "inputFiles": [
+      "_includes/service-worker.html"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/app/sw.js",
+    "inputFiles": [
+      "Scripts/app/sw.js"
+    ]
   }
 ]
