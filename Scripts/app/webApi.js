@@ -3,12 +3,13 @@ var TrainNotifier;
     var WebApi = (function () {
         function WebApi(serverSettings) {
             this.serverSettings = serverSettings;
+            this.baseProtocol = (("https:" == document.location.protocol) ? "https://" : "http://");
             if (!serverSettings) {
                 this.serverSettings = TrainNotifier.Common.serverSettings;
             }
         }
         WebApi.prototype.getBaseUrl = function () {
-            return "http://" + this.serverSettings.apiUrl;
+            return this.baseProtocol + this.serverSettings.apiUrl;
         };
         WebApi.prototype.getArgs = function () {
             return {

@@ -3,6 +3,7 @@
     export class WebApi {
 
         private static tiplocsLocalStorageKey = "tn-tiplocs";
+        private baseProtocol = (("https:" == document.location.protocol) ? "https://" : "http://");
 
         constructor(public serverSettings?: ServerSettings) {
             if (!serverSettings) {
@@ -11,7 +12,7 @@
         }
 
         private getBaseUrl() {
-            return "http://" + this.serverSettings.apiUrl;
+            return this.baseProtocol + this.serverSettings.apiUrl;
         }
 
         private getArgs() {
