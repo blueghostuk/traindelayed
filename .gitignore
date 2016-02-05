@@ -68,3 +68,9 @@ PublishProfiles/azure-vm.pubxml
 # jekyll deploy
 _site/**/*
 .vs/config/applicationhost.config
+
+#npm
+node_modules
+
+#typings
+typings
