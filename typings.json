@@ -1,8 +1,0 @@
-{
-  "ambientDependencies": {
-    "bootstrap": "github:DefinitelyTyped/DefinitelyTyped/bootstrap/bootstrap.d.ts#76534619dd2e00ef7575225fec70eec5bd67a62a",
-    "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts#cf2a968f0edd7d30773f7d23fe3708fa029d5ab7",
-    "knockout": "github:DefinitelyTyped/DefinitelyTyped/knockout/knockout.d.ts#1256c09f6526c97f511576074bb332afd936b681",
-    "moment": "github:DefinitelyTyped/DefinitelyTyped/moment/moment.d.ts#b090bcf9ba9f756ec8ff53e7707269729172a325"
-  }
-}
